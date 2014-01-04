@@ -244,12 +244,12 @@
         </mapAttribute>
     </attributes>
     <buildtargets>
-        <buildtarget buildtool="Linker" name="CommandBasedRobotTemplate" passed="false" targetname="CommandBasedRobotTemplate">
+        <buildtarget buildtool="Linker" name="Robot-2014" passed="false" targetname="Robot-2014">
             <contents>
-                <buildtargetreference name="/Robot-2014/CommandBasedRobotTemplate_partialImage"/>
+                <buildtargetreference name="/Robot-2014/Robot-2014_partialImage"/>
             </contents>
         </buildtarget>
-        <buildtarget buildtool="Partial Image Linker" name="CommandBasedRobotTemplate_partialImage" passed="true" targetname="CommandBasedRobotTemplate_partialImage">
+        <buildtarget buildtool="Partial Image Linker" name="Robot-2014_partialImage" passed="true" targetname="Robot-2014_partialImage">
             <contents>
                 <folder name="/Robot-2014" recursive="true"/>
             </contents>
