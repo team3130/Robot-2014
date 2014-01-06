@@ -4,6 +4,8 @@
 *.out
 ctdt.c
 PPC603gnu/
+Makefile
+
 
 #############
 ## Windows detritus
