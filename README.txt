@@ -10,12 +10,24 @@
 --  I. Installation                                              --
 -------------------------------------------------------------------
 
-1. Import the Robot-2014 project into WindRiver
+1. If you have not set-up WindRiver, follow the Getting Started
+   With C++ guide from FIRST
+   (http://wpilib.screenstepslive.com/s/3120/m/7913)
+
+2. Import the Robot-2014 project into WindRiver
    [File->Import...  General->Existing Project Into Workspace]
+   Select the project directory with "Select Root Directory"
+   Do not Copy the Project into the Workspace
 
-2. ???
+3. Build the project once
+   [CTRL+B CTRL+P]
 
-3. Profit!
+4. Change your FIRST Downloader Preferences to download this 
+   project
+   [Window->Preferences  First Downloader Preferences]
+   Set Team Number to 3130
+   Set the download file to the .out file from the project (found 
+   in Robot-2014/PPC603gnu/Robot-2014/Debug)
 
 -------------------------------------------------------------------
 --  II. Code Information                                         --
