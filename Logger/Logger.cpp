@@ -8,7 +8,13 @@ int file_exists (char *filename)
   return (stat(filename, &buffer) == 0);
 }
 
-Logger::Logger() {
+
+Logger* Logger::m_logger = NULL;
+
+Logger::Logger() :
+		m_file(NULL),
+		m_table(NULL)
+		{
 	// Remove old match data if present
 	if (file_exists(LOG_FILE_OLD)) {
 		remove(LOG_FILE_OLD);
