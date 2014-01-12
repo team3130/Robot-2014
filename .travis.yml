@@ -1,0 +1,9 @@
+language: cpp
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install wine wput python2.7 tcl curl
+  - git clone https://github.com/nikitakit/ucpp
+  - export PATH=$PATH:./ucpp/ucpp
+  - ucpp setup -t 3130
+  - ucpp init
+script: ucpp configure && make
