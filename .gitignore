@@ -6,7 +6,10 @@ ctdt.c
 PPC603gnu/
 Makefile
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 77c9dac... Initial Robotbuilder Export
 #############
 ## Windows detritus
 #############
