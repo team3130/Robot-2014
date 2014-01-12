@@ -5,6 +5,9 @@
 ctdt.c
 PPC603gnu/
 
+# Backup files
+*.*~
+
 #############
 ## Windows detritus
 #############
