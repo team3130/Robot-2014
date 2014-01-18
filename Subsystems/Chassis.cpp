@@ -17,13 +17,13 @@ void Chassis::InitDefaultCommand() {
 void Chassis::tankDrive(Joystick* left, Joystick* right, int precision){
 	precisionLevel = precision;
 	float multiplier = pow(precisionMultiplier, precisionLevel);
-	float leftStick = left->GetY()
-	float rightStick = right->GetY()
+	float leftStick = left->GetY();
+	float rightStick = right->GetY();
 	if (fabs(leftStick)<.07){
-		leftStick = 0
+		leftStick = 0;
 	}
 	if (fabs(rightStick)<.07){
-		rightStick = 0
+		rightStick = 0;
 	}
 	drive->TankDrive(leftStick*multiplier, rightStick*multiplier, false);		//look at the function declaration to see why I put 'false' here.
 }
