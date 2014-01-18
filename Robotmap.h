@@ -11,8 +11,10 @@
  
 // For example to map the left and right motors, you could define the
 // following variables to use with your drivetrain subsystem.
-// #define LEFTMOTOR 1
-// #define RIGHTMOTOR 2
+
+// It is convention to name all #defined constants with all caps names.
+#define C_LEFTMOTOR1 1
+#define C_RIGHTMOTOR1 2
 
 // If you are using multiple modules, make sure to define both the port
 // number and the module. For example you with a rangefinder:

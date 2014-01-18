@@ -8,6 +8,11 @@ private:
 
 public:
 	OI();
+	Joystick* leftJoystick;
+	Joystick* rightJoystick;
+	Joystick* gamepad;
+	JoystickButton* leftPrecision;
+	JoystickButton* rightPrecision;
 };
 
 #endif

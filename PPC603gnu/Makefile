@@ -31,8 +31,8 @@ else
 MODE_DIR := NonDebug
 endif
 OBJ_DIR := .
-WS_ROOT_DIR := C:/Users/3130/Documents/GitHub
-PRJ_ROOT_DIR := $(WS_ROOT_DIR)/Robot-2014
+WS_ROOT_DIR := C:/WindRiver/workspace
+PRJ_ROOT_DIR := C:/Users/Ashwin_2/Documents/Projects/FRC/Robot-2014
 
 
 
@@ -174,7 +174,19 @@ Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Commands/ExampleCommand.o
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
+Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Commands/JoystickTank.o : $(PRJ_ROOT_DIR)/Commands/JoystickTank.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+
+
+Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Logger/Logger.o : $(PRJ_ROOT_DIR)/Logger/Logger.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+
+
 Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/OI.o : $(PRJ_ROOT_DIR)/OI.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+
+
+Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Subsystems/Chassis.o : $(PRJ_ROOT_DIR)/Subsystems/Chassis.cpp $(FORCE_FILE_BUILD)
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
@@ -185,7 +197,10 @@ Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Subsystems/ExampleSubsyst
 OBJECTS_Robot-2014_partialImage = Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/CommandBase.o \
 	 Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/CommandBasedRobot.o \
 	 Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Commands/ExampleCommand.o \
+	 Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Commands/JoystickTank.o \
+	 Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Logger/Logger.o \
 	 Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/OI.o \
+	 Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Subsystems/Chassis.o \
 	 Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Subsystems/ExampleSubsystem.o
 
 Robot-2014_partialImage/$(MODE_DIR)/Robot-2014_partialImage.o : $(OBJECTS_Robot-2014_partialImage)
@@ -201,7 +216,8 @@ Robot-2014_partialImage/$(MODE_DIR)/Robot-2014_partialImage_clean :
 force : 
 
 DEP_FILES := Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/CommandBase.d Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/CommandBasedRobot.d Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Commands/ExampleCommand.d \
-	 Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/OI.d Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Subsystems/ExampleSubsystem.d
+	 Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Commands/JoystickTank.d Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Logger/Logger.d Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/OI.d \
+	 Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Subsystems/Chassis.d Robot-2014_partialImage/$(MODE_DIR)/Objects/Robot-2014/Subsystems/ExampleSubsystem.d
 -include $(DEP_FILES)
 
 
