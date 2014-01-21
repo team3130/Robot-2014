@@ -2,6 +2,7 @@
 #define MOVE_STRAIGHT_H
 
 #include "../CommandBase.h"
+#include "WPILib.h"
 
 /**
  * @author Ashwin
@@ -11,8 +12,12 @@
  * meters.
  */
 class MoveStraight: public CommandBase {
+private:
+	Timer timer;
+	float lDistance;
+	float rDistance;
 public:
-	MoveStraight();
+	MoveStraight(float lDist, float rDist);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

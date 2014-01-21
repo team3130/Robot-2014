@@ -15,6 +15,10 @@
 // It is convention to name all #defined constants with all caps names.
 #define C_LEFTMOTOR1 1
 #define C_RIGHTMOTOR1 2
+#define C_ENCODER_LEFT_CHANNEL_1 3
+#define C_ENCODER_LEFT_CHANNEL_2 4
+#define C_ENCODER_RIGHT_CHANNEL_1 1
+#define C_ENCODER_RIGHT_CHANNEL_2 2
 
 // If you are using multiple modules, make sure to define both the port
 // number and the module. For example you with a rangefinder:
