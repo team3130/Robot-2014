@@ -17,6 +17,8 @@
 2. Import the Robot-2014 project into WindRiver
    [File->Import...  General->Existing Project Into Workspace]
    Select the project directory with "Select Root Directory"
+   [My Documents/GitHub/Robot-2014]
+   Click on the Robot-2014 folder and click OK.
    Do not Copy the Project into the Workspace
 
 3. Build the project once
