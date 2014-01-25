@@ -39,10 +39,23 @@ void JoystickTank::Execute() {
 	int rightPrecision = oi->rightPrecision->Get()?1:0;		//1 if button pressed, 0 otherwise.
 	precisionLevel = leftPrecision+rightPrecision;
 	float multiplier = pow(precisionMultiplier, precisionLevel);
+	
+	//calculate observed bias between the two motors
 	float observedRightBias= chassis->rightEncoder->GetRate() - chassis->leftEncoder->GetRate(); 	//right encoder velocity - left encoder velocity
-	float correct=lrdifvc.update(observedRightBias,PIDTimer.Get());
-	chassis->tankDrive(joystickToSpeed(leftStick*multiplier)-correct,	//correction to motor inputs.
-			joystickToSpeed(rightStick*multiplier)+correct);
+	//calculate average observed speed of both motors
+	float speed = ((chassis->rightEncoder->GetRate() - chassis->leftEncoder->GetRate())/2);
+	//divide observed bias by speed, because bias is directly proportional to speed.
+	float observedBiasPerSpeed = observedRightBias/speed;
+	//get a calculated correction value through PID.
+	float correct=lrdifvc.update(observedBiasPerSpeed,(int)PIDTimer.Get());
+	//because observed bias is directly proportional to speed, the correction bias must also
+	//be directly proportional to speed. Dividing and multiplying by speed allows us a solution
+	//that is independent of the speed of the robot. Correction bias amounts would otherwise
+	//vary with the speed of the robot, and the PID controller would become unreliable. PID does
+	//not itself well to the presence of multiple quickly-changing variables.
+	correct*=speed;
+	chassis->tankDrive(joystickToSpeed(leftStick*multiplier)+correct,	//correction to motor inputs.
+			joystickToSpeed(rightStick*multiplier)-correct);
 }
 //convert joystick value to a speed (m/s)
 float JoystickTank::joystickToSpeed(float in){
