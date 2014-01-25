@@ -1,5 +1,5 @@
 #include "../Robotmap.h"
-#include "../Commands/JoystickTank.h"
+#include "../Commands/JoystickArcade.h"
 #include "Chassis.h"
 #include "math.h"
 #include "string.h"
@@ -17,7 +17,7 @@ Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 }
 void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new JoystickTank());
+	SetDefaultCommand(new JoystickArcade());
 }
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
 	drive->TankDrive(leftSpeed, rightSpeed, false);

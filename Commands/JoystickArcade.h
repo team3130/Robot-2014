@@ -8,7 +8,7 @@
  *
  * @author ExampleAuthor
  */
-class JoystickTank: public CommandBase {
+class JoystickArcade: public CommandBase {
 private:
 	float precisionMultiplier;	//how much precision each level gives us.
 	int precisionLevel;			//level of precision we want. 0 is default
@@ -17,7 +17,7 @@ private:
 	Timer PIDTimer;
 	Timer dashboardSendTimer;
 public:
-	JoystickTank();
+	JoystickArcade();
 	float joystickToSpeed(float in);	//convert joystick value to a speed (m/s)
 	virtual void Initialize();
 	virtual void Execute();

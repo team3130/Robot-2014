@@ -1,16 +1,16 @@
-#include "JoystickTank.h"
+#include "JoystickArcade.h"
 #include "math.h"
 
-JoystickTank::JoystickTank(): lrdifvc("Chassis LR Difference"){
+JoystickArcade::JoystickArcade(): lrdifvc("Chassis LR Difference"){
 	Requires(chassis);
 	precisionMultiplier = 0.6666666666f;
 	precisionLevel = 0;
 	maxPrecisionLevel = 2;
-	//SmartDashboard::PutNumber("JoystickTank: Joystick To Speed Multiplier",1.f);
+	//SmartDashboard::PutNumber("JoystickArcade: Joystick To Speed Multiplier",1.f);
 	
 }
 // Called just before this Command runs the first time
-void JoystickTank::Initialize() {
+void JoystickArcade::Initialize() {
 	lrdifvc.reset();
 	chassis->leftEncoder->Reset();
 	chassis->rightEncoder->Reset();
@@ -23,7 +23,7 @@ void JoystickTank::Initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-void JoystickTank::Execute() {
+void JoystickArcade::Execute() {
 	//deadzones
 	float leftStick = oi->leftJoystick->GetY();
 	float rightStick = oi->rightJoystick->GetY();
@@ -67,20 +67,20 @@ void JoystickTank::Execute() {
 	}
 }
 //convert joystick value to a speed (m/s)
-float JoystickTank::joystickToSpeed(float in){
-	return in * 1; //SmartDashboard::GetNumber("JoystickTank: Joystick To Speed Multiplier");
+float JoystickArcade::joystickToSpeed(float in){
+	return in * 1; //SmartDashboard::GetNumber("JoystickArcade: Joystick To Speed Multiplier");
 }
 // Make this return true when this Command no longer needs to run execute()
-bool JoystickTank::IsFinished() {
+bool JoystickArcade::IsFinished() {
 	return false;
 }
 
 // Called once after isFinished returns true
-void JoystickTank::End() {
+void JoystickArcade::End() {
 	
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void JoystickTank::Interrupted() {
+void JoystickArcade::Interrupted() {
 }
