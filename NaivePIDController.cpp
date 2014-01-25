@@ -49,6 +49,9 @@ void NaivePIDController::projectPIDValues(){
 	SmartDashboard::PutNumber(name+std::string(" P"),P*1000.);
 	SmartDashboard::PutNumber(name+std::string(" I"),I*1000.);
 	SmartDashboard::PutNumber(name+std::string(" D"),D*1000.);
+	SmartDashboard::PutNumber(name+std::string(" Error"),currentError);
+	SmartDashboard::PutNumber(name+std::string(" Accum"),accum);
+	SmartDashboard::PutNumber(name+std::string(" DiffError"),currentError-lastError);
 }
 void NaivePIDController::getPIDValues(){
 //	P=-0.001f;

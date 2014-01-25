@@ -19,6 +19,7 @@ void JoystickTank::Initialize() {
 	lrdifvc.setSetPoint(0);
 	PIDTimer.Reset();
 	PIDTimer.Start();
+	dashboardSendTimer.Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -56,6 +57,14 @@ void JoystickTank::Execute() {
 	correct*=speed;
 	chassis->tankDrive(joystickToSpeed(leftStick*multiplier)+correct,	//correction to motor inputs.
 			joystickToSpeed(rightStick*multiplier)-correct);
+	//send all values to smartdashboard
+	if(dashboardSendTimer.Get()>20){	//every 20ms
+		SmartDashboard::PutNumber("Observed Right Bias ", observedRightBias);
+		SmartDashboard::PutNumber("Speed", speed);
+		SmartDashboard::PutNumber("Observed Bias Per Speed", observedBiasPerSpeed);
+		SmartDashboard::PutNumber("Correct", correct);
+		dashboardSendTimer.Reset();
+	}
 }
 //convert joystick value to a speed (m/s)
 float JoystickTank::joystickToSpeed(float in){

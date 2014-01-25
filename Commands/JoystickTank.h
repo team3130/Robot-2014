@@ -15,6 +15,7 @@ private:
 	int maxPrecisionLevel;		//maximum precision level.
 	NaivePIDController lrdifvc;	//left right difference velocity controller.
 	Timer PIDTimer;
+	Timer dashboardSendTimer;
 public:
 	JoystickTank();
 	float joystickToSpeed(float in);	//convert joystick value to a speed (m/s)
