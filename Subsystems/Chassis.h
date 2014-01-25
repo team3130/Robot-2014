@@ -22,6 +22,7 @@ public:
 	Chassis(int leftMotorChannel, int rightMotorChannel);
 	void InitDefaultCommand();
 	void tankDrive(float leftSpeed, float rightSpeed);
+	void arcadeDrive(float move, float turn);
 	
 //	void morePrecision();
 //	void lessPrecision();

@@ -22,3 +22,6 @@ void Chassis::InitDefaultCommand() {
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
 	drive->TankDrive(leftSpeed, rightSpeed, false);
 }
+void Chassis::arcadeDrive(float move, float turn){
+	drive->ArcadeDrive(move, turn, false);
+}
