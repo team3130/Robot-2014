@@ -1,6 +1,8 @@
 #include "Logger.h"
 #include "Driverstation.h"
 #include "stat.h"
+#include <iostream>
+#include "tables/TableKeyNotDefinedException.h"
 
 int file_exists (char *filename)
 {
@@ -67,6 +69,20 @@ void Logger::update_boolean(const char* name, bool value) {
 	subtable->PutBoolean(buf, value);
 	
 	fprintf(m_file, "B %s %s\n", name, value ? "true" : "false");
+}
+
+// Only for doubles ...?
+void Logger::ValueChanged(ITable* source, const std::string& key, EntryValue value, bool isNew) {
+	std::string name;
+	try {
+		name = source->GetString("_TableName");
+	} catch (TableKeyNotDefinedException* e) {
+		std::cout << "ERROR" << e->what() << std::endl;
+		return;
+	}
+	char buf[20];
+	snprintf(buf, 20, "%f.4", DriverStation::GetInstance()->GetMatchTime());
+	m_table->GetSubTable(name)->GetSubTable(key)->PutNumber(std::string(buf), value.f);
 }
 
 

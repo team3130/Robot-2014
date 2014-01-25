@@ -13,6 +13,7 @@ public:
 	void update_number(const char* name, double value);
 	void update_string(const char* name, const char* value);
 	void update_boolean(const char* name, bool value);
+	void ValueChanged(ITable* source, const std::string& key, EntryValue value, bool isNew); // Implements ITableListener
 	
 private:
 	
