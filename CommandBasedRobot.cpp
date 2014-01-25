@@ -27,13 +27,13 @@ private:
 		string s6="french ";
 		string s7="fries";
 		s6+=s7;
-		SmartDashboard::PutString("s1",s1);
-		SmartDashboard::PutString("s2",s2);
-		SmartDashboard::PutString("s3",s3);
-		SmartDashboard::PutString("s4",s4);
-		SmartDashboard::PutString("s5",s5);
-		SmartDashboard::PutString("s6",s6);
-		SmartDashboard::PutString("s7",s7);
+		//SmartDashboard::PutString("s1",s1);
+		//SmartDashboard::PutString("s2",s2);
+		//SmartDashboard::PutString("s3",s3);
+		//SmartDashboard::PutString("s4",s4);
+		//SmartDashboard::PutString("s5",s5);
+		//SmartDashboard::PutString("s6",s6);
+		//SmartDashboard::PutString("s7",s7);
 		autonomousCommand->Start();
 	}
 	
@@ -47,7 +47,7 @@ private:
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		autonomousCommand->Cancel();
-		SmartDashboard::PutData("Move Straight", new MoveStraight(600,600));
+		//SmartDashboard::PutData("Move Straight", new MoveStraight(600,600));
 	}
 	
 	virtual void TeleopPeriodic() {

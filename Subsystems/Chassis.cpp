@@ -5,10 +5,11 @@
 #include "string.h"
 
 Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
-		: Subsystem("Chassis"), leftpc("Chassis Left Position"), rightpc("Chassis Right Position")
-			, leftvc("Chassis Left Velocity"), rightvc("Chassis Right Velocity"){
+		: Subsystem("Chassis"){
 	rightEncoder = new Encoder(C_ENCODER_RIGHT_CHANNEL_1,C_ENCODER_RIGHT_CHANNEL_1); 
 	leftEncoder = new Encoder(C_ENCODER_LEFT_CHANNEL_1,C_ENCODER_LEFT_CHANNEL_2, true);
+	leftEncoder->SetDistancePerPulse(1);
+	rightEncoder->SetDistancePerPulse(1);
 	left = new Jaguar(leftMotorChannel);
 	right = new Jaguar(rightMotorChannel);
 	drive=new RobotDrive(left, right);

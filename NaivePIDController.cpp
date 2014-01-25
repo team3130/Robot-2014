@@ -7,9 +7,11 @@ NaivePIDController::NaivePIDController(string vname){
 	accum=0;
 	lastSetTime=0;
 	lastError=0;
-	this->name=name;
-	SmartDashboard::PutString(string("Output"), SmartDashboard::GetString("Output")+"\tNPC "+vname+". ");
+	this->name=vname;
+	//SmartDashboard::PutString(string("Output"), //SmartDashboard::GetString("Output")+"\tNPC "+vname+". ");
 	projectPIDValues();
+	timer.Reset();
+	timer.Start();
 }
 void NaivePIDController::setSetPoint(float in){
 	setPoint=in;
@@ -18,12 +20,16 @@ void NaivePIDController::setSetPoint(float in){
  * returns the value to set the controller to. Input time in milliseconds
  */
 float NaivePIDController::update(float value, long time){
-	//update values in SmartDashboard
-	getPIDValues();
-	projectPIDValues();
-	
+	//update values in //SmartDashboard
+	if(timer.Get()>0.5){
+		getPIDValues();
+		projectPIDValues();
+		timer.Stop();
+		timer.Reset();
+		timer.Start();
+	}
 	//do math
-	lastError= currentError;
+	lastError = currentError;
 	currentError = value- setPoint;
 	float propTerm = currentError*P;
 	float lastTimeSeconds = ((float)(time-lastSetTime))/1000.f;
@@ -40,14 +46,17 @@ void NaivePIDController::projectPIDValues(){
 	printf("Projecting PID values");
 	printf(name.c_str());
 	printf("\r\n");
-	SmartDashboard::PutNumber(name+std::string(" P"),P);
-	SmartDashboard::PutNumber(name+std::string(" I"),I);
-	SmartDashboard::PutNumber(name+std::string(" D"),D);
+	SmartDashboard::PutNumber(name+std::string(" P"),P*1000.);
+	SmartDashboard::PutNumber(name+std::string(" I"),I*1000.);
+	SmartDashboard::PutNumber(name+std::string(" D"),D*1000.);
 }
 void NaivePIDController::getPIDValues(){
-	P = SmartDashboard::GetNumber(name+std::string(" P"));
-	I = SmartDashboard::GetNumber(name+std::string(" I"));
-	D = SmartDashboard::GetNumber(name+std::string(" D"));
+//	P=-0.001f;
+//	I=0;
+//	D=0;
+	P = SmartDashboard::GetNumber(name+std::string(" P"))/1000.;
+	I = SmartDashboard::GetNumber(name+std::string(" I"))/1000.;
+	D = SmartDashboard::GetNumber(name+std::string(" D"))/1000.;
 }
 void NaivePIDController::resetTime(){
 	lastError=0;

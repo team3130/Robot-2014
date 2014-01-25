@@ -14,12 +14,7 @@ private:
 	RobotDrive* drive;
 	Jaguar* left;
 	Jaguar* right;
-	Timer PIDTimer;
 public:
-	NaivePIDController leftpc;
-	NaivePIDController rightpc;
-	NaivePIDController leftvc;
-	NaivePIDController rightvc;
 	Encoder* leftEncoder;
 	Encoder* rightEncoder;
 	

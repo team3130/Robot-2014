@@ -20,6 +20,7 @@ public:
 	void setSetPoint(float in);
 	void set(float P, float I, float D);
 private:
+	Timer timer;
 	void projectPIDValues();
 	void getPIDValues();
 };
