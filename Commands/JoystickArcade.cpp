@@ -41,10 +41,12 @@ void JoystickArcade::Execute() {
 	precisionLevel = leftPrecision+rightPrecision;
 	float multiplier = pow(precisionMultiplier, precisionLevel);
 	if(leftStick==0){
+		float rDirectionMultiplier = chassis->rightEncoder->GetDirection()?1:-1;
+		float lDirectionMultiplier = chassis->leftEncoder->GetDirection()?1:-1;
 		//calculate observed bias between the two motors
-		float observedRightBias= chassis->rightEncoder->GetRate() - chassis->leftEncoder->GetRate(); 	//right encoder velocity - left encoder velocity
+		float observedRightBias= chassis->rightEncoder->GetRate()*rDirectionMultiplier - chassis->leftEncoder->GetRate()*lDirectionMultiplier; 	//right encoder velocity - left encoder velocity
 		//calculate average observed speed of both motors
-		float speed = ((chassis->rightEncoder->GetRate() - chassis->leftEncoder->GetRate())/2);
+		float speed = ((chassis->rightEncoder->GetRate()*rDirectionMultiplier - chassis->leftEncoder->GetRate()*lDirectionMultiplier)/2);
 		//divide observed bias by speed, because bias is directly proportional to speed.
 		float observedBiasPerSpeed = observedRightBias/speed;
 		//get a calculated correction value through PID.
@@ -56,14 +58,16 @@ void JoystickArcade::Execute() {
 		//not itself well to the presence of multiple quickly-changing variables.
 		correct*=speed;
 		//tank drive: control each motor independently. we are just going straight.
-		chassis->tankDrive(joystickToSpeed(leftStick*multiplier)+correct,	//correction to motor inputs.
+		chassis->tankDrive(joystickToSpeed(rightStick*multiplier)+correct,	//correction to motor inputs.
 				joystickToSpeed(rightStick*multiplier)-correct);
 		//send all values to smartdashboard
-		if(dashboardSendTimer.Get()>20){	//every 20ms
+		if(dashboardSendTimer.Get()>3){	//every 20ms
 			SmartDashboard::PutNumber("Observed Right Bias ", observedRightBias);
 			SmartDashboard::PutNumber("Speed", speed);
 			SmartDashboard::PutNumber("Observed Bias Per Speed", observedBiasPerSpeed);
 			SmartDashboard::PutNumber("Correct", correct);
+			SmartDashboard::PutNumber("Left Speed", chassis->leftEncoder->GetRate());
+			SmartDashboard::PutNumber("Right Speed", chassis->leftEncoder->GetRate());
 			dashboardSendTimer.Reset();
 		}
 	}else{	//don't use pid because we aren't going straight.

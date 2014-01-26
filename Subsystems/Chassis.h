@@ -14,6 +14,9 @@ private:
 	RobotDrive* drive;
 	Jaguar* left;
 	Jaguar* right;
+	double bias;
+	double rightInvert;
+	double leftInvert;
 public:
 	Encoder* leftEncoder;
 	Encoder* rightEncoder;
@@ -23,6 +26,7 @@ public:
 	void InitDefaultCommand();
 	void tankDrive(float leftSpeed, float rightSpeed);
 	void arcadeDrive(float move, float turn);
+	void straightDrive(float speed);
 	
 //	void morePrecision();
 //	void lessPrecision();

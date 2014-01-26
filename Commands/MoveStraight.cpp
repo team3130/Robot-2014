@@ -1,35 +1,33 @@
 #include "MoveStraight.h"
 #include "math.h"
 
-MoveStraight::MoveStraight(float lDist, float rDist){
+MoveStraight::MoveStraight(){
 	Requires(chassis);
-	lDistance=lDist;
-	rDistance=rDist;
 }
 // Called just before this Command runs the first time
 void MoveStraight::Initialize() {
-//	chassis->leftpc.reset();
-//	chassis->rightpc.reset();
 	chassis->leftEncoder->Reset();
 	chassis->rightEncoder->Reset();
 	chassis->leftEncoder->Start();
 	chassis->rightEncoder->Start();
-//	chassis->leftpc.setSetPoint(lDistance);
-//	chassis->rightpc.setSetPoint(rDistance);
 	timer.Reset();
 	timer.Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void MoveStraight::Execute() {
-//	float setLeft=chassis->leftpc.update(chassis->leftEncoder->Get(),(long)timer.Get());
-//	float setRight=chassis->rightpc.update(chassis->rightEncoder->Get(),(long)timer.Get());
-//	chassis->tankDrive(setLeft,setRight);
+	double power = oi->leftJoystick->GetY()+oi->rightJoystick->GetY();
+	if(power>0.1 || power<-0.1){
+		chassis->straightDrive(power/2.0);
+	}
+	else{
+		chassis->tankDrive(0,0);
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool MoveStraight::IsFinished() {
-	return fabs(chassis->leftEncoder->Get()-lDistance)<15 && fabs(chassis->rightEncoder->Get()-rDistance)<15;
+	return false;
 }
 
 // Called once after isFinished returns true

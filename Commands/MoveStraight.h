@@ -14,10 +14,8 @@
 class MoveStraight: public CommandBase {
 private:
 	Timer timer;
-	float lDistance;
-	float rDistance;
 public:
-	MoveStraight(float lDist, float rDist);
+	MoveStraight();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
