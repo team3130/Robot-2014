@@ -1,6 +1,6 @@
 #include "../Robotmap.h"
 #include "../Commands/JoystickTank.h"
-#include "../Commands/MoveStraight.h"
+#include "../Commands/JoystickStraight.h"
 #include "Chassis.h"
 #include "math.h"
 #include "string.h"

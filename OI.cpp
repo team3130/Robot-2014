@@ -1,5 +1,5 @@
 #include "OI.h"
-#include "Commands/MoveStraight.h"
+#include "Commands/JoystickStraight.h"
 #include "Commands/JoystickTank.h"
 OI::OI() {
 	leftJoystick = new Joystick(1);
@@ -8,6 +8,6 @@ OI::OI() {
 	leftPrecision = new JoystickButton(leftJoystick, 1);
 	rightPrecision = new JoystickButton(rightJoystick, 1);
 	straightMode = new JoystickButton(rightJoystick, 2);
-	straightMode->WhenPressed(new MoveStraight());
+	straightMode->WhenPressed(new JoystickStraight());
 	//straightMode->WhenReleased(new JoystickTank());
 }

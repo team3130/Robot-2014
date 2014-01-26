@@ -29,7 +29,7 @@ void JoystickTank::Execute() {
 	float rightStick = oi->rightJoystick->GetY();
 	SmartDashboard::PutNumber("Left Stick", leftStick);
 	SmartDashboard::PutNumber("Right Stick", rightStick);
-	if (fabs(leftStick)<.15f){
+	if (fabs(leftStick)<.07f){
 		leftStick = 0;
 	}
 	if (fabs(rightStick)<.07f){

@@ -11,11 +11,11 @@
  * distance. For the sake of physics calculations, we should use
  * meters.
  */
-class MoveStraight: public CommandBase {
+class JoystickStraight: public CommandBase {
 private:
 	Timer timer;
 public:
-	MoveStraight();
+	JoystickStraight();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
