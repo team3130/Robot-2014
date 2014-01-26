@@ -2,17 +2,23 @@
 #define MOVE_STRAIGHT_H
 
 #include "../CommandBase.h"
+#include "WPILib.h"
 
 /**
  * @author Ashwin
  * This class uses the encoders (and maybe accelerometer or vision)
  * to move straight--either forward or backward--by a specific
- * distance. For the sake of physics calculations, we should use
- * meters.
+ * distance.
  */
-class MoveStraight: public CommandBase {
+class DriveStraight: public CommandBase {
+private:
+	Timer timer;
+	double goal;
+	double distanceToGoal;
+	double threshold;
+	double confirmTime;
 public:
-	MoveStraight();
+	DriveStraight(double dist, double thresh, double timeToWait);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

@@ -1,43 +1,57 @@
 #include "../Robotmap.h"
 #include "../Commands/JoystickTank.h"
+#include "../Commands/JoystickStraight.h"
 #include "Chassis.h"
 #include "math.h"
+#include "string.h"
 
-Chassis::Chassis(int leftMotorChannel, int rightMotorChannel) : Subsystem("Chassis"){
-	drive=new RobotDrive(leftMotorChannel, rightMotorChannel);
+Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
+		: Subsystem("Chassis"){
+	rightEncoder = new Encoder(C_ENCODER_RIGHT_CHANNEL_1,C_ENCODER_RIGHT_CHANNEL_2, false); 
+	leftEncoder = new Encoder(C_ENCODER_LEFT_CHANNEL_1,C_ENCODER_LEFT_CHANNEL_2, true);
+	left = new Jaguar(leftMotorChannel);
+	right = new Jaguar(rightMotorChannel);
+	drive=new RobotDrive(left, right);
+	drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
+	drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
+	
+	bias = 0;
 	drive->SetSafetyEnabled(false);
-	precisionMultiplier = 0.6666666666f;
-	precisionLevel = 0;
-	maxPrecisionLevel = 2;
+	//Assuming we have 4" (.1016m) wheels, pi*d = 3.14*.1016 = 0.319185meters per rotation
+	//360 pulses per rotation -> 0.319185/360 = 0.0008866m/pulse.
+	SmartDashboard::PutNumber("Encoder Distance (m) per Pulse", 0.0008866);
+	SmartDashboard::PutNumber("Bias Multiplier",1000.0);
 }
 void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new JoystickTank());
 }
-void Chassis::tankDrive(Joystick* left, Joystick* right, int precision){
-	precisionLevel = precision;
-	float multiplier = pow(precisionMultiplier, precisionLevel);
-	float leftStick = left->GetY();
-	float rightStick = right->GetY();
-	if (fabs(leftStick)<.07){
-		leftStick = 0;
-	}
-	if (fabs(rightStick)<.07){
-		rightStick = 0;
-	}
-	drive->TankDrive(leftStick*multiplier, rightStick*multiplier, false);		//look at the function declaration to see why I put 'false' here.
+void Chassis::resetBias(){
+	bias=0;
 }
-//void Chassis::morePrecision(){
-//	precisionLevel++;
-//	if(precisionLevel>maxPrecisionLevel)precisionLevel=maxPrecisionLevel;
-//}
-//void Chassis::lessPrecision(){
-//	precisionLevel--;
-//	if(precisionLevel<0)precisionLevel=0;
-//}
-//void Chassis::resetPrecision(){
-//	precisionLevel=0;
-//}
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
+void Chassis::tankDrive(float leftSpeed, float rightSpeed){
+	drive->TankDrive(leftSpeed, rightSpeed, false);
+}
+void Chassis::arcadeDrive(float move, float turn){
+	drive->ArcadeDrive(move, turn, false);
+}
+void Chassis::straightDrive(float speed){
+	double distPerPulse = SmartDashboard::GetNumber("Encoder Distance (m) per Pulse");
+	leftEncoder->SetDistancePerPulse(distPerPulse);
+	rightEncoder->SetDistancePerPulse(distPerPulse);
 
+	if(speed<-1)speed=-1;
+	if(speed>1)speed=1;
+	double leftVelocity = leftEncoder->GetRate();
+	double rightVelocity = rightEncoder->GetRate();
+	double error= (fabs(rightVelocity)-fabs(leftVelocity));
+	bias-=error*SmartDashboard::GetNumber("Bias Multiplier")/1000.0;
+	//if(count++%3==0){
+		SmartDashboard::PutNumber("Chassis Speed",speed);
+		SmartDashboard::PutNumber("Chassis Bias", bias);
+		SmartDashboard::PutNumber("Chassis Error", error);
+		SmartDashboard::PutNumber("Chassis Left Velocity", leftVelocity);
+		SmartDashboard::PutNumber("Chassis Right Velocity", rightVelocity);
+	//}
+	tankDrive(speed*(1.0-bias),speed*(1.0+bias));
+}

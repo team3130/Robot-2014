@@ -5,8 +5,9 @@
 
 /**
  *
- *
- * @author ExampleAuthor
+ * This command assumes the robot to start from rest,
+ * and is primarily meant to take place during autonomous.
+ * Aim to the closest target.
  */
 class AimToTarget: public CommandBase {
 public:

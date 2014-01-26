@@ -2,6 +2,8 @@
 #include "Commands/Command.h"
 #include "Commands/ExampleCommand.h"
 #include "CommandBase.h"
+#include "string.h"
+#include "Commands/JoystickStraight.h"
 
 class CommandBasedRobot : public IterativeRobot {
 private:
@@ -28,6 +30,7 @@ private:
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		autonomousCommand->Cancel();
+		//SmartDashboard::PutData("Move Straight", new JoystickStraight(600,600));
 	}
 	
 	virtual void TeleopPeriodic() {

@@ -2,25 +2,33 @@
 #define CHASSIS_H
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
+#include "../NaivePidController.h"
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class Chassis: public Subsystem {
+class Chassis: public Subsystem{
 private:
 	RobotDrive* drive;
-	// It's desirable that everything possible under private except
-	// for methods that implement subsystem capabilities
+	Jaguar* left;
+	Jaguar* right;
+	double bias;
+	double rightInvert;
+	double leftInvert;
 public:
-	float precisionMultiplier;	//how much precision each level gives us.
-	int precisionLevel;			//level of precision we want. 0 is default
-	int maxPrecisionLevel;		//maximum precision level.
+	Encoder* leftEncoder;
+	Encoder* rightEncoder;
+	
 	Chassis();
 	Chassis(int leftMotorChannel, int rightMotorChannel);
 	void InitDefaultCommand();
-	void tankDrive(Joystick* left, Joystick* right, int precision);
+	void tankDrive(float leftSpeed, float rightSpeed);
+	void arcadeDrive(float move, float turn);
+	void straightDrive(float speed);
+	void resetBias();
+	
 //	void morePrecision();
 //	void lessPrecision();
 //	void resetPrecision();
