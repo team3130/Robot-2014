@@ -9,8 +9,6 @@ Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 		: Subsystem("Chassis"){
 	rightEncoder = new Encoder(C_ENCODER_RIGHT_CHANNEL_1,C_ENCODER_RIGHT_CHANNEL_2, false); 
 	leftEncoder = new Encoder(C_ENCODER_LEFT_CHANNEL_1,C_ENCODER_LEFT_CHANNEL_2, true);
-	leftEncoder->SetDistancePerPulse(1);
-	rightEncoder->SetDistancePerPulse(1);
 	left = new Jaguar(leftMotorChannel);
 	right = new Jaguar(rightMotorChannel);
 	drive=new RobotDrive(left, right);
@@ -19,7 +17,10 @@ Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 	
 	bias = 0;
 	drive->SetSafetyEnabled(false);
-	SmartDashboard::PutNumber("Bias Multiplier",1.0);
+	//Assuming we have 4" (.1016m) wheels, pi*d = 3.14*.1016 = 0.319185meters per rotation
+	//360 pulses per rotation -> 0.319185/360 = 0.0008866m/pulse.
+	SmartDashboard::PutNumber("Encoder Distance (m) per Pulse", 0.0008866);
+	SmartDashboard::PutNumber("Bias Multiplier",1000.0);
 }
 void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
@@ -35,21 +36,22 @@ void Chassis::arcadeDrive(float move, float turn){
 	drive->ArcadeDrive(move, turn, false);
 }
 void Chassis::straightDrive(float speed){
+	double distPerPulse = SmartDashboard::GetNumber("Encoder Distance (m) per Pulse");
+	leftEncoder->SetDistancePerPulse(distPerPulse);
+	rightEncoder->SetDistancePerPulse(distPerPulse);
 
 	if(speed<-1)speed=-1;
 	if(speed>1)speed=1;
-	leftEncoder->SetDistancePerPulse(.01);
-	rightEncoder->SetDistancePerPulse(.01);
 	double leftVelocity = leftEncoder->GetRate();
 	double rightVelocity = rightEncoder->GetRate();
 	double error= (fabs(rightVelocity)-fabs(leftVelocity));
 	bias-=error*SmartDashboard::GetNumber("Bias Multiplier")/1000.0;
 	//if(count++%3==0){
-		SmartDashboard::PutNumber("Speed",speed);
-		SmartDashboard::PutNumber("Bias", bias);
-		SmartDashboard::PutNumber("Error", error);
-		SmartDashboard::PutNumber("left", leftVelocity);
-		SmartDashboard::PutNumber("right", rightVelocity);
+		SmartDashboard::PutNumber("Chassis Speed",speed);
+		SmartDashboard::PutNumber("Chassis Bias", bias);
+		SmartDashboard::PutNumber("Chassis Error", error);
+		SmartDashboard::PutNumber("Chassis Left Velocity", leftVelocity);
+		SmartDashboard::PutNumber("Chassis Right Velocity", rightVelocity);
 	//}
 	tankDrive(speed*(1.0-bias),speed*(1.0+bias));
 }

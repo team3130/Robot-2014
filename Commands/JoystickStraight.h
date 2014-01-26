@@ -6,10 +6,7 @@
 
 /**
  * @author Ashwin
- * This class uses the encoders (and maybe accelerometer or vision)
- * to move straight--either forward or backward--by a specific
- * distance. For the sake of physics calculations, we should use
- * meters.
+ * Drive straight with joystick inputs
  */
 class JoystickStraight: public CommandBase {
 private:
