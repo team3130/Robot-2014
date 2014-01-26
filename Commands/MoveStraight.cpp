@@ -12,6 +12,7 @@ void MoveStraight::Initialize() {
 	chassis->rightEncoder->Start();
 	timer.Reset();
 	timer.Start();
+	chassis->resetBias();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -21,13 +22,14 @@ void MoveStraight::Execute() {
 		chassis->straightDrive(power/2.0);
 	}
 	else{
+		chassis->resetBias();
 		chassis->tankDrive(0,0);
 	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool MoveStraight::IsFinished() {
-	return false;
+	return !oi->straightMode->Get();
 }
 
 // Called once after isFinished returns true

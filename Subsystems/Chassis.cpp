@@ -23,7 +23,10 @@ Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 }
 void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new MoveStraight());
+	SetDefaultCommand(new JoystickArcade());
+}
+void Chassis::resetBias(){
+	bias=0;
 }
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
 	drive->TankDrive(leftSpeed, rightSpeed, false);

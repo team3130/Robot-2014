@@ -13,6 +13,7 @@ public:
 	Joystick* gamepad;
 	JoystickButton* leftPrecision;
 	JoystickButton* rightPrecision;
+	JoystickButton* straightMode;
 };
 
 #endif

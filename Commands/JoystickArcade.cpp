@@ -25,7 +25,7 @@ void JoystickArcade::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void JoystickArcade::Execute() {
 	//deadzones
-	float leftStick = oi->leftJoystick->GetX();
+	float leftStick = oi->leftJoystick->GetY();
 	float rightStick = oi->rightJoystick->GetY();
 	SmartDashboard::PutNumber("Left Stick", leftStick);
 	SmartDashboard::PutNumber("Right Stick", rightStick);
@@ -40,41 +40,8 @@ void JoystickArcade::Execute() {
 	int rightPrecision = oi->rightPrecision->Get()?1:0;		//1 if button pressed, 0 otherwise.
 	precisionLevel = leftPrecision+rightPrecision;
 	float multiplier = pow(precisionMultiplier, precisionLevel);
-	if(leftStick==0){
-		float rDirectionMultiplier = chassis->rightEncoder->GetDirection()?1:-1;
-		float lDirectionMultiplier = chassis->leftEncoder->GetDirection()?1:-1;
-		//calculate observed bias between the two motors
-		float observedRightBias= chassis->rightEncoder->GetRate()*rDirectionMultiplier - chassis->leftEncoder->GetRate()*lDirectionMultiplier; 	//right encoder velocity - left encoder velocity
-		//calculate average observed speed of both motors
-		float speed = ((chassis->rightEncoder->GetRate()*rDirectionMultiplier - chassis->leftEncoder->GetRate()*lDirectionMultiplier)/2);
-		//divide observed bias by speed, because bias is directly proportional to speed.
-		float observedBiasPerSpeed = observedRightBias/speed;
-		//get a calculated correction value through PID.
-		float correct=lrdifvc.update(observedBiasPerSpeed,(int)PIDTimer.Get());
-		//because observed bias is directly proportional to speed, the correction bias must also
-		//be directly proportional to speed. Dividing and multiplying by speed allows us a solution
-		//that is independent of the speed of the robot. Correction bias amounts would otherwise
-		//vary with the speed of the robot, and the PID controller would become unreliable. PID does
-		//not itself well to the presence of multiple quickly-changing variables.
-		correct*=speed;
-		//tank drive: control each motor independently. we are just going straight.
-		chassis->tankDrive(joystickToSpeed(rightStick*multiplier)+correct,	//correction to motor inputs.
-				joystickToSpeed(rightStick*multiplier)-correct);
-		//send all values to smartdashboard
-		if(dashboardSendTimer.Get()>3){	//every 20ms
-			SmartDashboard::PutNumber("Observed Right Bias ", observedRightBias);
-			SmartDashboard::PutNumber("Speed", speed);
-			SmartDashboard::PutNumber("Observed Bias Per Speed", observedBiasPerSpeed);
-			SmartDashboard::PutNumber("Correct", correct);
-			SmartDashboard::PutNumber("Left Speed", chassis->leftEncoder->GetRate());
-			SmartDashboard::PutNumber("Right Speed", chassis->leftEncoder->GetRate());
-			dashboardSendTimer.Reset();
-		}
-	}else{	//don't use pid because we aren't going straight.
-		lrdifvc.resetTime();	//so delta time isn't counted even when we aren't using pid.
-		chassis->arcadeDrive(joystickToSpeed(rightStick*multiplier),
-						joystickToSpeed(leftStick*multiplier));
-	}
+	chassis->tankDrive(joystickToSpeed(leftStick*multiplier),
+						joystickToSpeed(rightStick*multiplier));
 }
 //convert joystick value to a speed (m/s)
 float JoystickArcade::joystickToSpeed(float in){
