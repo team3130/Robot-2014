@@ -64,5 +64,11 @@
 --  IV. Licensing                                                --
 -------------------------------------------------------------------
 
-<We should probably decide on a license since our code is public on
-the internet>
+Use this format for code headers for licensing.
+
+/*-------------------------------------------------------------------------*/
+/* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
+/* Open Source Software - may be modified, shared, used and reused by FRC  */
+/* teams under the same license as the WPILib code itself.                 */
+/* Authors: <INSERT AUTHOR(S) OF CODE>                                     */
+/*-------------------------------------------------------------------------*/
