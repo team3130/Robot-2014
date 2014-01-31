@@ -24,6 +24,6 @@ void CommandBase::init() {
     // Create a single static instance of all of your subsystems. The following
 	// line should be repeated for each subsystem in the project.
 	//examplesubsystem = new ExampleSubsystem();
-	chassis = new Chassis(C_LEFTMOTOR1, C_RIGHTMOTOR1);
+	chassis = new Chassis(C_LEFTMOTOR1, C_RIGHTMOTOR1, C_ARMMOTOR1);
 	oi = new OI();
 }

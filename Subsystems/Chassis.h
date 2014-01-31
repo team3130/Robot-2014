@@ -20,6 +20,7 @@ private:
 	RobotDrive* drive;
 	Jaguar* left;
 	Jaguar* right;
+	Jaguar* arm; 
 	double bias;
 	double rightInvert;
 	double leftInvert;

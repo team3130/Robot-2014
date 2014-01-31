@@ -21,6 +21,7 @@
 // It is convention to name all #defined constants with all caps names.
 #define C_LEFTMOTOR1 1
 #define C_RIGHTMOTOR1 2
+#define C_ARMMOTOR1 3
 #define C_ENCODER_LEFT_CHANNEL_1 3
 #define C_ENCODER_LEFT_CHANNEL_2 4
 #define C_ENCODER_RIGHT_CHANNEL_1 1

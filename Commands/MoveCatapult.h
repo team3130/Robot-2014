@@ -1,0 +1,21 @@
+#ifndef MOVE_CATAPULT_H
+#define MOVE_CATAPULT_H
+
+#include "../CommandBase.h"
+#include "WPILIB.h"
+/**
+ *
+ *
+ * @author Kevin Bi and James Li
+ */
+class MoveCatapult: public CommandBase {
+public:
+	MoveCatapult();
+	virtual void Initialize();
+	virtual void Execute();
+	virtual bool IsFinished();
+	virtual void End();
+	virtual void Interrupted();
+};
+
+#endif
