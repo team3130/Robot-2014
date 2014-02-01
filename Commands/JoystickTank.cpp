@@ -35,6 +35,10 @@ void JoystickTank::Execute() {
 	if (fabs(rightStick)<.07f){
 		rightStick = 0;
 	}
+	if(fabs(rightStick)<.07 && fabs(leftStick)<.07){
+		chassis->drive->updatePIDValues();
+	}
+	
 	//precision mode
 	int leftPrecision = oi->leftPrecision->Get()?1:0;		//1 if button pressed, 0 otherwise.
 	int rightPrecision = oi->rightPrecision->Get()?1:0;		//1 if button pressed, 0 otherwise.

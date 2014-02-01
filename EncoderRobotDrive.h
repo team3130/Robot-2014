@@ -10,4 +10,7 @@ public:
 			Encoder* leftEncoder, Encoder* rightController);
 	virtual ~EncoderRobotDrive();
 	void SetLeftRightMotorOutputs(float left, float right);
+	void projectPIDValues();
+	void getPIDValues();
+	void updatePIDValues();
 };

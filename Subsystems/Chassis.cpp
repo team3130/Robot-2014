@@ -9,6 +9,8 @@ Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 		: Subsystem("Chassis"){
 	rightEncoder = new Encoder(C_ENCODER_RIGHT_CHANNEL_1,C_ENCODER_RIGHT_CHANNEL_2, false); 
 	leftEncoder = new Encoder(C_ENCODER_LEFT_CHANNEL_1,C_ENCODER_LEFT_CHANNEL_2, true);
+	rightEncoder->SetPIDSourceParameter(PIDSource::kRate);
+	leftEncoder->SetPIDSourceParameter(PIDSource::kRate);
 	leftController = new Jaguar(leftMotorChannel);
 	rightController = new Jaguar(rightMotorChannel);
 	drive=new EncoderRobotDrive(leftController, rightController, leftEncoder, rightEncoder);
@@ -21,6 +23,7 @@ Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 	//360 pulses per rotation -> 0.319185/360 = 0.0008866m/pulse.
 	SmartDashboard::PutNumber("Encoder Distance (m) per Pulse", 0.0008866);
 	SmartDashboard::PutNumber("Bias Multiplier",1000.0);
+	SmartDashboard::PutNumber("Speed Multiplier",720);
 }
 Chassis::~Chassis()
 {
@@ -39,6 +42,9 @@ void Chassis::resetBias(){
 	bias=0;
 }
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
+	double num=SmartDashboard::GetNumber("Speed Multiplier");
+	leftEncoder->SetDistancePerPulse(num/1000.);
+	leftEncoder->SetDistancePerPulse(num/1000.);
 	SmartDashboard::PutNumber("Gyro Angle", gyro->GetAngle());
 	SmartDashboard::PutNumber("Gyro Rate", gyro->GetRate());
 	drive->TankDrive(leftSpeed, rightSpeed, false);
@@ -47,7 +53,6 @@ void Chassis::arcadeDrive(float move, float turn){
 	drive->ArcadeDrive(move, turn, false);
 }
 void Chassis::straightDrive(float speed){
-	
 	double distPerPulse = SmartDashboard::GetNumber("Encoder Distance (m) per Pulse");
 	leftEncoder->SetDistancePerPulse(distPerPulse);
 	rightEncoder->SetDistancePerPulse(distPerPulse);

@@ -4,6 +4,7 @@
 #include "WPILib.h"
 #include "../NaivePidController.h"
 #include "../EncoderRobotDrive.h"
+#include "string.h"
 
 /**
  *
@@ -12,7 +13,6 @@
  */
 class Chassis: public Subsystem{
 private:
-	EncoderRobotDrive* drive;
 	Jaguar* leftController;
 	Jaguar* rightController;
 	Gyro* gyro;
@@ -20,6 +20,7 @@ private:
 	double rightInvert;
 	double leftInvert;
 public:
+	EncoderRobotDrive* drive;
 	Encoder* leftEncoder;
 	Encoder* rightEncoder;
 	
