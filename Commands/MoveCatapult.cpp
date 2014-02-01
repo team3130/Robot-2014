@@ -1,3 +1,10 @@
+/*-------------------------------------------------------------------------*/
+/* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
+/* Open Source Software - may be modified, shared, used and reused by FRC  */
+/* teams under the same license as the WPILib code itself.                 */
+/* Authors: Kevin Bi, James Li                                             */
+/*-------------------------------------------------------------------------*/
+
 #include "MoveCatapult.h"
 
 MoveCatapult::MoveCatapult() {
@@ -8,7 +15,10 @@ MoveCatapult::MoveCatapult() {
 
 // Called just before this Command runs the first time
 void MoveCatapult::Initialize() {
-	
+	chassis->winchEncoder->Reset();
+	chassis->winchEncoder->Start();
+	timer.Reset();
+	timer.Start();
 }
 
 // Called repeatedly when this Command is scheduled to run

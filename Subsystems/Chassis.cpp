@@ -11,13 +11,14 @@
 #include "math.h"
 #include "string.h"
 
-Chassis::Chassis(int leftMotorChannel, int rightMotorChannel, int armMotorChannel)
+Chassis::Chassis(int leftMotorChannel, int rightMotorChannel, int winchMotorChannel)
 		: Subsystem("Chassis"){
 	rightEncoder = new Encoder(C_ENCODER_RIGHT_CHANNEL_1,C_ENCODER_RIGHT_CHANNEL_2, false); 
 	leftEncoder = new Encoder(C_ENCODER_LEFT_CHANNEL_1,C_ENCODER_LEFT_CHANNEL_2, true);
+	winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_1, C_ENCODER_WINCH_CHANNEL_2, false);
 	left = new Jaguar(leftMotorChannel);
 	right = new Jaguar(rightMotorChannel);
-	arm = new Jaguar(armMotorChannel);
+	winch = new Jaguar(winchMotorChannel);
 	drive=new RobotDrive(left, right);
 	drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
 	drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
