@@ -11,10 +11,10 @@ Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 	leftEncoder = new Encoder(C_ENCODER_LEFT_CHANNEL_1,C_ENCODER_LEFT_CHANNEL_2, true);
 	left = new Jaguar(leftMotorChannel);
 	right = new Jaguar(rightMotorChannel);
-	drive=new RobotDrive(left, right);
+	drive=new EncoderRobotDrive(left, right);
 	drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
 	drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
-	
+	gyro = new Gyro(1);
 	bias = 0;
 	drive->SetSafetyEnabled(false);
 	//Assuming we have 4" (.1016m) wheels, pi*d = 3.14*.1016 = 0.319185meters per rotation
@@ -30,12 +30,15 @@ void Chassis::resetBias(){
 	bias=0;
 }
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
+	SmartDashboard::PutNumber("Gyro Angle", gyro->GetAngle());
+	SmartDashboard::PutNumber("Gyro Rate", gyro->GetRate());
 	drive->TankDrive(leftSpeed, rightSpeed, false);
 }
 void Chassis::arcadeDrive(float move, float turn){
 	drive->ArcadeDrive(move, turn, false);
 }
 void Chassis::straightDrive(float speed){
+	
 	double distPerPulse = SmartDashboard::GetNumber("Encoder Distance (m) per Pulse");
 	leftEncoder->SetDistancePerPulse(distPerPulse);
 	rightEncoder->SetDistancePerPulse(distPerPulse);
@@ -45,6 +48,7 @@ void Chassis::straightDrive(float speed){
 	double leftVelocity = leftEncoder->GetRate();
 	double rightVelocity = rightEncoder->GetRate();
 	double error= (fabs(rightVelocity)-fabs(leftVelocity));
+	//error*=sign(rightVelocity)*sign(leftVelocity);
 	bias-=error*SmartDashboard::GetNumber("Bias Multiplier")/1000.0;
 	//if(count++%3==0){
 		SmartDashboard::PutNumber("Chassis Speed",speed);

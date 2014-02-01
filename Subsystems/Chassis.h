@@ -3,6 +3,7 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 #include "../NaivePidController.h"
+#include "../EncoderRobotDrive.h"
 
 /**
  *
@@ -11,9 +12,10 @@
  */
 class Chassis: public Subsystem{
 private:
-	RobotDrive* drive;
+	EncoderRobotDrive* drive;
 	Jaguar* left;
 	Jaguar* right;
+	Gyro* gyro;
 	double bias;
 	double rightInvert;
 	double leftInvert;
