@@ -13,8 +13,8 @@
 class Chassis: public Subsystem{
 private:
 	EncoderRobotDrive* drive;
-	Jaguar* left;
-	Jaguar* right;
+	Jaguar* leftController;
+	Jaguar* rightController;
 	Gyro* gyro;
 	double bias;
 	double rightInvert;
@@ -25,6 +25,7 @@ public:
 	
 	Chassis();
 	Chassis(int leftMotorChannel, int rightMotorChannel);
+	virtual ~Chassis();
 	void InitDefaultCommand();
 	void tankDrive(float leftSpeed, float rightSpeed);
 	void arcadeDrive(float move, float turn);

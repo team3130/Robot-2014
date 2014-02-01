@@ -9,9 +9,9 @@ Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 		: Subsystem("Chassis"){
 	rightEncoder = new Encoder(C_ENCODER_RIGHT_CHANNEL_1,C_ENCODER_RIGHT_CHANNEL_2, false); 
 	leftEncoder = new Encoder(C_ENCODER_LEFT_CHANNEL_1,C_ENCODER_LEFT_CHANNEL_2, true);
-	left = new Jaguar(leftMotorChannel);
-	right = new Jaguar(rightMotorChannel);
-	drive=new EncoderRobotDrive(left, right);
+	leftController = new Jaguar(leftMotorChannel);
+	rightController = new Jaguar(rightMotorChannel);
+	drive=new EncoderRobotDrive(leftController, rightController, leftEncoder, rightEncoder);
 	drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
 	drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
 	gyro = new Gyro(1);
@@ -21,6 +21,15 @@ Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 	//360 pulses per rotation -> 0.319185/360 = 0.0008866m/pulse.
 	SmartDashboard::PutNumber("Encoder Distance (m) per Pulse", 0.0008866);
 	SmartDashboard::PutNumber("Bias Multiplier",1000.0);
+}
+Chassis::~Chassis()
+{
+	delete rightEncoder;
+	delete leftEncoder;
+	delete leftController;
+	delete rightController;
+	delete drive;
+	delete gyro;
 }
 void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
