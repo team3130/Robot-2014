@@ -1,3 +1,10 @@
+/*-------------------------------------------------------------------------*/
+/* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
+/* Open Source Software - may be modified, shared, used and reused by FRC  */
+/* teams under the same license as the WPILib code itself.                 */
+/* Authors: Mikhail Kyraha                                                 */
+/*-------------------------------------------------------------------------*/
+
 #ifndef ROTATE_H
 #define ROTATE_H
 
@@ -11,6 +18,7 @@
  * to move straight--either forward or backward--by a specific
  * distance.
  */
+<<<<<<< HEAD
 class Rotate: public PIDCommand{
 private:
 	Timer timer;
@@ -23,6 +31,11 @@ private:
 public:
 	Rotate(double dist, double thresh, double timeToWait, double p, double i, double d);
 	Rotate();
+=======
+class Rotate : public PIDCommand {
+public:
+	Rotate(double angle, double p, double i, double d);
+>>>>>>> 47bea4b9c9d7b12b7e1199060397fac8ff3aacdd
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

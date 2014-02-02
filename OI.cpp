@@ -3,6 +3,8 @@
 #include "Commands/JoystickTank.h"
 #include "Commands/Rotate.h"
 #include "Commands/DriveStraight.h"
+#include "Commands/Rotate.h"
+
 OI::OI() {
 	leftJoystick = new Joystick(1);
 	rightJoystick = new Joystick(2);
@@ -23,4 +25,18 @@ OI::OI() {
 	rotateTest->WhenPressed(new Rotate(180,1,1,-1,0,0));
 		
 	//straightMode->WhenReleased(new JoystickTank());
+
+	SmartDashboard::PutNumber("Rotate",90.0);	// degrees
+	SmartDashboard::PutNumber("Rotate PID P",1.0);
+	SmartDashboard::PutNumber("Rotate PID I",0);
+	SmartDashboard::PutNumber("Rotate PID D",0);
+	SmartDashboard::PutNumber("Rotate Tolerance",5.0); // degrees
+	SmartDashboard::PutNumber("Rotate Slowdown",30.0); // if above then full speed
+	btnTest2 = new JoystickButton(leftJoystick, 4);
+	btnTest2->WhenPressed(new Rotate(
+			SmartDashboard::GetNumber("Rotate"),
+			SmartDashboard::GetNumber("Rotate PID P"),
+			SmartDashboard::GetNumber("Rotate PID I"),
+			SmartDashboard::GetNumber("Rotate PID D")
+			));
 }
