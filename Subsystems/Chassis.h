@@ -15,7 +15,6 @@ class Chassis: public Subsystem{
 private:
 	Jaguar* leftController;
 	Jaguar* rightController;
-	Gyro* gyro;
 	double bias;
 	double rightInvert;
 	double leftInvert;
@@ -23,6 +22,7 @@ public:
 	EncoderRobotDrive* drive;
 	Encoder* leftEncoder;
 	Encoder* rightEncoder;
+	Gyro* gyro;
 	
 	Chassis();
 	Chassis(int leftMotorChannel, int rightMotorChannel);

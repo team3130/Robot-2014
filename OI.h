@@ -15,6 +15,7 @@ public:
 	JoystickButton* rightPrecision;
 	JoystickButton* straightMode;
 	JoystickButton* driveTest;
+	JoystickButton* rotateTest;
 };
 
 #endif

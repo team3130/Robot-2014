@@ -33,7 +33,7 @@ void DriveStraight::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void DriveStraight::Execute() {
-	double dist = controller->GetSetpoint()-controller->Get();
+	double dist = goal-(chassis->leftEncoder->GetDistance()+chassis->rightEncoder->GetDistance())/2.0;
 	distanceToGoal=dist;
 	SmartDashboard::PutNumber("Straight LE D",chassis->leftEncoder->GetDistance());
 	SmartDashboard::PutNumber("Straight RE D",chassis->rightEncoder->GetDistance());

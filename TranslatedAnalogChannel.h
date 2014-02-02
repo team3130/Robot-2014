@@ -1,0 +1,3 @@
+class TranslatedanalogChannel: public AnalogChannel{
+	
+};
