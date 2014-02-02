@@ -17,6 +17,6 @@ OI::OI() {
 	driveTest = new JoystickButton(leftJoystick, 3);
 	//DriveStraight* t = new DriveStraight(0,0,0,0,0,0);
 	//driveTest->WhenPressed((Command*)t);
-	driveTest->WhenPressed(new DriveStraight(SmartDashboard::GetNumber("Drive Straight"),360,1, SmartDashboard::GetNumber("Drive Straight P"), SmartDashboard::GetNumber("Drive Straight I"), SmartDashboard::GetNumber("Drive Straight D")));
+	driveTest->WhenPressed(new DriveStraight(SmartDashboard::GetNumber("Drive Straight"),0.05,1, SmartDashboard::GetNumber("Drive Straight P"), SmartDashboard::GetNumber("Drive Straight I"), SmartDashboard::GetNumber("Drive Straight D")));
 	//straightMode->WhenReleased(new JoystickTank());
 }

@@ -8,11 +8,20 @@ DriveStraight::DriveStraight(double dist, double thresh, double timeToWait, doub
 	distanceToGoal=goal;
 	threshold=thresh;
 	confirmTime=timeToWait;
-	PIDCommand::SetSetpoint(dist);
 	SmartDashboard::PutData(this);
+	SmartDashboard::PutNumber("Straight PID P",-10000);
+	SmartDashboard::PutNumber("Straight PID I",0);
+	SmartDashboard::PutNumber("Straight PID D",0);
+	SmartDashboard::PutNumber("StraightGoal",0.5);
 }
 // Called just before this Command runs the first time
 void DriveStraight::Initialize() {
+	double np=SmartDashboard::GetNumber("Straight PID P")/1000.;
+	double ni=SmartDashboard::GetNumber("Straight PID I")/1000.;
+	double nd=SmartDashboard::GetNumber("Straight PID D")/1000.;
+	PIDCommand::SetSetpoint(SmartDashboard::GetNumber("StraightGoal"));
+	controller=GetPIDController();
+	controller->SetPID(np,ni,nd);
 	chassis->leftEncoder->Reset();
 	chassis->rightEncoder->Reset();
 	chassis->leftEncoder->Start();
@@ -24,8 +33,10 @@ void DriveStraight::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void DriveStraight::Execute() {
-	double dist = goal-(chassis->leftEncoder->GetDistance()+chassis->rightEncoder->GetDistance())/2.0;
+	double dist = controller->GetSetpoint()-controller->Get();
 	distanceToGoal=dist;
+	SmartDashboard::PutNumber("Straight LE D",chassis->leftEncoder->GetDistance());
+	SmartDashboard::PutNumber("Straight RE D",chassis->rightEncoder->GetDistance());
 	//(4x|x|)/(4x^2+1)
 	//This function has no mathematical significance; but because it tapers off near 0, it
 	//is preferable to a purely proportional control. This function also has horizontal asymptotes
