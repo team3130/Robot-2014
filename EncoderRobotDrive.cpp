@@ -19,26 +19,29 @@ EncoderRobotDrive::~EncoderRobotDrive()
 void EncoderRobotDrive::updatePIDValues(){
 	getPIDValues();
 	projectPIDValues();
+	leftPID->Reset();
+	rightPID->Reset();
 }
 void EncoderRobotDrive::SetLeftRightMotorOutputs(float left, float right){
 	leftPID->SetSetpoint(left);
 	rightPID->SetSetpoint(right);
+	RobotDrive::SetLeftRightMotorOutputs(left, right);
+	std::string name="Chassis Left";
+	std::string namer="Chassis Right";
 	SmartDashboard::PutNumber("Left PID", leftPID->Get());
 	SmartDashboard::PutNumber("Right PID", rightPID->Get());
-	RobotDrive::SetLeftRightMotorOutputs(left, right);
+	SmartDashboard::PutNumber("Left Error",this->leftPID->GetError());
+	SmartDashboard::PutNumber("Right Error",this->rightPID->GetError());
 }
-
 void EncoderRobotDrive::projectPIDValues(){
 	std::string name="Chassis Left";
 	SmartDashboard::PutNumber(name+std::string(" P"),this->leftPID->GetP()*1000.);
 	SmartDashboard::PutNumber(name+std::string(" I"),this->leftPID->GetI()*1000.);
 	SmartDashboard::PutNumber(name+std::string(" D"),this->leftPID->GetD()*1000.);
-	SmartDashboard::PutNumber(name+std::string(" Error"),this->leftPID->GetError());
 	std::string namer="Chassis Right";
 	SmartDashboard::PutNumber(namer+std::string(" P"),this->rightPID->GetP()*1000.);
 	SmartDashboard::PutNumber(namer+std::string(" I"),this->rightPID->GetI()*1000.);
-	SmartDashboard::PutNumber(namer+std::string(" D"),this->rightPID->GetD()*1000.);
-	SmartDashboard::PutNumber(namer+std::string(" Error"),this->rightPID->GetError());
+	SmartDashboard::PutNumber(namer+std::string(" D"),this->rightPID->GetD()*1000.);\
 }
 void EncoderRobotDrive::getPIDValues(){
 	std::string name="Chassis Left";

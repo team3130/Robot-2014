@@ -21,9 +21,10 @@ Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 	drive->SetSafetyEnabled(false);
 	//Assuming we have 4" (.1016m) wheels, pi*d = 3.14*.1016 = 0.319185meters per rotation
 	//360 pulses per rotation -> 0.319185/360 = 0.0008866m/pulse.
-	SmartDashboard::PutNumber("Encoder Distance (m) per Pulse", 0.0008866);
-	SmartDashboard::PutNumber("Bias Multiplier",1000.0);
-	SmartDashboard::PutNumber("Speed Multiplier",720);
+	//SmartDashboard::PutNumber("Encoder Distance (m) per Pulse", 0.0008866);
+	//SmartDashboard::PutNumber("Bias Multiplier",1000.0);
+	//SmartDashboard::PutNumber("Speed Multiplier",720);
+	SmartDashboard::PutNumber("Pulses Per Distance",3000);
 }
 Chassis::~Chassis()
 {
@@ -41,21 +42,36 @@ void Chassis::InitDefaultCommand() {
 void Chassis::resetBias(){
 	bias=0;
 }
+void update(){
+	
+}
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
-	double num=SmartDashboard::GetNumber("Speed Multiplier");
-	leftEncoder->SetDistancePerPulse(num/1000.);
-	leftEncoder->SetDistancePerPulse(num/1000.);
+	double ppd=SmartDashboard::GetNumber("Pulses Per Distance");	//# pulses per distance per second at maximum speed
+	leftEncoder->SetDistancePerPulse(1.0/ppd);
+	rightEncoder->SetDistancePerPulse(1.0/ppd);
+	drive->TankDrive(leftSpeed, rightSpeed, false);
+
 	SmartDashboard::PutNumber("Gyro Angle", gyro->GetAngle());
 	SmartDashboard::PutNumber("Gyro Rate", gyro->GetRate());
-	drive->TankDrive(leftSpeed, rightSpeed, false);
+	double leftVelocity = leftEncoder->GetRate();
+	double rightVelocity = rightEncoder->GetRate();
+	SmartDashboard::PutNumber("Chassis Left Velocity", leftVelocity);
+	SmartDashboard::PutNumber("Chassis Right Velocity", rightVelocity);
 }
 void Chassis::arcadeDrive(float move, float turn){
+	double ppd=SmartDashboard::GetNumber("Pulses Per Distance");	//# pulses per distance per second at maximum speed
+	leftEncoder->SetDistancePerPulse(1.0/ppd);
+	rightEncoder->SetDistancePerPulse(1.0/ppd);
 	drive->ArcadeDrive(move, turn, false);
+	
+	SmartDashboard::PutNumber("Gyro Angle", gyro->GetAngle());
+	SmartDashboard::PutNumber("Gyro Rate", gyro->GetRate());
+	double leftVelocity = leftEncoder->GetRate();
+	double rightVelocity = rightEncoder->GetRate();
+	SmartDashboard::PutNumber("Chassis Left Velocity", leftVelocity);
+	SmartDashboard::PutNumber("Chassis Right Velocity", rightVelocity);
 }
 void Chassis::straightDrive(float speed){
-	double distPerPulse = SmartDashboard::GetNumber("Encoder Distance (m) per Pulse");
-	leftEncoder->SetDistancePerPulse(distPerPulse);
-	rightEncoder->SetDistancePerPulse(distPerPulse);
 
 	if(speed<-1)speed=-1;
 	if(speed>1)speed=1;

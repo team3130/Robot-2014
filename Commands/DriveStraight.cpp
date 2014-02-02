@@ -1,12 +1,15 @@
 #include "DriveStraight.h"
 #include "math.h"
-
-DriveStraight::DriveStraight(double dist, double thresh, double timeToWait){
-	Requires(chassis);
+#include "../DoubleEncoder.h"
+DriveStraight::DriveStraight(double dist, double thresh, double timeToWait, double p, double i, double d): PIDCommand("Drive Straight", p, i, d){
+	PIDCommand::Requires(CommandBase::chassis);
+	this->chassis = CommandBase::chassis;
 	goal=dist;
 	distanceToGoal=goal;
 	threshold=thresh;
 	confirmTime=timeToWait;
+	PIDCommand::SetSetpoint(dist);
+	SmartDashboard::PutData(this);
 }
 // Called just before this Command runs the first time
 void DriveStraight::Initialize() {
@@ -29,11 +32,10 @@ void DriveStraight::Execute() {
 	//at both -1 and 1. This function rises more gradually than either a quadratic or
 	//exponential control.
 	//this function assumes distance is in meters.
-	double x= distanceToGoal;
-	double power = (4*x*fabs(x))/(4*x*x+1);
-	if(power<-1)power=-1;
-	if(power>1)power=1;
-	chassis->straightDrive(power);
+	//double x= distanceToGoal;
+	//if(power<-1)power=-1;
+	//if(power>1)power=1;
+	//chassis->straightDrive(power);
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -44,8 +46,14 @@ bool DriveStraight::IsFinished() {
 		timer.Stop();
 		timer.Reset();
 	}
-	if(timer.Get()>confirmTime)return true;
+	if(timer.Get()>=confirmTime)return true;
 	else return false;
+}
+double DriveStraight::ReturnPIDInput(){
+	return (chassis->leftEncoder->GetDistance()+chassis->rightEncoder->GetDistance())/2.0;
+}
+void DriveStraight::UsePIDOutput(double output){
+	chassis->arcadeDrive(output,0);
 }
 
 // Called once after isFinished returns true

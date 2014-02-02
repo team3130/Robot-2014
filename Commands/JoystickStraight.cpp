@@ -17,12 +17,12 @@ void JoystickStraight::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickStraight::Execute() {
-	double power = oi->leftJoystick->GetY()+oi->rightJoystick->GetY();
-	if(power>0.1 || power<-0.1){
-		chassis->straightDrive(power/2.0);
+	double power = oi->rightJoystick->GetY();
+	if(power>0.07 || power<-0.07){
+		chassis->arcadeDrive(power, oi->leftJoystick->GetX());
 	}
 	else{
-		chassis->resetBias();
+		chassis->drive->updatePIDValues();
 		chassis->tankDrive(0,0);
 	}
 }

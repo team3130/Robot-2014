@@ -12,8 +12,6 @@ JoystickTank::JoystickTank(): lrdifvc("Chassis LR Difference"){
 // Called just before this Command runs the first time
 void JoystickTank::Initialize() {
 	lrdifvc.reset();
-	chassis->leftEncoder->Reset();
-	chassis->rightEncoder->Reset();
 	chassis->leftEncoder->Start();
 	chassis->rightEncoder->Start();
 	lrdifvc.setSetPoint(0);
