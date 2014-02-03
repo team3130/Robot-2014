@@ -19,12 +19,8 @@ Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 	gyro = new Gyro(1);
 	bias = 0;
 	drive->SetSafetyEnabled(false);
-	//Assuming we have 4" (.1016m) wheels, pi*d = 3.14*.1016 = 0.319185meters per rotation
-	//360 pulses per rotation -> 0.319185/360 = 0.0008866m/pulse.
-	//SmartDashboard::PutNumber("Encoder Distance (m) per Pulse", 0.0008866);
-	//SmartDashboard::PutNumber("Bias Multiplier",1000.0);
-	//SmartDashboard::PutNumber("Speed Multiplier",720);
-	SmartDashboard::PutNumber("Pulses Per Distance",3000);
+
+	SmartDashboard::PutNumber("Pulses Per Distance",Chassis::ENCODER_TOP_SPEED);
 }
 Chassis::~Chassis()
 {
@@ -46,7 +42,7 @@ void update(){
 	
 }
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
-	double ppd=SmartDashboard::GetNumber("Pulses Per Distance");	//# pulses per distance per second at maximum speed
+	double ppd=Chassis::ENCODER_TOP_SPEED;	//# pulses per distance per second at maximum speed
 	leftEncoder->SetDistancePerPulse(1.0/ppd);
 	rightEncoder->SetDistancePerPulse(1.0/ppd);
 	drive->TankDrive(leftSpeed, rightSpeed, false);
@@ -59,7 +55,7 @@ void Chassis::tankDrive(float leftSpeed, float rightSpeed){
 	SmartDashboard::PutNumber("Chassis Right Velocity", rightVelocity);
 }
 void Chassis::arcadeDrive(float move, float turn){
-	double ppd=SmartDashboard::GetNumber("Pulses Per Distance");	//# pulses per distance per second at maximum speed
+	double ppd=Chassis::ENCODER_TOP_SPEED;	//# pulses per distance per second at maximum speed
 	leftEncoder->SetDistancePerPulse(1.0/ppd);
 	rightEncoder->SetDistancePerPulse(1.0/ppd);
 	drive->ArcadeDrive(move, turn, false);
@@ -71,21 +67,14 @@ void Chassis::arcadeDrive(float move, float turn){
 	SmartDashboard::PutNumber("Chassis Left Velocity", leftVelocity);
 	SmartDashboard::PutNumber("Chassis Right Velocity", rightVelocity);
 }
-void Chassis::straightDrive(float speed){
 
-	if(speed<-1)speed=-1;
-	if(speed>1)speed=1;
-	double leftVelocity = leftEncoder->GetRate();
-	double rightVelocity = rightEncoder->GetRate();
-	double error= (fabs(rightVelocity)-fabs(leftVelocity));
-	//error*=sign(rightVelocity)*sign(leftVelocity);
-	bias-=error*SmartDashboard::GetNumber("Bias Multiplier")/1000.0;
-	//if(count++%3==0){
-		SmartDashboard::PutNumber("Chassis Speed",speed);
-		SmartDashboard::PutNumber("Chassis Bias", bias);
-		SmartDashboard::PutNumber("Chassis Error", error);
-		SmartDashboard::PutNumber("Chassis Left Velocity", leftVelocity);
-		SmartDashboard::PutNumber("Chassis Right Velocity", rightVelocity);
-	//}
-	tankDrive(speed*(1.0-bias),speed*(1.0+bias));
+double Chassis::encoderUnitsToFeet(double in){
+	static double conversionFactor = (Chassis::ENCODER_TOP_SPEED/360)*WHEEL_RADIUS_INCHES*WHEEL_RADIUS_INCHES*3.141592654/12;
+	//1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.
+	return in*conversionFactor;
+}
+double Chassis::feetToEncoderUnits(double in){
+	static double conversionFactor = (Chassis::ENCODER_TOP_SPEED/360)*WHEEL_RADIUS_INCHES*WHEEL_RADIUS_INCHES*3.141592654/12;
+	//1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.
+	return in/conversionFactor;
 }

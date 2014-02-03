@@ -8,7 +8,6 @@
 #include "Rotate.h"
 
 #include "math.h"
-#include "../DoubleEncoder.h"
 Rotate::Rotate(double dist, double thresh, double timeToWait, double p, double i, double d): PIDCommand("Rotate", p, i, d){
 	PIDCommand::Requires(CommandBase::chassis);
 	this->chassis = CommandBase::chassis;
@@ -17,7 +16,7 @@ Rotate::Rotate(double dist, double thresh, double timeToWait, double p, double i
 	threshold=thresh;
 	confirmTime=timeToWait;
 	SmartDashboard::PutData(this);
-	SmartDashboard::PutNumber("Rotate PID P",-10000);
+	SmartDashboard::PutNumber("Rotate PID P",-7);
 	SmartDashboard::PutNumber("Rotate PID I",0);
 	SmartDashboard::PutNumber("Rotate PID D",0);
 	SmartDashboard::PutNumber("RotateGoal",90);
