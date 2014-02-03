@@ -13,6 +13,20 @@ DriveStraight::DriveStraight(double dist, double thresh, double timeToWait, doub
 	SmartDashboard::PutNumber("Straight PID D",0);
 	SmartDashboard::PutNumber("StraightGoal",1.0);
 }
+DriveStraight::DriveStraight(double dist, double thresh, double timeToWait): PIDCommand("Drive Straight", -3000,0,0){
+	PIDCommand::Requires(CommandBase::chassis);
+	this->chassis = CommandBase::chassis;
+	goal=dist;
+	distanceToGoal=goal;
+	threshold=thresh;
+	confirmTime=timeToWait;
+	SmartDashboard::PutData(this);
+	SmartDashboard::PutNumber("Straight PID P",-3000);
+	SmartDashboard::PutNumber("Straight PID I",0);
+	SmartDashboard::PutNumber("Straight PID D",0);
+	SmartDashboard::PutNumber("StraightGoal",dist);
+	PIDCommand::SetSetpoint(goal);
+}
 // Called just before this Command runs the first time
 void DriveStraight::Initialize() {
 	double np=SmartDashboard::GetNumber("Straight PID P")/1000.;

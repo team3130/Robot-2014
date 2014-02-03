@@ -21,6 +21,20 @@ Rotate::Rotate(double dist, double thresh, double timeToWait, double p, double i
 	SmartDashboard::PutNumber("Rotate PID D",0);
 	SmartDashboard::PutNumber("RotateGoal",90);
 }
+Rotate::Rotate(double dist, double thresh, double timeToWait): PIDCommand("Rotate", -7,0,0){
+	PIDCommand::Requires(CommandBase::chassis);
+	this->chassis = CommandBase::chassis;
+	goal=dist;
+	distanceToGoal=goal;
+	threshold=thresh;
+	confirmTime=timeToWait;
+	SmartDashboard::PutData(this);
+	SmartDashboard::PutNumber("Rotate PID P",-7);
+	SmartDashboard::PutNumber("Rotate PID I",0);
+	SmartDashboard::PutNumber("Rotate PID D",0);
+	SmartDashboard::PutNumber("RotateGoal",dist);
+	PIDCommand::SetSetpoint(dist);
+}
 // Called just before this Command runs the first time
 void Rotate::Initialize() {
 	double np=SmartDashboard::GetNumber("Rotate PID P")/1000.;

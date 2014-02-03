@@ -29,6 +29,7 @@ private:
 	Chassis* chassis;	//from commandbase. we aren't a subclass of it b/c of deadly diamond of death
 public:
 	Rotate(double dist, double thresh, double timeToWait, double p, double i, double d);
+	Rotate(double dist, double thresh, double timeToWait);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
