@@ -77,6 +77,9 @@ double DriveStraight::ReturnPIDInput(){
 	return (chassis->leftEncoder->GetDistance()+chassis->rightEncoder->GetDistance())/2.0;
 }
 void DriveStraight::UsePIDOutput(double output){
+	
+	if(output<0.11 && output >0.01)output=0.11;
+	if(output>-0.11 && output <-0.01)output=-0.11;
 	chassis->arcadeDrive(output,0);
 }
 

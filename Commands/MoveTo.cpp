@@ -1,6 +1,8 @@
 #include "MoveTo.h"
 #include "Rotate.h"
 #include "math.h"
+#include "DriveStraight.h"
+#include "Rotate.h"
 MoveTo::MoveTo(double rotangle, double movedistance, double finalangle){
 	Requires(chassis);
 	finalAngle=finalangle;
@@ -22,16 +24,16 @@ void MoveTo::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void MoveTo::Execute() {
-	if(rotate->IsFinished()){
+	if(!rotate->IsRunning()){
 		if(straight==0){
 			chassis->gyro->Reset();
 			straight=new DriveStraight(straightDist,Chassis::feetToEncoderUnits(.2),1);
 			straight->Start();
-		}else if(straight->IsFinished()){
+		}else if(!straight->IsRunning()){
 			if(rotate2==0){
-				double gyroDrift = chassis->gyro->Reset();	//the amount the robot has rotated while moving straight.
+				double gyroDrift = chassis->gyro->GetAngle();	//the amount the robot has rotated while moving straight.
 				rotate2=new Rotate(-gyroDrift,2.5,.4);
-			}else if(rotate2->IsFinished()){
+			}else if(!rotate2->IsRunning()){
 				done=true;
 			}
 		}

@@ -22,7 +22,7 @@ OI::OI() {
 	//DriveStraight* t = new DriveStraight(0,0,0,0,0,0);
 	//driveTest->WhenPressed((Command*)t);
 	driveTest->WhenPressed(new DriveStraight(300,0.05,1,0,0,0));
-	rotateTest->WhenPressed(new Rotate(180,1,1,-1,0,0));
+	rotateTest->WhenPressed(new Rotate(180,2.5,1,-1,0,0));
 		
 	//straightMode->WhenReleased(new JoystickTank());
 }
