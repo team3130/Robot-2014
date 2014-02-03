@@ -9,6 +9,10 @@
 
 #include "math.h"
 Rotate::Rotate(double dist, double thresh, double timeToWait, double p, double i, double d): PIDCommand("Rotate", p, i, d){
+	dist-=360*((int)(dist/360));	//ensure its absolute value is less than 360.
+	if(dist>180)dist-=360;			//choose the shortest direction to the goal
+	else if(dist<180)dist+=360;		//choose the shortest direction to the goal
+	
 	PIDCommand::Requires(CommandBase::chassis);
 	this->chassis = CommandBase::chassis;
 	goal=dist;
@@ -22,6 +26,10 @@ Rotate::Rotate(double dist, double thresh, double timeToWait, double p, double i
 	SmartDashboard::PutNumber("RotateGoal",90);
 }
 Rotate::Rotate(double dist, double thresh, double timeToWait): PIDCommand("Rotate", -7,0,0){
+	dist-=360*((int)(dist/360));	//ensure its absolute value is less than 360.
+	if(dist>180)dist-=360;			//choose the shortest direction to the goal
+	else if(dist<180)dist+=360;		//choose the shortest direction to the goal
+	
 	PIDCommand::Requires(CommandBase::chassis);
 	this->chassis = CommandBase::chassis;
 	goal=dist;
