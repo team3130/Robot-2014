@@ -47,10 +47,23 @@ bool MoveTo::IsFinished() {
 
 // Called once after isFinished returns true
 void MoveTo::End() {
-	
+	//clean up
+	delete straight;
+	delete rotate;
+	delete rotate2;
+	straight=0;
+	rotate=0;
+	rotate2=0;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void MoveTo::Interrupted() {
+	//clean up
+	delete straight;
+	delete rotate;
+	delete rotate2;
+	straight=0;
+	rotate=0;
+	rotate2=0;
 }
