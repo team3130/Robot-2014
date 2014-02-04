@@ -25,4 +25,21 @@ OI::OI() {
 	rotateTest->WhenPressed(new Rotate(180,2.5,1,-1,0,0));
 		
 	//straightMode->WhenReleased(new JoystickTank());
+<<<<<<< HEAD
+=======
+
+	SmartDashboard::PutNumber("Rotate",90.0);	// degrees
+	SmartDashboard::PutNumber("Rotate PID P",1.0);
+	SmartDashboard::PutNumber("Rotate PID I",0);
+	SmartDashboard::PutNumber("Rotate PID D",0);
+	SmartDashboard::PutNumber("Rotate Tolerance",5.0); // degrees
+	SmartDashboard::PutNumber("Rotate Slowdown",30.0); // if above then full speed
+	btnTest2 = new JoystickButton(leftJoystick, 4);
+	btnTest2->WhenPressed(new Rotate(
+			SmartDashboard::GetNumber("Rotate"),
+			SmartDashboard::GetNumber("Rotate PID P"),
+			SmartDashboard::GetNumber("Rotate PID I"),
+			SmartDashboard::GetNumber("Rotate PID D")
+			));
+>>>>>>> parent of 8f46f47... functional and quick PID for position/rotation
 }
