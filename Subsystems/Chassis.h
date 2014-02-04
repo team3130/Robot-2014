@@ -35,6 +35,7 @@ public:
 	void tankDrive(float leftSpeed, float rightSpeed);
 	void arcadeDrive(float move, float turn);
 	void straightDrive(float speed);
+	void adjustCatapult(double level);
 	void resetBias();
 	
 //	void morePrecision();

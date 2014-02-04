@@ -2,41 +2,39 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: Kevin Bi, James Li                                             */
+/* Authors: James Li, Kevin Bi                                             */
 /*-------------------------------------------------------------------------*/
 
-#include "MoveCatapult.h"
+#include "ShootCatapult.h"
 
-MoveCatapult::MoveCatapult() {
+ShootCatapult::ShootCatapult() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires(chassis);
+	Requires(shooter);
 }
 
 // Called just before this Command runs the first time
-void MoveCatapult::Initialize() {
-	chassis->winchEncoder->Reset();
-	chassis->winchEncoder->Start();
+void ShootCatapult::Initialize() {
+	
 }
 
 // Called repeatedly when this Command is scheduled to run
-void MoveCatapult::Execute() {
-	double level = oi->gamepad->GetRawAxis(1);
-	chassis->adjustCatapult(level);
+void ShootCatapult::Execute() {
+	shooter->Shoot();
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool MoveCatapult::IsFinished() {
+bool ShootCatapult::IsFinished() {
 	return false;
 }
 
 // Called once after isFinished returns true
-void MoveCatapult::End() {
+void ShootCatapult::End() {
 	
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void MoveCatapult::Interrupted() {
+void ShootCatapult::Interrupted() {
 	
 }

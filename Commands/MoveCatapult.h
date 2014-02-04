@@ -12,8 +12,6 @@
 #include "WPILIB.h"
 
 class MoveCatapult: public CommandBase {
-private:
-	Timer timer;
 public:
 	MoveCatapult();
 	virtual void Initialize();

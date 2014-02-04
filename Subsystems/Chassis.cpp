@@ -63,3 +63,7 @@ void Chassis::straightDrive(float speed){
 	//}
 	tankDrive(speed*(1.0-bias),speed*(1.0+bias));
 }
+void Chassis::adjustCatapult(double level){
+	//double catapultPosition = winchEncoder->GetDistance();
+	//catapultPosition += level;
+}
