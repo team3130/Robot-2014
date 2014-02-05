@@ -11,14 +11,12 @@
 #include "math.h"
 #include "string.h"
 
-Chassis::Chassis(int leftMotorChannel, int rightMotorChannel, int winchMotorChannel)
+Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
 		: Subsystem("Chassis"){
 	rightEncoder = new Encoder(C_ENCODER_RIGHT_CHANNEL_1,C_ENCODER_RIGHT_CHANNEL_2, false); 
 	leftEncoder = new Encoder(C_ENCODER_LEFT_CHANNEL_1,C_ENCODER_LEFT_CHANNEL_2, true);
-	winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_1, C_ENCODER_WINCH_CHANNEL_2, false);
 	left = new Jaguar(leftMotorChannel);
 	right = new Jaguar(rightMotorChannel);
-	winch = new Jaguar(winchMotorChannel);
 	drive=new RobotDrive(left, right);
 	drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
 	drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
@@ -62,8 +60,4 @@ void Chassis::straightDrive(float speed){
 		SmartDashboard::PutNumber("Chassis Right Velocity", rightVelocity);
 	//}
 	tankDrive(speed*(1.0-bias),speed*(1.0+bias));
-}
-void Chassis::adjustCatapult(double level){
-	//double catapultPosition = winchEncoder->GetDistance();
-	//catapultPosition += level;
 }

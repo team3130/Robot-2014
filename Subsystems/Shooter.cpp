@@ -7,19 +7,29 @@
 
 #include "Shooter.h"
 #include "../Robotmap.h"
+#include "../Commands/ShootCatapult.h"
 
-Shooter::Shooter() : Subsystem("Shooter") {
-	
+Shooter::Shooter(int winchMotorChannel, int shootChannel) : Subsystem("Shooter") {
+	winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_1, C_ENCODER_WINCH_CHANNEL_2, false);
+	shoot = new Solenoid(shootChannel);
+	winch = new Jaguar(winchMotorChannel);
+	toggle = false;
+	shoot->Set(toggle);
 }
     
 void Shooter::InitDefaultCommand() {
-	//shoot = new Trigger();
 	// Set the default command for a subsystem here.
-	//SetDefaultCommand(new MySpecialCommand());
+	SetDefaultCommand(new ShootCatapult());
 }
 
+void Shooter::adjustCatapult(double level){
+	double catapultPosition = winchEncoder->GetDistance();
+	catapultPosition += level;
+}
 
 void Shooter::Shoot(){
-	
+	//switches the toggle of the shoot mechanism and sets the solenoid to that in theory
+	toggle = !toggle;
+	shoot->Set(toggle);
 }
 

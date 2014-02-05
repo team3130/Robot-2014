@@ -20,22 +20,19 @@ private:
 	RobotDrive* drive;
 	Jaguar* left;
 	Jaguar* right;
-	Jaguar* winch;
 	double bias;
 	double rightInvert;
 	double leftInvert;
 public:
 	Encoder* leftEncoder;
 	Encoder* rightEncoder;
-	Encoder* winchEncoder;
 	
 	Chassis();
-	Chassis(int leftMotorChannel, int rightMotorChannel, int winchMotorChannel);
+	Chassis(int leftMotorChannel, int rightMotorChannel);
 	void InitDefaultCommand();
 	void tankDrive(float leftSpeed, float rightSpeed);
 	void arcadeDrive(float move, float turn);
 	void straightDrive(float speed);
-	void adjustCatapult(double level);
 	void resetBias();
 	
 //	void morePrecision();

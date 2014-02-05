@@ -12,12 +12,16 @@
 
 class Shooter: public Subsystem {
 private:
-	//Trigger* shoot;
-	
+	Solenoid* shoot;
+	Jaguar* winch;
+	bool toggle;
 public:
+	Encoder* winchEncoder;
+	
 	Shooter();
-	//Shooter(); For later when we add parameters to constructor
+	Shooter(int winchMotorChannel, int shootChannel);
 	void InitDefaultCommand();
+	void adjustCatapult(double level);
 	void Shoot();
 };
 

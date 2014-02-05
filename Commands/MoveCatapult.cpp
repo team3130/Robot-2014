@@ -15,14 +15,14 @@ MoveCatapult::MoveCatapult() {
 
 // Called just before this Command runs the first time
 void MoveCatapult::Initialize() {
-	chassis->winchEncoder->Reset();
-	chassis->winchEncoder->Start();
+	shooter->winchEncoder->Reset();
+	shooter->winchEncoder->Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void MoveCatapult::Execute() {
 	double level = oi->gamepad->GetRawAxis(1);
-	chassis->adjustCatapult(level);
+	shooter->adjustCatapult(level);
 }
 
 // Make this return true when this Command no longer needs to run execute()
