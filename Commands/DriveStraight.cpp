@@ -1,6 +1,5 @@
 #include "DriveStraight.h"
 #include "math.h"
-#include "../DoubleEncoder.h"
 DriveStraight::DriveStraight(double dist, double thresh, double timeToWait, double p, double i, double d): PIDCommand("Drive Straight", p, i, d){
 	PIDCommand::Requires(CommandBase::chassis);
 	this->chassis = CommandBase::chassis;
@@ -9,10 +8,24 @@ DriveStraight::DriveStraight(double dist, double thresh, double timeToWait, doub
 	threshold=thresh;
 	confirmTime=timeToWait;
 	SmartDashboard::PutData(this);
-	SmartDashboard::PutNumber("Straight PID P",-10000);
+	SmartDashboard::PutNumber("Straight PID P",-3000);
 	SmartDashboard::PutNumber("Straight PID I",0);
 	SmartDashboard::PutNumber("Straight PID D",0);
-	SmartDashboard::PutNumber("StraightGoal",0.5);
+	SmartDashboard::PutNumber("StraightGoal",1.0);
+}
+DriveStraight::DriveStraight(double dist, double thresh, double timeToWait): PIDCommand("Drive Straight", -3000,0,0){
+	PIDCommand::Requires(CommandBase::chassis);
+	this->chassis = CommandBase::chassis;
+	goal=dist;
+	distanceToGoal=goal;
+	threshold=thresh;
+	confirmTime=timeToWait;
+	SmartDashboard::PutData(this);
+	SmartDashboard::PutNumber("Straight PID P",-3000);
+	SmartDashboard::PutNumber("Straight PID I",0);
+	SmartDashboard::PutNumber("Straight PID D",0);
+	SmartDashboard::PutNumber("StraightGoal",dist);
+	PIDCommand::SetSetpoint(goal);
 }
 // Called just before this Command runs the first time
 void DriveStraight::Initialize() {
@@ -64,6 +77,9 @@ double DriveStraight::ReturnPIDInput(){
 	return (chassis->leftEncoder->GetDistance()+chassis->rightEncoder->GetDistance())/2.0;
 }
 void DriveStraight::UsePIDOutput(double output){
+	
+	if(output<0.11 && output >0.01)output=0.11;
+	if(output>-0.11 && output <-0.01)output=-0.11;
 	chassis->arcadeDrive(output,0);
 }
 
