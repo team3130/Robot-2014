@@ -22,6 +22,7 @@ private:
 	Chassis* chassis;	//from commandbase. we aren't a subclass of it b/c of deadly diamond of death
 public:
 	DriveStraight(double dist, double thresh, double timeToWait, double p, double i, double d);
+	DriveStraight(double dist, double thresh, double timeToWait);
 	DriveStraight();
 	virtual void Initialize();
 	virtual void Execute();
