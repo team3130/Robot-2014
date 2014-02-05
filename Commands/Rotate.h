@@ -18,7 +18,6 @@
  * to move straight--either forward or backward--by a specific
  * distance.
  */
-<<<<<<< HEAD
 class Rotate: public PIDCommand{
 private:
 	Timer timer;
@@ -30,16 +29,7 @@ private:
 	Chassis* chassis;	//from commandbase. we aren't a subclass of it b/c of deadly diamond of death
 public:
 	Rotate(double dist, double thresh, double timeToWait, double p, double i, double d);
-<<<<<<< HEAD
 	Rotate(double dist, double thresh, double timeToWait);
-=======
-	Rotate();
-=======
-class Rotate : public PIDCommand {
-public:
-	Rotate(double angle, double p, double i, double d);
->>>>>>> 47bea4b9c9d7b12b7e1199060397fac8ff3aacdd
->>>>>>> parent of 8f46f47... functional and quick PID for position/rotation
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

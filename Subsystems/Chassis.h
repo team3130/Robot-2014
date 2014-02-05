@@ -24,11 +24,6 @@ public:
 	Encoder* leftEncoder;
 	Encoder* rightEncoder;
 	Gyro* gyro;
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> 47bea4b9c9d7b12b7e1199060397fac8ff3aacdd
 	Chassis();
 	Chassis(int leftMotorChannel, int rightMotorChannel);
 	virtual ~Chassis();
