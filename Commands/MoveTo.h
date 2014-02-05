@@ -1,5 +1,5 @@
-#ifndef ATT_COMMAND_H
-#define ATT_COMMAND_H
+#ifndef MOVETO_COMMAND_H
+#define MOVETO_COMMAND_H
 
 #include "../CommandBase.h"
 
@@ -9,9 +9,16 @@
  * and is primarily meant to take place during autonomous.
  * Aim to the closest target.
  */
-class AimToTarget: public CommandBase {
+class MoveTo: public CommandBase {
 public:
-	AimToTarget();
+	MoveTo(double rotangle, double movedistance, double finalangle);
+	double finalAngle;
+	double straightDist;
+	double initRotate;
+	Command* straight;
+	Command* rotate;
+	Command* rotate2;
+	bool done;
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

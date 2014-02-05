@@ -13,7 +13,6 @@ private:
 	float precisionMultiplier;	//how much precision each level gives us.
 	int precisionLevel;			//level of precision we want. 0 is default
 	int maxPrecisionLevel;		//maximum precision level.
-	NaivePIDController lrdifvc;	//left right difference velocity controller.
 	Timer PIDTimer;
 	Timer dashboardSendTimer;
 public:

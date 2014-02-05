@@ -1,7 +1,7 @@
 #include "JoystickTank.h"
 #include "math.h"
 
-JoystickTank::JoystickTank(): lrdifvc("Chassis LR Difference"){
+JoystickTank::JoystickTank(){
 	Requires(chassis);
 	precisionMultiplier = 0.6666666666f;
 	precisionLevel = 0;
@@ -11,10 +11,8 @@ JoystickTank::JoystickTank(): lrdifvc("Chassis LR Difference"){
 }
 // Called just before this Command runs the first time
 void JoystickTank::Initialize() {
-	lrdifvc.reset();
 	chassis->leftEncoder->Start();
 	chassis->rightEncoder->Start();
-	lrdifvc.setSetPoint(0);
 	PIDTimer.Reset();
 	PIDTimer.Start();
 	dashboardSendTimer.Start();
@@ -25,8 +23,6 @@ void JoystickTank::Execute() {
 	//deadzones
 	float leftStick = oi->leftJoystick->GetY();
 	float rightStick = oi->rightJoystick->GetY();
-	SmartDashboard::PutNumber("Left Stick", leftStick);
-	SmartDashboard::PutNumber("Right Stick", rightStick);
 	if (fabs(leftStick)<.07f){
 		leftStick = 0;
 	}
