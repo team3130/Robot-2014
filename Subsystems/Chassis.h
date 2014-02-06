@@ -14,9 +14,6 @@ class Chassis: public Subsystem{
 private:
 	Jaguar* leftController;
 	Jaguar* rightController;
-	double bias;
-	double rightInvert;
-	double leftInvert;
 public:
 	static const int ENCODER_TOP_SPEED=3000;
 	static const double WHEEL_RADIUS_INCHES=2;
@@ -25,20 +22,12 @@ public:
 	Encoder* rightEncoder;
 	Gyro* gyro;
 	Chassis();
-	Chassis(int leftMotorChannel, int rightMotorChannel);
 	virtual ~Chassis();
 	void InitDefaultCommand();
 	void tankDrive(float leftSpeed, float rightSpeed);
 	void arcadeDrive(float move, float turn);
-	void straightDrive(float speed);
-	void resetBias();
 	static double encoderUnitsToFeet(double in);
 	static double feetToEncoderUnits(double in);
-	
-	
-//	void morePrecision();
-//	void lessPrecision();
-//	void resetPrecision();
 };
 
 #endif

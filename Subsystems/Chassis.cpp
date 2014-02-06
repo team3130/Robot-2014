@@ -5,19 +5,15 @@
 #include "math.h"
 #include "string.h"
 
-Chassis::Chassis(int leftMotorChannel, int rightMotorChannel)
-		: Subsystem("Chassis"){
+Chassis::Chassis() : Subsystem("Chassis"){
+	leftController = new Jaguar(C_LEFTMOTOR1);
+	rightController = new Jaguar(C_RIGHTMOTOR1);
 	rightEncoder = new Encoder(C_ENCODER_RIGHT_CHANNEL_1,C_ENCODER_RIGHT_CHANNEL_2, false); 
 	leftEncoder = new Encoder(C_ENCODER_LEFT_CHANNEL_1,C_ENCODER_LEFT_CHANNEL_2, true);
-	rightEncoder->SetPIDSourceParameter(PIDSource::kRate);
-	leftEncoder->SetPIDSourceParameter(PIDSource::kRate);
-	leftController = new Jaguar(leftMotorChannel);
-	rightController = new Jaguar(rightMotorChannel);
+	gyro = new Gyro(1);
 	drive=new EncoderRobotDrive(leftController, rightController, leftEncoder, rightEncoder);
 	drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
 	drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
-	gyro = new Gyro(1);
-	bias = 0;
 	drive->SetSafetyEnabled(false);
 
 	SmartDashboard::PutNumber("Pulses Per Distance",Chassis::ENCODER_TOP_SPEED);
@@ -31,41 +27,27 @@ Chassis::~Chassis()
 	delete drive;
 	delete gyro;
 }
+
 void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new JoystickTank());
 }
-void Chassis::resetBias(){
-	bias=0;
-}
-void update(){
-	
-}
+
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
-	double ppd=Chassis::ENCODER_TOP_SPEED;	//# pulses per distance per second at maximum speed
-	leftEncoder->SetDistancePerPulse(1.0/ppd);
-	rightEncoder->SetDistancePerPulse(1.0/ppd);
 	drive->TankDrive(leftSpeed, rightSpeed, false);
 
 	SmartDashboard::PutNumber("Gyro Angle", gyro->GetAngle());
 	SmartDashboard::PutNumber("Gyro Rate", gyro->GetRate());
-	double leftVelocity = leftEncoder->GetRate();
-	double rightVelocity = rightEncoder->GetRate();
-	SmartDashboard::PutNumber("Chassis Left Velocity", leftVelocity);
-	SmartDashboard::PutNumber("Chassis Right Velocity", rightVelocity);
+	SmartDashboard::PutNumber("Chassis Left Velocity", leftEncoder->GetRate());
+	SmartDashboard::PutNumber("Chassis Right Velocity", rightEncoder->GetRate());
 }
 void Chassis::arcadeDrive(float move, float turn){
-	double ppd=Chassis::ENCODER_TOP_SPEED;	//# pulses per distance per second at maximum speed
-	leftEncoder->SetDistancePerPulse(1.0/ppd);
-	rightEncoder->SetDistancePerPulse(1.0/ppd);
 	drive->ArcadeDrive(move, turn, false);
 	
 	SmartDashboard::PutNumber("Gyro Angle", gyro->GetAngle());
 	SmartDashboard::PutNumber("Gyro Rate", gyro->GetRate());
-	double leftVelocity = leftEncoder->GetRate();
-	double rightVelocity = rightEncoder->GetRate();
-	SmartDashboard::PutNumber("Chassis Left Velocity", leftVelocity);
-	SmartDashboard::PutNumber("Chassis Right Velocity", rightVelocity);
+	SmartDashboard::PutNumber("Chassis Left Velocity", leftEncoder->GetRate());
+	SmartDashboard::PutNumber("Chassis Right Velocity", rightEncoder->GetRate());
 }
 
 double Chassis::encoderUnitsToFeet(double in){

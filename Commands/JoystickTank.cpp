@@ -6,16 +6,12 @@ JoystickTank::JoystickTank(){
 	precisionMultiplier = 0.6666666666f;
 	precisionLevel = 0;
 	maxPrecisionLevel = 2;
-	//SmartDashboard::PutNumber("JoystickTank: Joystick To Speed Multiplier",1.f);
-	
 }
+
 // Called just before this Command runs the first time
 void JoystickTank::Initialize() {
-	chassis->leftEncoder->Start();
-	chassis->rightEncoder->Start();
-	PIDTimer.Reset();
-	PIDTimer.Start();
 	dashboardSendTimer.Start();
+	chassis->drive->DumbRobot();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -29,22 +25,16 @@ void JoystickTank::Execute() {
 	if (fabs(rightStick)<.07f){
 		rightStick = 0;
 	}
-	if(fabs(rightStick)<.07 && fabs(leftStick)<.07){
-		chassis->drive->updatePIDValues();
-	}
 	
 	//precision mode
 	int leftPrecision = oi->leftPrecision->Get()?1:0;		//1 if button pressed, 0 otherwise.
 	int rightPrecision = oi->rightPrecision->Get()?1:0;		//1 if button pressed, 0 otherwise.
 	precisionLevel = leftPrecision+rightPrecision;
 	float multiplier = pow(precisionMultiplier, precisionLevel);
-	chassis->tankDrive(joystickToSpeed(leftStick*multiplier),
-						joystickToSpeed(rightStick*multiplier));
+
+	chassis->tankDrive(leftStick*multiplier, rightStick*multiplier);
 }
-//convert joystick value to a speed (m/s)
-float JoystickTank::joystickToSpeed(float in){
-	return in * 1; //SmartDashboard::GetNumber("JoystickTank: Joystick To Speed Multiplier");
-}
+
 // Make this return true when this Command no longer needs to run execute()
 bool JoystickTank::IsFinished() {
 	return false;

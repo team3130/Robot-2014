@@ -6,13 +6,16 @@ JoystickStraight::JoystickStraight(){
 }
 // Called just before this Command runs the first time
 void JoystickStraight::Initialize() {
+	double ppd=Chassis::ENCODER_TOP_SPEED;	//# pulses per distance per second at maximum speed
+	chassis->leftEncoder->SetDistancePerPulse(1.0/ppd);
+	chassis->rightEncoder->SetDistancePerPulse(1.0/ppd);
+	chassis->leftEncoder->SetPIDSourceParameter(PIDSource::kRate);
+	chassis->rightEncoder->SetPIDSourceParameter(PIDSource::kRate);
 	chassis->leftEncoder->Reset();
 	chassis->rightEncoder->Reset();
 	chassis->leftEncoder->Start();
 	chassis->rightEncoder->Start();
-	timer.Reset();
-	timer.Start();
-	chassis->resetBias();
+	chassis->drive->SmartRobot();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -22,7 +25,7 @@ void JoystickStraight::Execute() {
 		chassis->arcadeDrive(power, oi->leftJoystick->GetX());
 	}
 	else{
-		chassis->drive->updatePIDValues();
+		// chassis->drive->updatePIDValues();
 		chassis->tankDrive(0,0);
 	}
 }

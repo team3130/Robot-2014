@@ -1,83 +1,74 @@
 #include "DriveStraight.h"
 #include "math.h"
-DriveStraight::DriveStraight(double dist, double thresh, double timeToWait, double p, double i, double d): PIDCommand("Drive Straight", p, i, d){
-	PIDCommand::Requires(CommandBase::chassis);
+
+// Used be constructed with (300,0.05,1,0,0,0)
+DriveStraight::DriveStraight(): PIDCommand("Drive Straight",0,0,0){
+	Requires(CommandBase::chassis);
 	this->chassis = CommandBase::chassis;
-	goal=dist;
-	distanceToGoal=goal;
-	threshold=thresh;
-	confirmTime=timeToWait;
 	SmartDashboard::PutData(this);
 	SmartDashboard::PutNumber("Straight PID P",-3000);
 	SmartDashboard::PutNumber("Straight PID I",0);
 	SmartDashboard::PutNumber("Straight PID D",0);
 	SmartDashboard::PutNumber("StraightGoal",1.0);
 }
-DriveStraight::DriveStraight(double dist, double thresh, double timeToWait): PIDCommand("Drive Straight", -3000,0,0){
-	PIDCommand::Requires(CommandBase::chassis);
-	this->chassis = CommandBase::chassis;
+
+void DriveStraight::SetGoal(double dist, double thresh, double timeToWait) {
 	goal=dist;
-	distanceToGoal=goal;
 	threshold=thresh;
 	confirmTime=timeToWait;
-	SmartDashboard::PutData(this);
-	SmartDashboard::PutNumber("Straight PID P",-3000);
-	SmartDashboard::PutNumber("Straight PID I",0);
-	SmartDashboard::PutNumber("Straight PID D",0);
-	SmartDashboard::PutNumber("StraightGoal",dist);
-	PIDCommand::SetSetpoint(goal);
+	SmartDashboard::PutNumber("Straight Goal",goal);
+	SmartDashboard::PutNumber("Straight Threshold",thresh);
+	SmartDashboard::PutNumber("Straight Cooldown",timeToWait);
 }
+
 // Called just before this Command runs the first time
 void DriveStraight::Initialize() {
 	double np=SmartDashboard::GetNumber("Straight PID P")/1000.;
 	double ni=SmartDashboard::GetNumber("Straight PID I")/1000.;
 	double nd=SmartDashboard::GetNumber("Straight PID D")/1000.;
-	PIDCommand::SetSetpoint(SmartDashboard::GetNumber("StraightGoal"));
-	controller=GetPIDController();
-	controller->SetPID(np,ni,nd);
+	SetSetpoint(SmartDashboard::GetNumber("StraightGoal"));
+	GetPIDController()->SetPID(np,ni,nd);
+	GetPIDController()->SetAbsoluteTolerance(threshold);
+	double ppd=Chassis::ENCODER_TOP_SPEED;	//# pulses per distance per second at maximum speed
+	chassis->leftEncoder->SetDistancePerPulse(1.0/ppd);
+	chassis->rightEncoder->SetDistancePerPulse(1.0/ppd);
+	chassis->leftEncoder->SetPIDSourceParameter(PIDSource::kRate);
+	chassis->rightEncoder->SetPIDSourceParameter(PIDSource::kRate);
 	chassis->leftEncoder->Reset();
 	chassis->rightEncoder->Reset();
 	chassis->leftEncoder->Start();
 	chassis->rightEncoder->Start();
-	timer.Reset();
-	timer.Start();
-	chassis->resetBias();
+	chassis->drive->SmartRobot();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveStraight::Execute() {
-	double dist = goal-(chassis->leftEncoder->GetDistance()+chassis->rightEncoder->GetDistance())/2.0;
-	distanceToGoal=dist;
 	SmartDashboard::PutNumber("Straight LE D",chassis->leftEncoder->GetDistance());
 	SmartDashboard::PutNumber("Straight RE D",chassis->rightEncoder->GetDistance());
-	//(4x|x|)/(4x^2+1)
-	//This function has no mathematical significance; but because it tapers off near 0, it
-	//is preferable to a purely proportional control. This function also has horizontal asymptotes
-	//at both -1 and 1. This function rises more gradually than either a quadratic or
-	//exponential control.
-	//this function assumes distance is in meters.
-	//double x= distanceToGoal;
-	//if(power<-1)power=-1;
-	//if(power>1)power=1;
-	//chassis->straightDrive(power);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveStraight::IsFinished() {
-	if(fabs(distanceToGoal)<threshold){
-		timer.Start();
+	if(GetPIDController()->OnTarget()){
+		if(!isConfirming) {
+			isConfirming = true;
+			timer.Reset();
+			timer.Start();
+		}
+		return timer.Get() >= confirmTime;
 	}else{
+		isConfirming = false;
 		timer.Stop();
 		timer.Reset();
 	}
-	if(timer.Get()>=confirmTime)return true;
-	else return false;
+	return false;
 }
+
 double DriveStraight::ReturnPIDInput(){
 	return (chassis->leftEncoder->GetDistance()+chassis->rightEncoder->GetDistance())/2.0;
 }
+
 void DriveStraight::UsePIDOutput(double output){
-	
 	if(output<0.11 && output >0.01)output=0.11;
 	if(output>-0.11 && output <-0.01)output=-0.11;
 	chassis->arcadeDrive(output,0);

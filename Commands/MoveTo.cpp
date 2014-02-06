@@ -18,7 +18,7 @@ double finalAngle;
 	double initRotate;
 // Called just before this Command runs the first time
 void MoveTo::Initialize() {
-	rotate=new Rotate(initRotate,2.5,.4);
+	rotate=new Rotate(/* initRotate,2.5,.4 */);
 	rotate->Start();
 }
 
@@ -27,12 +27,12 @@ void MoveTo::Execute() {
 	if(!rotate->IsRunning()){
 		if(straight==0){
 			chassis->gyro->Reset();
-			straight=new DriveStraight(straightDist,Chassis::feetToEncoderUnits(.2),1);
+			straight=new DriveStraight(/* straightDist,Chassis::feetToEncoderUnits(.2),1 */);
 			straight->Start();
 		}else if(!straight->IsRunning()){
 			if(rotate2==0){
 				double gyroDrift = chassis->gyro->GetAngle();	//the amount the robot has rotated while moving straight.
-				rotate2=new Rotate(-gyroDrift+finalAngle,2.5,.4);
+				rotate2=new Rotate(/* -gyroDrift+finalAngle,2.5,.4 */);
 			}else if(!rotate2->IsRunning()){
 				done=true;
 			}

@@ -4,13 +4,14 @@ class EncoderRobotDrive : public RobotDrive{
 private:
 	PIDController* leftPID;
 	PIDController* rightPID;
+	bool isBypass;
 public:
 	EncoderRobotDrive(
 			SpeedController* leftController, SpeedController* rightController,
 			Encoder* leftEncoder, Encoder* rightController);
 	virtual ~EncoderRobotDrive();
 	void SetLeftRightMotorOutputs(float left, float right);
-	void projectPIDValues();
-	void getPIDValues();
-	void updatePIDValues();
+	void updatePIDValues(double p, double i, double d);
+	void DumbRobot(bool dumb=true);
+	void SmartRobot() {DumbRobot(false);}
 };

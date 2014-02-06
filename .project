@@ -3,6 +3,7 @@
 	<name>Robot-2014</name>
 	<comment></comment>
 	<projects>
+		<project>WPILib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
