@@ -26,6 +26,7 @@ public:
 	void InitDefaultCommand();
 	void tankDrive(float leftSpeed, float rightSpeed);
 	void arcadeDrive(float move, float turn);
+	void ProjectSensors();
 	static double encoderUnitsToFeet(double in);
 	static double feetToEncoderUnits(double in);
 };

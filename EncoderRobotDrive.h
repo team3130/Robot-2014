@@ -12,6 +12,6 @@ public:
 	virtual ~EncoderRobotDrive();
 	void SetLeftRightMotorOutputs(float left, float right);
 	void updatePIDValues(double p, double i, double d);
-	void DumbRobot(bool dumb=true);
-	void SmartRobot() {DumbRobot(false);}
+	void DumbRobot();
+	void SmartRobot();
 };

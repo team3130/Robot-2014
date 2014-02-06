@@ -12,9 +12,6 @@ OI::OI() {
 	leftPrecision = new JoystickButton(leftJoystick, 1);
 	rightPrecision = new JoystickButton(rightJoystick, 1);
 	straightMode = new JoystickButton(rightJoystick, 2);
-	driveTest = new JoystickButton(leftJoystick, 6);
-	rotateTest = new JoystickButton(leftJoystick, 7);
+
 	straightMode->WhenPressed(new JoystickStraight());
-	driveTest->WhenPressed(new DriveStraight());
-	rotateTest->WhenPressed(new Rotate());
 }

@@ -35,7 +35,7 @@ void Rotate::SetGoal(double dist, double thresh, double timeToWait) {
 
 // Called just before this Command runs the first time
 void Rotate::Initialize() {
-	GetPIDController()->Reset();
+	GetPIDController()->Disable();
 	double np=SmartDashboard::GetNumber("Rotate PID P")/1000.;
 	double ni=SmartDashboard::GetNumber("Rotate PID I")/1000.;
 	double nd=SmartDashboard::GetNumber("Rotate PID D")/1000.;
@@ -46,37 +46,32 @@ void Rotate::Initialize() {
 	//CommandBase::chassis->rightEncoder->Reset();
 	CommandBase::chassis->gyro->Reset();
 	CommandBase::chassis->gyro->SetPIDSourceParameter(PIDSource::kAngle);
+	CommandBase::chassis->drive->DumbRobot();
 	timer.Reset();
 	timer.Start();
+	GetPIDController()->Reset();
 	GetPIDController()->Enable();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void Rotate::Execute() {
-	SmartDashboard::PutNumber("Gyro D",   CommandBase::chassis->gyro->GetAngle());
-	SmartDashboard::PutNumber("Encoder L",CommandBase::chassis->leftEncoder->Get());
-	SmartDashboard::PutNumber("Encoder R",CommandBase::chassis->rightEncoder->Get());
+	
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool Rotate::IsFinished() {
-	if(GetPIDController()->OnTarget()){
-		if(!isConfirming) {
-			isConfirming = true;
-			timer.Reset();
-			timer.Start();
-		}
-		return timer.Get() >= confirmTime;
-	}else{
-		isConfirming = false;
-		timer.Stop();
+	if(!GetPIDController()->OnTarget()) return isConfirming = false;
+	if(!isConfirming) {
+		isConfirming = true;
 		timer.Reset();
+		timer.Start();
 	}
-	return false;
+	return timer.Get() >= confirmTime;
 }
 double Rotate::ReturnPIDInput(){
 	return CommandBase::chassis->gyro->GetAngle();
 }
+
 void Rotate::UsePIDOutput(double output){
 	if(output<0.11 && output >0.01)output=0.11;
 	if(output>-0.11 && output <-0.01)output=-0.11;

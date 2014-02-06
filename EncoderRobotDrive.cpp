@@ -1,12 +1,15 @@
 #include "EncoderRobotDrive.h"
 
-EncoderRobotDrive::EncoderRobotDrive(
+EncoderRobotDrive::EncoderRobotDrive (
 		SpeedController* leftController, SpeedController* rightController,
 		Encoder* leftEncoder, Encoder* rightEncoder)
 	: RobotDrive(leftController, rightController)
 {
-	leftPID = new PIDController(0.0,1.0,0.0,leftEncoder,leftController);
-	rightPID = new PIDController(0.0,1.0,0.0,rightEncoder,rightController);
+	leftPID = new PIDController(0,0,0,leftEncoder,leftController);
+	rightPID = new PIDController(0,0,0,rightEncoder,rightController);
+	SmartDashboard::PutNumber("Smart Robot P", 0);
+	SmartDashboard::PutNumber("Smart Robot I", 1);
+	SmartDashboard::PutNumber("Smart Robot D", 0);
 }
 
 EncoderRobotDrive::~EncoderRobotDrive()
@@ -15,24 +18,23 @@ EncoderRobotDrive::~EncoderRobotDrive()
 	delete rightPID;
 }
 
-void EncoderRobotDrive::DumbRobot(bool dumb) {
-	if(dumb) {
-		leftPID->Disable();
-		rightPID->Disable();
-		isBypass = true;
-	}
-	else {
-		leftPID->Enable();
-		rightPID->Enable();
-		updatePIDValues(0,1,0);
-		isBypass = false;
-	}
+void EncoderRobotDrive::DumbRobot() {
+	leftPID->Disable();
+	rightPID->Disable();
+	isBypass = true;
+}
+
+void EncoderRobotDrive::SmartRobot() {
+	updatePIDValues(
+		SmartDashboard::GetNumber("Smart Robot P"),
+		SmartDashboard::GetNumber("Smart Robot I"),
+		SmartDashboard::GetNumber("Smart Robot D"));
+	leftPID->Enable();
+	rightPID->Enable();
+	isBypass = false;
 }
 
 void EncoderRobotDrive::updatePIDValues(double p, double i, double d){
-	SmartDashboard::PutNumber("Smart Robot P",p);
-	SmartDashboard::PutNumber("Smart Robot I",i);
-	SmartDashboard::PutNumber("Smart Robot D",d);
 	leftPID->SetPID(p,i,d);
 	rightPID->SetPID(p,i,d);
 	leftPID->Reset();

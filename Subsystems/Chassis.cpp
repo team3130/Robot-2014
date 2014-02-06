@@ -35,19 +35,20 @@ void Chassis::InitDefaultCommand() {
 
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
 	drive->TankDrive(leftSpeed, rightSpeed, false);
-
-	SmartDashboard::PutNumber("Gyro Angle", gyro->GetAngle());
-	SmartDashboard::PutNumber("Gyro Rate", gyro->GetRate());
-	SmartDashboard::PutNumber("Chassis Left Velocity", leftEncoder->GetRate());
-	SmartDashboard::PutNumber("Chassis Right Velocity", rightEncoder->GetRate());
+	ProjectSensors();
 }
 void Chassis::arcadeDrive(float move, float turn){
 	drive->ArcadeDrive(move, turn, false);
-	
-	SmartDashboard::PutNumber("Gyro Angle", gyro->GetAngle());
-	SmartDashboard::PutNumber("Gyro Rate", gyro->GetRate());
+	ProjectSensors();
+}
+
+void Chassis::ProjectSensors() {
+	SmartDashboard::PutNumber("Chassis Gyro Angle", gyro->GetAngle());
+	SmartDashboard::PutNumber("Chassis Gyro Rate", gyro->GetRate());
 	SmartDashboard::PutNumber("Chassis Left Velocity", leftEncoder->GetRate());
 	SmartDashboard::PutNumber("Chassis Right Velocity", rightEncoder->GetRate());
+	SmartDashboard::PutNumber("Encoder Left Raw",leftEncoder->GetRaw());
+	SmartDashboard::PutNumber("Encoder Right Raw",rightEncoder->GetRaw());
 }
 
 double Chassis::encoderUnitsToFeet(double in){
@@ -55,6 +56,7 @@ double Chassis::encoderUnitsToFeet(double in){
 	//1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.
 	return in*conversionFactor;
 }
+
 double Chassis::feetToEncoderUnits(double in){
 	static double conversionFactor = (Chassis::ENCODER_TOP_SPEED/360)*WHEEL_RADIUS_INCHES*WHEEL_RADIUS_INCHES*3.141592654/12;
 	//1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.

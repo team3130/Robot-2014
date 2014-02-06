@@ -5,12 +5,10 @@ JoystickTank::JoystickTank(){
 	Requires(chassis);
 	precisionMultiplier = 0.6666666666f;
 	precisionLevel = 0;
-	maxPrecisionLevel = 2;
 }
 
 // Called just before this Command runs the first time
 void JoystickTank::Initialize() {
-	dashboardSendTimer.Start();
 	chassis->drive->DumbRobot();
 }
 

@@ -12,12 +12,8 @@ class JoystickTank: public CommandBase {
 private:
 	float precisionMultiplier;	//how much precision each level gives us.
 	int precisionLevel;			//level of precision we want. 0 is default
-	int maxPrecisionLevel;		//maximum precision level.
-	Timer PIDTimer;
-	Timer dashboardSendTimer;
 public:
 	JoystickTank();
-	float joystickToSpeed(float in);	//convert joystick value to a speed (m/s)
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
