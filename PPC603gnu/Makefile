@@ -32,7 +32,7 @@ MODE_DIR := NonDebug
 endif
 OBJ_DIR := .
 WS_ROOT_DIR := C:/WindRiver/workspace
-PRJ_ROOT_DIR := C:/Users/Ashwin_2/Documents/Projects/FRC/Robot-2014
+PRJ_ROOT_DIR := C:/Users/Mike/Documents/GitHub/Robot-2014
 
 
 
