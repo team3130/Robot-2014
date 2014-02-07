@@ -27,6 +27,6 @@ void CommandBase::init() {
 	// line should be repeated for each subsystem in the project.
 	//examplesubsystem = new ExampleSubsystem();
 	chassis = new Chassis(C_LEFTMOTOR1, C_RIGHTMOTOR1);
-	intake = new Intake(C_INTAKEMOTOR1);
+	intake = new Intake(C_INTAKEMOTOR1, C_EXTENDSOLENOID1);
 	oi = new OI();
 }

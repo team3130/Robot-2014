@@ -2,26 +2,25 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: Ashwin Chetty                                                  */
+/* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
-#ifndef OI_H
-#define OI_H
 
+#ifndef SPIN_INTAKE_H
+#define SPIN_INTAKE_H
+
+#include "../CommandBase.h"
 #include "WPILib.h"
 
-class OI {
+class SpinIntake: public CommandBase {
 private:
-
+	bool on;
 public:
-	OI();
-	Joystick* leftJoystick;
-	Joystick* rightJoystick;
-	Joystick* gamepad;
-	JoystickButton* leftPrecision;
-	JoystickButton* rightPrecision;
-	JoystickButton* straightMode;
-	JoystickButton* intakeTrigger;
-	JoystickButton* extendTrigger;
+	SpinIntake();
+	virtual void Initialize();
+	virtual void Execute();
+	virtual bool IsFinished();
+	virtual void End();
+	virtual void Interrupted();
 };
 
 #endif
