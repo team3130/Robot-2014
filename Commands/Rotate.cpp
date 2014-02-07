@@ -23,7 +23,7 @@ Rotate::Rotate(): PIDCommand("Rotate", 0, 0, 0){
 void Rotate::SetGoal(double dist, double thresh, double timeToWait) {
 	dist-=360*((int)(dist/360));	//ensure its absolute value is less than 360.
 	if(dist>180)dist-=360;			//choose the shortest direction to the goal
-	else if(dist<180)dist+=360;		//choose the shortest direction to the goal
+	else if(dist<-180)dist+=360;		//choose the shortest direction to the goal
 	
 	goal=dist;
 	threshold=thresh;
@@ -73,8 +73,8 @@ double Rotate::ReturnPIDInput(){
 }
 
 void Rotate::UsePIDOutput(double output){
-	if(output<0.11 && output >0.01)output=0.11;
-	if(output>-0.11 && output <-0.01)output=-0.11;
+	if(output<0.11 && output >0.001)output=0.11;
+	if(output>-0.11 && output <-0.001)output=-0.11;
 	if(output<-.5)output=-.5;
 	if(output>.5)output=0.5;
 	

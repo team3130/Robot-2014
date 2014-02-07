@@ -3,6 +3,7 @@
 #include "Commands/Scheduler.h"
 #include "Subsystems/Chassis.h"
 #include "Robotmap.h"
+#include "UnitTest/UnitTest.h"
 
 CommandBase::CommandBase(const char *name) : Command(name) {
 }
@@ -13,6 +14,7 @@ CommandBase::CommandBase() : Command() {
 // Initialize a single static instance of all of your subsystems to NULL
 Chassis* CommandBase::chassis = NULL;
 OI* CommandBase::oi = NULL;
+UnitTest* CommandBase::unitTest = NULL;
 
 void CommandBase::init() {
     // Create a single static instance of all of your subsystems. The following
@@ -20,4 +22,5 @@ void CommandBase::init() {
 	//examplesubsystem = new ExampleSubsystem();
 	chassis = new Chassis();
 	oi = new OI();
+	unitTest = new UnitTest();
 }

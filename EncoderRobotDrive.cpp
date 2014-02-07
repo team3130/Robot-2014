@@ -46,7 +46,7 @@ void EncoderRobotDrive::SetLeftRightMotorOutputs(float left, float right){
 		RobotDrive::SetLeftRightMotorOutputs(left, right);
 	}
 	else {
-		leftPID->SetSetpoint(left);
+		leftPID->SetSetpoint(-left);
 		rightPID->SetSetpoint(right);
 		SmartDashboard::PutNumber("Smart Robot Left Speed",left);
 		SmartDashboard::PutNumber("Smart Robot Right Speed",right);
