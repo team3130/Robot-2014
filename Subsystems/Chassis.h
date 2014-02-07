@@ -2,7 +2,7 @@
 #define CHASSIS_H
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
-#include "../EncoderRobotDrive.h"
+#include "VelocityController.h"
 #include "string.h"
 
 /**
@@ -12,21 +12,23 @@
  */
 class Chassis: public Subsystem{
 private:
-	Jaguar* leftController;
-	Jaguar* rightController;
+	VelocityController* leftController;
+	VelocityController* rightController;
 public:
 	static const int ENCODER_TOP_SPEED=3000;
 	static const double WHEEL_RADIUS_INCHES=2;
-	EncoderRobotDrive* drive;
-	Encoder* leftEncoder;
-	Encoder* rightEncoder;
+	RobotDrive* drive;
 	Gyro* gyro;
 	Chassis();
 	virtual ~Chassis();
 	void InitDefaultCommand();
+	void InitEncoders();
 	void tankDrive(float leftSpeed, float rightSpeed);
 	void arcadeDrive(float move, float turn);
+	void SmartRobot(bool smart=true);
+	void DumbRobot() {SmartRobot(false);}
 	void ProjectSensors();
+	double GetDistance();
 	static double encoderUnitsToFeet(double in);
 	static double feetToEncoderUnits(double in);
 };

@@ -29,22 +29,12 @@ void DriveStraight::Initialize() {
 	SetSetpoint(SmartDashboard::GetNumber("StraightGoal"));
 	GetPIDController()->SetPID(np,ni,nd);
 	GetPIDController()->SetAbsoluteTolerance(threshold);
-	double ppd=Chassis::ENCODER_TOP_SPEED;	//# pulses per distance per second at maximum speed
-	chassis->leftEncoder->SetDistancePerPulse(1.0/ppd);
-	chassis->rightEncoder->SetDistancePerPulse(1.0/ppd);
-	chassis->leftEncoder->SetPIDSourceParameter(PIDSource::kRate);
-	chassis->rightEncoder->SetPIDSourceParameter(PIDSource::kRate);
-	chassis->leftEncoder->Reset();
-	chassis->rightEncoder->Reset();
-	chassis->leftEncoder->Start();
-	chassis->rightEncoder->Start();
-	chassis->drive->SmartRobot();
+	chassis->InitEncoders();
+	chassis->SmartRobot();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveStraight::Execute() {
-	SmartDashboard::PutNumber("Straight LE D",chassis->leftEncoder->GetDistance());
-	SmartDashboard::PutNumber("Straight RE D",chassis->rightEncoder->GetDistance());
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -65,7 +55,7 @@ bool DriveStraight::IsFinished() {
 }
 
 double DriveStraight::ReturnPIDInput(){
-	return (chassis->leftEncoder->GetDistance()+chassis->rightEncoder->GetDistance())/2.0;
+	return chassis->GetDistance();
 }
 
 void DriveStraight::UsePIDOutput(double output){

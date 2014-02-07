@@ -9,7 +9,7 @@ JoystickTank::JoystickTank(){
 
 // Called just before this Command runs the first time
 void JoystickTank::Initialize() {
-	chassis->drive->DumbRobot();
+	chassis->DumbRobot();
 }
 
 // Called repeatedly when this Command is scheduled to run

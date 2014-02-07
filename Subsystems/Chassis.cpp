@@ -6,22 +6,19 @@
 #include "string.h"
 
 Chassis::Chassis() : Subsystem("Chassis"){
-	leftController = new Jaguar(C_LEFTMOTOR1);
-	rightController = new Jaguar(C_RIGHTMOTOR1);
-	rightEncoder = new Encoder(C_ENCODER_RIGHT_CHANNEL_1,C_ENCODER_RIGHT_CHANNEL_2, false); 
-	leftEncoder = new Encoder(C_ENCODER_LEFT_CHANNEL_1,C_ENCODER_LEFT_CHANNEL_2, true);
-	gyro = new Gyro(1);
-	drive=new EncoderRobotDrive(leftController, rightController, leftEncoder, rightEncoder);
+	leftController = new VelocityController(C_LEFTMOTOR,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B, true);
+	rightController = new VelocityController(C_RIGHTMOTOR,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B, false);
+	gyro  = new Gyro(C_GYRO);
+	drive = new RobotDrive(leftController, rightController);
 	drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
 	drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
 	drive->SetSafetyEnabled(false);
 
 	SmartDashboard::PutNumber("Pulses Per Distance",Chassis::ENCODER_TOP_SPEED);
 }
+
 Chassis::~Chassis()
 {
-	delete rightEncoder;
-	delete leftEncoder;
 	delete leftController;
 	delete rightController;
 	delete drive;
@@ -33,6 +30,19 @@ void Chassis::InitDefaultCommand() {
 	SetDefaultCommand(new JoystickTank());
 }
 
+void Chassis::InitEncoders() {
+	leftController->SetDistancePerPulse(1.0/ENCODER_TOP_SPEED);
+	rightController->SetDistancePerPulse(1.0/ENCODER_TOP_SPEED);
+	leftController->Reset();
+	rightController->Reset();
+	leftController->Start();
+	rightController->Start();
+}
+
+double Chassis::GetDistance() {
+	return (leftController->GetDistance()+rightController->GetDistance())/2.0;
+}
+
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
 	drive->TankDrive(leftSpeed, rightSpeed, false);
 	ProjectSensors();
@@ -42,13 +52,18 @@ void Chassis::arcadeDrive(float move, float turn){
 	ProjectSensors();
 }
 
+void Chassis::SmartRobot(bool smart) {
+	leftController->UseEncoder(smart);
+	rightController->UseEncoder(smart);
+}
+
 void Chassis::ProjectSensors() {
 	SmartDashboard::PutNumber("Chassis Gyro Angle", gyro->GetAngle());
-	SmartDashboard::PutNumber("Chassis Gyro Rate", gyro->GetRate());
-	SmartDashboard::PutNumber("Chassis Left Velocity", leftEncoder->GetRate());
-	SmartDashboard::PutNumber("Chassis Right Velocity", rightEncoder->GetRate());
-	SmartDashboard::PutNumber("Encoder Left Raw",leftEncoder->GetRaw());
-	SmartDashboard::PutNumber("Encoder Right Raw",rightEncoder->GetRaw());
+	SmartDashboard::PutNumber("Chassis Gyro Rate",  gyro->GetRate());
+	SmartDashboard::PutNumber("Chassis Left  Raw",      leftController->Encoder::GetRaw());
+	SmartDashboard::PutNumber("Chassis Right Raw",      rightController->Encoder::GetRaw());
+	SmartDashboard::PutNumber("Chassis Left  Velocity", leftController->GetRate());
+	SmartDashboard::PutNumber("Chassis Right Velocity", rightController->GetRate());
 }
 
 double Chassis::encoderUnitsToFeet(double in){

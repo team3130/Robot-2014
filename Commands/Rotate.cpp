@@ -46,7 +46,7 @@ void Rotate::Initialize() {
 	//CommandBase::chassis->rightEncoder->Reset();
 	CommandBase::chassis->gyro->Reset();
 	CommandBase::chassis->gyro->SetPIDSourceParameter(PIDSource::kAngle);
-	CommandBase::chassis->drive->DumbRobot();
+	CommandBase::chassis->DumbRobot();
 	timer.Reset();
 	timer.Start();
 	GetPIDController()->Reset();
