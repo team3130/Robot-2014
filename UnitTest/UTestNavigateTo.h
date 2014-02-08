@@ -11,7 +11,7 @@
  */
 class UTestNavigateTo: public CommandGroup {
 private:
-	DriveStraight* m_command;
+	NavigateTo* m_command;
 public:	
 	UTestNavigateTo();
 	void Initialize();

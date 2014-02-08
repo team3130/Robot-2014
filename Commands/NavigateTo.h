@@ -24,6 +24,7 @@ public:
 	~NavigateTo();
 	void SetGoalCartesian(double cartX, double cartY, double finalRotation);
 	void SetGoalPolar(double rotate, double distance, double finalRotation);
+	virtual void Initialize();
 };
 
 #endif

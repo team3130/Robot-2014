@@ -20,9 +20,10 @@ NavigateTo::NavigateTo() {
 	rotateFirst = new Rotate();
 	driveStraight = new DriveStraight();
 	rotateSecond = new Rotate();
+	firstRotateAngle=0;
 	AddSequential(rotateFirst);
-	AddSequential(driveStraight);
-	AddSequential(rotateSecond);
+	//AddSequential(driveStraight);
+	//AddSequential(rotateSecond);
 }
 
 NavigateTo::~NavigateTo() {
@@ -31,8 +32,9 @@ NavigateTo::~NavigateTo() {
 	delete rotateSecond;
 }
 
-void Initialize()
+void NavigateTo::Initialize()
 {
+	rotateFirst->SetGoal(firstRotateAngle,2,1);
 	// From X and Y coordinates and final angle calculate params for each step
 }
 void NavigateTo::SetGoalCartesian(double cartX, double cartY, double finalRotation){
