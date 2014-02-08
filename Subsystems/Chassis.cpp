@@ -8,6 +8,8 @@
 Chassis::Chassis() : Subsystem("Chassis"){
 	leftController = new VelocityController(C_LEFTMOTOR,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B, true);
 	rightController = new VelocityController(C_RIGHTMOTOR,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B, false);
+	rightController->SetSmartInvertedMotor(true);
+	//leftController->SetInverted(true);
 	gyro  = new Gyro(C_GYRO);
 	drive = new RobotDrive(leftController, rightController);
 	drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);

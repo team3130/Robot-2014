@@ -1,5 +1,5 @@
 #include "NavigateTo.h"
-
+#include "math.h"
 NavigateTo::NavigateTo() {
         // Add Commands here:
         // e.g. AddSequential(new Command1());
@@ -34,4 +34,15 @@ NavigateTo::~NavigateTo() {
 void Initialize()
 {
 	// From X and Y coordinates and final angle calculate params for each step
+}
+void NavigateTo::SetGoalCartesian(double cartX, double cartY, double finalRotation){
+	firstRotateAngle = 360*atan2(cartX, cartY)/(2*3.1415926536);
+	finalRotateAngle = finalRotation;
+	moveDist = sqrt(cartX*cartX + cartY*cartY);
+	SetGoalPolar(firstRotateAngle, moveDist, finalRotateAngle);
+}
+void NavigateTo::SetGoalPolar(double rotate, double distance, double finalRotation){
+	firstRotateAngle = rotate;
+	finalRotateAngle = finalRotation;
+	moveDist = distance;
 }

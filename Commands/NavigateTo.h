@@ -15,9 +15,15 @@ private:
 	Rotate* rotateFirst;
 	DriveStraight* driveStraight;
 	Rotate* rotateSecond;
+	double firstRotateAngle;
+	double moveDist;
+	double finalRotateAngle;
+	
 public:	
 	NavigateTo();
 	~NavigateTo();
+	void SetGoalCartesian(double cartX, double cartY, double finalRotation);
+	void SetGoalPolar(double rotate, double distance, double finalRotation);
 };
 
 #endif

@@ -55,11 +55,12 @@ bool DriveStraight::IsFinished() {
 }
 
 double DriveStraight::ReturnPIDInput(){
-	return chassis->GetDistance();
+	double d = chassis->GetDistance();
+	return d;
 }
 
 void DriveStraight::UsePIDOutput(double output){
-	if(output<0.11 && output >0.01)output=0.11;
+	if(output<0.11 && output >0.01)output=0.11;		//magic numbers. worked well in testing.
 	if(output>-0.11 && output <-0.01)output=-0.11;
 	chassis->arcadeDrive(output,0);
 }
