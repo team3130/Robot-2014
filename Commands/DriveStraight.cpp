@@ -9,7 +9,6 @@ DriveStraight::DriveStraight(): PIDCommand("Drive Straight",0,0,0){
 	SmartDashboard::PutNumber("Straight PID P",-3000);
 	SmartDashboard::PutNumber("Straight PID I",0);
 	SmartDashboard::PutNumber("Straight PID D",0);
-	SmartDashboard::PutNumber("StraightGoal",1.0);
 }
 
 void DriveStraight::SetGoal(double dist, double thresh, double timeToWait) {
@@ -19,6 +18,8 @@ void DriveStraight::SetGoal(double dist, double thresh, double timeToWait) {
 	SmartDashboard::PutNumber("Straight Goal",goal);
 	SmartDashboard::PutNumber("Straight Threshold",thresh);
 	SmartDashboard::PutNumber("Straight Cooldown",timeToWait);
+	GetPIDController()->SetSetpoint(goal);
+	GetPIDController()->SetAbsoluteTolerance(threshold);
 }
 
 // Called just before this Command runs the first time
@@ -26,8 +27,8 @@ void DriveStraight::Initialize() {
 	double np=SmartDashboard::GetNumber("Straight PID P")/1000.;
 	double ni=SmartDashboard::GetNumber("Straight PID I")/1000.;
 	double nd=SmartDashboard::GetNumber("Straight PID D")/1000.;
-	SetSetpoint(SmartDashboard::GetNumber("StraightGoal"));
 	GetPIDController()->SetPID(np,ni,nd);
+	GetPIDController()->SetSetpoint(goal);
 	GetPIDController()->SetAbsoluteTolerance(threshold);
 	chassis->InitEncoders();
 	chassis->SmartRobot();
@@ -56,10 +57,13 @@ bool DriveStraight::IsFinished() {
 
 double DriveStraight::ReturnPIDInput(){
 	double d = chassis->GetDistance();
+	SmartDashboard::PutNumber("DriveStraight Position", d);
+	SmartDashboard::PutNumber("DriveStraight Goal", GetPIDController()->GetSetpoint());
 	return d;
 }
 
 void DriveStraight::UsePIDOutput(double output){
+	//SmartDashboard::PutNumber("DriveStraight Error", GetPIDController()->GetError());
 	if(output<0.11 && output >0.01)output=0.11;		//magic numbers. worked well in testing.
 	if(output>-0.11 && output <-0.01)output=-0.11;
 	chassis->arcadeDrive(output,0);
