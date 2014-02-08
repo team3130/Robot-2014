@@ -38,7 +38,7 @@ void NavigateTo::Initialize()
 	// From X and Y coordinates and final angle calculate params for each step
 }
 void NavigateTo::SetGoalCartesian(double cartX, double cartY, double finalRotation){
-	firstRotateAngle = 360*atan2(cartX, cartY)/(2*3.1415926536);
+	firstRotateAngle = 360*atan2(cartX, cartY)/(2*3.1415926536);	
 	finalRotateAngle = finalRotation;
 	moveDist = sqrt(cartX*cartX + cartY*cartY);
 	SetGoalPolar(firstRotateAngle, moveDist, finalRotateAngle);

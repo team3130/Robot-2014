@@ -15,6 +15,7 @@ class UnitTest {
 private:
 	Command* utestRotate;
 	Command* utestDriveStraight;
+	Command* utestNavigateTo;
 public:
 	UnitTest();
 	~UnitTest();

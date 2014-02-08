@@ -16,6 +16,7 @@ UnitTest::UnitTest()
 {
 	utestRotate = new UTestRotate();
 	utestDriveStraight = new UTestDriveStraight();
+	utestNavigateTo = new UTestNavigateTo();
 }
 
 /*
@@ -25,4 +26,5 @@ UnitTest::~UnitTest()
 {
 	delete utestRotate;
 	delete utestDriveStraight;
+	delete utestNavigateTo;
 }
