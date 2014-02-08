@@ -46,6 +46,10 @@ void VelocityController::Set(float velocity, uint8_t syncGroup) {
 			m_power += correctAmount;
 		else
 			m_power -= correctAmount;
+		//the following code is definitely bad practice.
+		//this code assumes there are only two velocitycontrollers
+		//that are created. delete these lines when testing this
+		//class becomes a nonissue.
 		if(skipWrite%2==0){
 			SmartDashboard::PutNumber("VelocityController Power 0", m_power);
 			SmartDashboard::PutNumber("VelocityController DeltaAbs 0", deltaAbs);
