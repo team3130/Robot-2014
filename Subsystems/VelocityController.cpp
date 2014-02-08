@@ -37,15 +37,18 @@ void VelocityController::SetSmartInvertedMotor(bool inverted){
 void VelocityController::Set(float velocity, uint8_t syncGroup) {
 	static int skipWrite = 0;
 	m_kP = SmartDashboard::GetNumber("VelocityController P")/1000.0;
-	if(m_smart) {
+	if(m_smart && velocity != 0) {
 		if(m_smartInvertOutput)velocity*=-1;
-		double deltaAbs = fabs(velocity - GetRate());
+		double rate = GetRate();
+		double deltaAbs = fabs(velocity - rate);
 		deltaAbs = pow(deltaAbs, SmartDashboard::GetNumber("VelocityController W"));
-		double correctAmount= m_kP * deltaAbs;
-		if(velocity>GetRate())
+		double correctAmount= m_kP * deltaAbs; // * ((velocity>rate)?1.0:-1.0);
+		if(velocity>rate)
 			m_power += correctAmount;
 		else
 			m_power -= correctAmount;
+		if(m_power>1.0) m_power = 1.0;
+		if(m_power<-1.0) m_power = -1.0;
 		//the following code is definitely bad practice.
 		//this code assumes there are only two velocitycontrollers
 		//that are created. delete these lines when testing this
@@ -53,21 +56,29 @@ void VelocityController::Set(float velocity, uint8_t syncGroup) {
 		if(skipWrite%2==0){
 			SmartDashboard::PutNumber("VelocityController Power 0", m_power);
 			SmartDashboard::PutNumber("VelocityController DeltaAbs 0", deltaAbs);
-			SmartDashboard::PutNumber("VelocityController Delta 0", (velocity-GetRate()));
+			SmartDashboard::PutNumber("VelocityController Delta 0", (velocity-rate));
+			SmartDashboard::PutNumber("VelocityController Correct 0", correctAmount);
+			SmartDashboard::PutNumber("VelocityController Velocity 0", (velocity));
+			SmartDashboard::PutNumber("VelocityController Rate 0", rate);
+			
 		}
 		if(skipWrite%2==1){
 			SmartDashboard::PutNumber("VelocityController Power 1", m_power);
 			SmartDashboard::PutNumber("VelocityController DeltaAbs 1", deltaAbs);
-			SmartDashboard::PutNumber("VelocityController Delta 1", (velocity-GetRate()));
+			SmartDashboard::PutNumber("VelocityController Delta 1", (velocity-rate));
+			SmartDashboard::PutNumber("VelocityController Correct 1", correctAmount);
+			SmartDashboard::PutNumber("VelocityController Velocity 1", (velocity));
+			SmartDashboard::PutNumber("VelocityController Rate 1", rate);
 		}
 	}
 	else {
 		m_power = velocity;
 	}
-	if(velocity==0)m_power=0;	//when we tell the motor to stop, do not delay the stop by waiting for our controller to catch up.
+
 	if(m_smart && m_smartInvertOutput){
 		Jaguar::Set(-m_power,syncGroup);
 	}
-	else Jaguar::Set(m_power,syncGroup);
+	else
+		Jaguar::Set(m_power,syncGroup);
 	skipWrite++;
 }

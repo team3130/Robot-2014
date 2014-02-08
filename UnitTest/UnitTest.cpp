@@ -8,6 +8,7 @@
 #include "UnitTest.h"
 #include "UTestRotate.h"
 #include "UTestDriveStraight.h"
+#include "UTestNavigateTo.h"
 
 /*
  * Default constructor
