@@ -1,9 +1,19 @@
+//#include "stdafx.h"
+
 #include "DistanceTracking.h"
 #include "math.h"
-#include "WPILib.h"
-const double kCalibratedHeight_px = 100.0;
-const double kCalibratedDistance_ft = 10.0;
-const double kdDistanceBetweenReference_ft = 1.2;
+
+// constants
+const double kCalibratedHeight_px			= 100.0;
+const double kCalibratedDistance_ft			= 10.0;
+const double kdDistanceBetweenReference_ft	= 1.2;
+const double k90DegreesInRadians			= 1.57079633;
+
+// defines
+#define MARKER_ONE				0
+#define MARKER_TWO				1
+#define MARKER_THREE			2
+#define MARKER_FOUR				3
 
 #define POINT_UPPER_RIGHT_X		0
 #define POINT_UPPER_RIGHT_Y		1
@@ -14,252 +24,285 @@ const double kdDistanceBetweenReference_ft = 1.2;
 #define POINT_LOWER_RIGHT_X		6
 #define POINT_LOWER_RIGHT_Y		7
 
+// constructor
 DistanceTracking::DistanceTracking() {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(chassis);
-	
-	/*pLEDRelay = new DigitalOutput(5);
-	pLEDRelay->Set(1);*/
 }
 
-// Called just before this Command runs the first time
-void DistanceTracking::Initialize() {	
+double DistanceTracking::findRectangleHeight(const SPointRect & rect) 
+{
+	// get the average Y values for the top and bottom of the rect
+	double dUpperCenterY = (rect.ptUL.y + rect.ptUR.y) / 2.0;
+	double dLowerCenterY = (rect.ptLL.y + rect.ptLR.y) / 2.0;
+
+	// calculate the height, in pixels, of the rect
+	return (dUpperCenterY - dLowerCenterY);
 }
+
+double DistanceTracking::findRectangleWidth(const SPointRect & rect) 
+{
+	// get the average Y values for the top and bottom of the rect
+	double dRightCenterX = (rect.ptUR.x + rect.ptLR.x) / 2.0;
+	double dLeftCenterX = (rect.ptUL.x + rect.ptLL.x) / 2.0;
+
+	// calculate the height, in pixels, of the rect
+	return (dRightCenterX - dLeftCenterX);
+}
+
+// find the height of a triangle based on the three side lengths
 double DistanceTracking::findTriangleHeight(const double & dSideA, const double & dSideB, const double & dTotalBase){
-	double s = (dSideA+dSideB+dTotalBase)/2; //Herons area sd
-	double area = sqrt(s*(s - dSideA)*(s - dSideB)*(s + dTotalBase)); // Herons area
-	double height = (dTotalBase/(2 * area));
+	double s = (dSideA+dSideB + dTotalBase) / 2.0; //Herons area sd
+	double area = sqrt(s * (s - dSideA)*(s - dSideB) * (s + dTotalBase)); // Herons area
+	double height = (dTotalBase / (2.0 * area));
 	return height;
 }
 
-void DistanceTracking::Execute() {
-	NetworkTable*table = NetworkTable::GetTable("RoboRealm");
-	DriverStationLCD *ds = DriverStationLCD::GetInstance();
-	
-	
-	if (table && ds) {
-		double dDistanceBase_ft = 0.0;
-		NumberArray coords; // *targetNum = new NumberArray();
-		table->RetrieveValue("MEQ_COORDINATES", coords); // *targetNum);
-		double dImageWidth = table->GetNumber("IMAGE_WIDTH");
+// sort an array of SCoordSort structs based on the x coordinate
+void DistanceTracking::SortCoords( SCoordSort * coords, int size )
+{
+	SCoordSort temp;
 
-		// ds->PrintfLine(DriverStationLCD::kUser_Line1, "0 = %.1lf,%.1lf", coords.get(POINT_UPPER_RIGHT_X),coords.get(POINT_UPPER_RIGHT_Y));
-		// ds->PrintfLine(DriverStationLCD::kUser_Line2, "1 = %.1lf,%.1lf", coords.get(POINT_UPPER_LEFT_X),coords.get(POINT_UPPER_LEFT_Y));
-		// ds->PrintfLine(DriverStationLCD::kUser_Line3, "2 = %.1lf,%.1lf", coords.get(POINT_LOWER_LEFT_X),coords.get(POINT_LOWER_LEFT_Y));
-		// ds->PrintfLine(DriverStationLCD::kUser_Line4, "3 = %.1lf,%.1lf", coords.get(POINT_LOWER_RIGHT_X),coords.get(POINT_LOWER_RIGHT_Y));
+    for ( int i=0; i<size; i++ )
+    {
+		for ( int j=i+1; j<size; j++ )
+        {
+			if ( coords[j].dULX < coords[i].dULX )
+            {   
+                temp = coords[i];
+                coords[i] = coords[j];
+                coords[j] = temp;
+            }
+        }
+    }
+}
 
-		if ( coords.size() != 16 )
-			return;
+double DistanceTracking::LawOfCosines(const double & dA, const double & dB, const double & dC) {
+	return acos((dA * dA + dB * dB - dC * dC) / 2.0 * dA * dB);
+}
 
-		int iLeftRect = 0;
-		int iRightRect = 8;
-		//int iMiddleRect = 0;
+void DistanceTracking::GetMarkerData( NumberArray & coords, SPointRect * prcMarkerRects, double * pdMarkerHeights /*=NULL*/ ) {
 
-/*		if ( coords.get(2) < coords.get(10) ) {
-			if ( coords.get(2) < coords.get(18)) {
-				iLeftRect = 0;
-				if ( coords.get(10) < coords.get(18) ) {
-					iMiddleRect = 8; iRightRect = 16;  // 0, 1, 2
-				} else {
-					iMiddleRect = 16; iRightRect = 8;  // 0, 2, 1
-				}
-			} else {
-				iLeftRect = 16; iMiddleRect = 0; iRightRect = 8; // 2, 0, 1
-			}
-		} else {
-			if ( coords.get(10) < coords.get(18)) {
-				iLeftRect = 10;
-				if ( coords.get(2) < coords.get(18)) {
-					iMiddleRect = 0; iRightRect = 16; // 1, 0, 2
-				}
-				else {
-					iMiddleRect = 16; iRightRect = 0; // 1, 2, 0
-				}
-			} else {
-				iLeftRect = 16; iMiddleRect = 10; iRightRect = 0; // 2, 1, 0
-			}
+	double dUpperCenterY;
+	double dLowerCenterY;
+
+	int iSize = coords.size() / 8;
+
+	// DriverStationLCD * pDriverStation = DriverStationLCD::GetInstance();
+	// pDriverStation->PrintfLine(DriverStationLCD::kUser_Line1, "0 = %.1lf,%.1lf", coords.get(POINT_UPPER_RIGHT_X),coords.get(POINT_UPPER_RIGHT_Y));
+	// pDriverStation->PrintfLine(DriverStationLCD::kUser_Line2, "1 = %.1lf,%.1lf", coords.get(POINT_UPPER_LEFT_X),coords.get(POINT_UPPER_LEFT_Y));
+	// pDriverStation->PrintfLine(DriverStationLCD::kUser_Line3, "2 = %.1lf,%.1lf", coords.get(POINT_LOWER_LEFT_X),coords.get(POINT_LOWER_LEFT_Y));
+	// pDriverStation->PrintfLine(DriverStationLCD::kUser_Line4, "3 = %.1lf,%.1lf", coords.get(POINT_LOWER_RIGHT_X),coords.get(POINT_LOWER_RIGHT_Y));
+
+	SCoordSort * coordOffsets = new SCoordSort[iSize];
+
+	for ( int i=0; i<iSize; i++ ) {
+		coordOffsets[0].dULX = coords.get((i*8)+POINT_UPPER_LEFT_X); coordOffsets[i].iIndex = i*8;
+	}
+
+	SortCoords( coordOffsets, iSize );
+
+	// iterate for all four rects
+	for ( int i=0; i<iSize; i++ ) {
+
+		prcMarkerRects[i].ptUR.x = coords.get( coordOffsets[i].iIndex + POINT_UPPER_RIGHT_X );
+		prcMarkerRects[i].ptUR.y = coords.get( coordOffsets[i].iIndex + POINT_UPPER_RIGHT_Y );
+		prcMarkerRects[i].ptUL.x = coords.get( coordOffsets[i].iIndex + POINT_UPPER_LEFT_X  );
+		prcMarkerRects[i].ptUL.y = coords.get( coordOffsets[i].iIndex + POINT_UPPER_LEFT_Y  );
+		prcMarkerRects[i].ptLL.x = coords.get( coordOffsets[i].iIndex + POINT_LOWER_LEFT_X  );
+		prcMarkerRects[i].ptLL.y = coords.get( coordOffsets[i].iIndex + POINT_LOWER_LEFT_Y  );
+		prcMarkerRects[i].ptLR.x = coords.get( coordOffsets[i].iIndex + POINT_LOWER_RIGHT_X );
+		prcMarkerRects[i].ptLR.y = coords.get( coordOffsets[i].iIndex + POINT_LOWER_RIGHT_Y );
+
+		if ( pdMarkerHeights ) {
+			// get the average Y values for the top and bottom of the rect
+			dUpperCenterY = (prcMarkerRects[i].ptUL.y + prcMarkerRects[i].ptUR.y) / 2.0;
+			dLowerCenterY = (prcMarkerRects[i].ptLL.y + prcMarkerRects[i].ptLR.y) / 2.0;
+
+			// calculate the height, in pixels, of the rect
+			pdMarkerHeights[i] = dUpperCenterY - dLowerCenterY;
 		}
-	*/
-		// Center Point of Image
-		double dImageCenterX = dImageWidth/2.0;
-		
-		// Left Rectangle Calculations (Everything in Pixels)
-		double dLeftUpperRightX = coords.get(iLeftRect+POINT_UPPER_RIGHT_X);
-		double dLeftUpperRightY = coords.get(iLeftRect+POINT_UPPER_RIGHT_Y);
-		double dLeftUpperLeftX = coords.get(iLeftRect+POINT_UPPER_LEFT_X);
-		double dLeftUpperLeftY = coords.get(iLeftRect+POINT_UPPER_LEFT_Y);
-		double dLeftLowerLeftY = coords.get(iLeftRect+POINT_LOWER_LEFT_Y);
-		double dLeftLowerRightY = coords.get(iLeftRect+POINT_LOWER_RIGHT_Y);
-	
-		// get the average Y values for the top and bottom of the rect
-		double dLeftUpperCenterY = (dLeftUpperLeftY + dLeftUpperRightY) / 2.0;
-		double dLeftLowerCenterY = (dLeftLowerLeftY + dLeftLowerRightY) / 2.0;
+	}
 
-		// calculate the height, in pixels, of the rect
-		double dHeightLeft = dLeftUpperCenterY - dLeftLowerCenterY;
-			
+	delete coordOffsets;
+	coordOffsets = NULL;
+}
+
+// get the distance to the wall on the line being aimed at
+double DistanceTracking::GetDistanceToTarget() {
+	
+	NetworkTable * pNetworkTable		= NetworkTable::GetTable("RoboRealm");
+	// DriverStationLCD * pDriverStation 	= DriverStationLCD::GetInstance();
+		
+	double dDistance_ft = 0.0;
+	
+	if ( pNetworkTable ) { // && pDriverStation ) {
+
+		double		dMarkerHeights[4];
+		SPointRect	rcMarkerRects[4];
+		double		dDistanceBase_ft = 0.0;
+		NumberArray coords;
+
+		pNetworkTable->RetrieveValue("MEQ_COORDINATES", coords);
+		double dImageWidth = pNetworkTable->GetNumber("IMAGE_WIDTH");
+
+		// we need three rectangles, otherwise something is wrong with the image
+		if ( coords.size() < 24 )
+			return 0.0;
+
+		// gets marker data from the coords data, sorted from left to right
+		GetMarkerData( coords, rcMarkerRects, dMarkerHeights );
+
+
+		// calculate the center point of the image
+		double dImageCenterX = dImageWidth / 2.0;
+		
+
+		// Left Rectangle Calculations
+
 		// calculate the distance from the camera to the center of the rect based on calibrarated data and rectangle height
-		double dDistanceLeft_ft = (kCalibratedHeight_px/dHeightLeft)* kCalibratedDistance_ft;
+		double dDistanceLeft_ft = (kCalibratedHeight_px / dMarkerHeights[MARKER_TWO]) * kCalibratedDistance_ft;
 		
 		// calculate the base in pixels (center of rect to the center of the image)
-		double dLeftCenterX = (dLeftUpperRightX + dLeftUpperLeftX) / 2.0;
+		double dLeftCenterX = (rcMarkerRects[MARKER_TWO].ptUR.x + rcMarkerRects[MARKER_TWO].ptUL.x) / 2.0;
 		double dLeftBase = (dImageCenterX - dLeftCenterX);
 	
 
 		// Right Rectangle Calculations
-		double dRightUpperRightX = coords.get(iRightRect+POINT_UPPER_RIGHT_X);
-		double dRightUpperRightY = coords.get(iRightRect+POINT_UPPER_RIGHT_Y);
-		double dRightUpperLeftX = coords.get(iRightRect+POINT_UPPER_LEFT_X);
-		double dRightUpperLeftY = coords.get(iRightRect+POINT_UPPER_LEFT_Y);
-		double dRightLowerLeftY = coords.get(iRightRect+POINT_LOWER_LEFT_Y);
-		double dRightLowerRightY = coords.get(iRightRect+POINT_LOWER_RIGHT_Y);
-		
-		// get the average Y values for the top and bottom of the rect
-		double dRightUpperCenterY = (dRightUpperLeftY + dRightUpperRightY) / 2.0;
-		double dRightLowerCenterY = (dRightLowerLeftY + dRightLowerRightY) / 2.0;
-		
-		// calculate the height, in pixels, of the rect
-		double dHeightRight = (dRightUpperCenterY - dRightLowerCenterY);
-		
+
 		// calculate the distance from the camera to the center of the rect based on calibrarated data and rectangle height
-		double dDistanceRight_ft = (kCalibratedHeight_px/dHeightRight)* kCalibratedDistance_ft;
+		double dDistanceRight_ft = (kCalibratedHeight_px / dMarkerHeights[MARKER_THREE]) * kCalibratedDistance_ft;
 
 		// calculate the base in pixels (center of rect to the center of the image)
-		double dRightCenterX = (dRightUpperRightX + dRightUpperLeftX) / 2.0;
-		double dRightBase = (dRightCenterX- dImageCenterX);
+		double dRightCenterX = (rcMarkerRects[MARKER_THREE].ptUR.x + rcMarkerRects[MARKER_THREE].ptUL.x) / 2.0;
+		// double dRightBase = (dRightCenterX - dImageCenterX);
 
 
 		// Distance calculations
 
-		// calculate our trianble base length (center of left rect to center of right rect) 
+		// calculate our triangle base length (center of left rect to center of right rect) 
 		double dBaseWidth = dRightCenterX - dLeftCenterX;
 
 		// calculate the height of our triangle
 		double dHeight_ft = findTriangleHeight(dDistanceLeft_ft, dDistanceRight_ft, kdDistanceBetweenReference_ft);
 
-		if ( dRightBase > dLeftBase) {
-			// convert right base from pixels to feet
-			double dRightBase_ft = (dRightBase * kdDistanceBetweenReference_ft) / dBaseWidth;
+		// convert left base from pixels to feet
+		double dLeftBase_ft = (dLeftBase * kdDistanceBetweenReference_ft) / dBaseWidth;
 
-			// calculate the base of the right rectangle, based on other two sides
-			double dRightTriangleBase_ft = sqrt((pow(dDistanceRight_ft, 2.0)) - (pow(dHeight_ft ,2.0)));
+		// calculate the base of the left rectangle, based on other two sides
+		double dLeftTriangleBase_ft = sqrt((dDistanceLeft_ft*dDistanceLeft_ft) - (dHeight_ft*dHeight_ft));
 
-			// calculate the base of the distance rectangle
-			dDistanceBase_ft = dRightBase_ft - dRightTriangleBase_ft;
-		} 
-		
-		else {
-			// convert left base from pixels to feet
-			double dLeftBase_ft = (dLeftBase * kdDistanceBetweenReference_ft) / dBaseWidth;
+		// calculate angle C to decide whether to add or subtract values
+		double dCAngle = LawOfCosines(dBaseWidth, dDistanceLeft_ft, dDistanceRight_ft );
 
-			// calculate the base of the left rectangle, based on other two sides
-			double dLeftTriangleBase_ft = sqrt(pow(dDistanceLeft_ft, 2.0) - pow(dHeight_ft,22.0));
-
-			// calculate the base of the distance rectangle
-			dDistanceBase_ft = dLeftBase_ft - dLeftTriangleBase_ft;
-		}
+		// calculate the base of the distance rectangle
+		if ( dCAngle > k90DegreesInRadians )
+			dDistanceBase_ft = fabs(dLeftBase_ft + dLeftTriangleBase_ft);
+		else
+			dDistanceBase_ft = fabs(dLeftBase_ft - dLeftTriangleBase_ft);
 
 		// calculate the distance, based on other two sides
-		double dDistance_ft = sqrt(pow(dDistanceBase_ft, 2.0) + pow(dHeight_ft, 2.0));
+		dDistance_ft = sqrt((dDistanceBase_ft*dDistanceBase_ft) + (dHeight_ft*dHeight_ft));
 					
-		ds->PrintfLine(DriverStationLCD::kUser_Line5, "DL, DR, = %.1lf,%.1lf", dDistanceLeft_ft, dDistanceRight_ft);
-		ds->PrintfLine(DriverStationLCD::kUser_Line6, "D = %.1lf",  dDistance_ft);
-		ds->UpdateLCD();
+		// pDriverStation->PrintfLine( DriverStationLCD::kUser_Line5, "DL, DR, = %.1lf,%.1lf", dDistanceLeft_ft, dDistanceRight_ft);
+		// pDriverStation->PrintfLine( DriverStationLCD::kUser_Line6, "D = %.1lf",  dDistance_ft);
+		// pDriverStation->UpdateLCD();
 	}
-
-}
-// Called repeatedly when this Command is scheduled to run
-/*void DistanceTracking::Execute() {
-	NetworkTable *table = NetworkTable::GetTable("RoboRealm");
-	DriverStationLCD *ds = DriverStationLCD::GetInstance();
-	if (table && ds) {
-		NumberArray coords; // *targetNum = new NumberArray();
-		table->RetrieveValue("MEQ_COORDINATES", coords); // *targetNum);
-		double dImageWidth = table->GetNumber("IMAGE_WIDTH");
-
-		// ds->PrintfLine(DriverStationLCD::kUser_Line1, "0 = %.1lf,%.1lf", coords.get(0),coords.get(1));
-		// ds->PrintfLine(DriverStationLCD::kUser_Line2, "1 = %.1lf,%.1lf", coords.get(2),coords.get(3));
-		// ds->PrintfLine(DriverStationLCD::kUser_Line3, "2 = %.1lf,%.1lf", coords.get(4),coords.get(5));
-		// ds->PrintfLine(DriverStationLCD::kUser_Line4, "3 = %.1lf,%.1lf", coords.get(6),coords.get(7));
-
-		//Center Point of Image
-		double dImageCenterX = dImageWidth/2.0;
-		
-		//Left Rectangle Calculations (Everything in Pixels)
-		double dLeftUpperRightX = coords.get(0);
-		double dLeftUpperRightY = coords.get(1);
-		double dLeftUpperLeftX = coords.get(2);
-		double dLeftUpperLeftY = coords.get(3);
-
-		double dLeftLowerLeftY = coords.get(5);
-		double dLeftLowerRightY = coords.get(7);
-
-		
-		double dLeftUpperCenterY = (dLeftUpperLeftY + dLeftUpperRightY) / 2.0;
-		double dLeftLowerCenterY = (dLeftLowerLeftY + dLeftLowerRightY) / 2.0;
-		
-		double dLeftCenterX = (dLeftUpperRightX + dLeftUpperLeftX) / 2.0;
-		double dHeightLeft = dLeftUpperCenterY - dLeftLowerCenterY;
-			
-		double dDistanceLeft_ft = (kCalibratedHeight_px/dHeightLeft)* kCalibratedDistance_ft;
-		double dLeftBase = (dImageCenterX - dXLeftCenter);
 	
-		//Right Rectangle Calculations
-		double dXRightUpperRight = coords.get(8); 
-		double dYRightUpperRight = coords.get(9);
-		double dXRightUpperLeft = coords.get(10); 
-		double dYRightUpperLeft = coords.get(11);
-		
-		double dYRightLowerLeft = coords.get(13);
-		double dYRightLowerRight = coords.get(15);
-		
-		double dYRightUpperCenter = (dYRightUpperLeft + dYRightUpperRight) / 2.0;
-		double dYRightLowerCenter = (dYRightLowerLeft + dYRightLowerRight) / 2.0;
-		
-		double dXRightCenter = (dXRightUpperRight + dXRightUpperLeft)/2.0;
-		double dHeightRight = (dYRightUpperCenter - dYRightLowerCenter);
-		
-		double dDistanceRight_ft = (kCalibratedHeight_px/dHeightRight)* kCalibratedDistance_ft;
+	return dDistance_ft;
+}
 
-		double dRightBase = (dXRightCenter- dImageCenterX);
+bool DistanceTracking::IsClosestTargetHot() {
 
-		double dBaseWidth = dXRightCenter - dXLeftCenter;
+	NetworkTable * pNetworkTable = NetworkTable::GetTable("RoboRealm");
+	
+	// we'll have three rectangles.  One of the outside rectangles will be the horizontal
+	// hot goal indicator.  We'll have to sort them out, and we won't make any assumptions
+	// about the order sent from robo-realm.
+	// lets find the widest rectangle and assume that it's the target rectangle
+	
+	if ( pNetworkTable ) {
 
-		double dHeight_ft = findTriangleHeight(dDistanceLeft_ft, dDistanceRight_ft, kDistanceBetweenReference);
-		double dDistanceBase_ft = 0.0;
-		if ( dRightBase < dLeftBase) {
-			double dRightBase_ft = (dRightBase * kDistanceBetweenReference) / dBaseWidth;				
-			double dRightTriangleBase_ft = sqrt((pow(dDistanceRight_ft, 2.0)) - (pow(dHeight_ft ,2.0)));
-			dDistanceBase_ft = dRightBase_ft - dRightTriangleBase_ft;
-		} 
+		double			dMarkerHeights[3];
+		SPointRect		rcMarkerRects[3];
+		NumberArray		coords;
 		
-		else {
-			double dLeftBase_ft = (dLeftBase * kDistanceBetweenReference) / dBaseWidth;
-			double dLeftTriangleBase_ft = sqrt(pow(dDistanceLeft_ft, 2.0) - pow(dHeight_ft,22.0));
-			dDistanceBase_ft = dLeftBase_ft - dLeftTriangleBase_ft;
+		pNetworkTable->RetrieveValue("MEQ_COORDINATES", coords);
+
+		if ( coords.size() != 24 )
+			return false; // todo - return value?
+
+		// call routine to get marker heights (always returns three rect heights)
+		GetMarkerData( coords, rcMarkerRects, dMarkerHeights );
+
+		// the horizontal marker is either ONE or THREE, compare heights to see which
+
+		// if THREE is less than ONE, THREE (right) is the hot marker, ONE and TWO are the vertical markers
+		if ( dMarkerHeights[MARKER_THREE] < dMarkerHeights[MARKER_ONE] ) {
+
+			// larger height is closer, if TWO is larger then closer to it and the hot marker
+			if ( dMarkerHeights[MARKER_TWO] > dMarkerHeights[MARKER_ONE] )
+				return true;
+			else
+				return false;
+
+		// else ONE is hot, TWO and THREE are the vertical markers
+		} else {
+			// larger height is closer, if TWO is larger then closer to it and the hot marker
+			if ( dMarkerHeights[MARKER_TWO] > dMarkerHeights[MARKER_THREE] )
+				return true;
+			else
+				return false;
 		}
-	
-		double dDistance_ft = sqrt(pow(dDistanceBase_ft, 2.0) + pow(dHeight_ft, 2.0));
-					
-		//Numbers Not Checked (constants)
-		
-		ds->PrintfLine(DriverStationLCD::kUser_Line5, "DL, DR, D = %.1lf,%.1lf,%.1lf", dDistanceLeft_ft,dDistanceRight_ft, dDistance_ft);
-
-		ds->UpdateLCD();
 	}
-}
-*/
-// Make this return true when this Command no longer needs to run execute()
-bool DistanceTracking::IsFinished() {
 	return false;
 }
 
-// Called once after isFinished returns true
-void DistanceTracking::End() {
-	
-}
+bool DistanceTracking::IsAimedTargetHot() {
 
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
-void DistanceTracking::Interrupted() {
+	NetworkTable * pNetworkTable		= NetworkTable::GetTable("RoboRealm");
+	
+	if ( pNetworkTable ) {
+
+		double			dMarkerHeights[3];
+		SPointRect		rcMarkerRects[4];
+		NumberArray		coords;
+		
+		pNetworkTable->RetrieveValue("MEQ_COORDINATES", coords); // *targetNum);
+		double dImageWidth = pNetworkTable->GetNumber("IMAGE_WIDTH");
+
+		if ( coords.size() != 24 )
+			return false; // todo - return value?
+
+		double dImageCenterX = dImageWidth / 2.0;
+
+		// call routine to get marker heights (always returns three rect heights)
+		GetMarkerData( coords, rcMarkerRects, dMarkerHeights );
+
+		// if THREE is less than ONE, THREE (right) is the hot marker, ONE and TWO are the vertical markers
+		if ( dMarkerHeights[MARKER_THREE] < dMarkerHeights[MARKER_ONE] ) {
+
+			// get distances from the image center to the inside edge of each vertical marker
+			double dLeftDistance = dImageCenterX - rcMarkerRects[MARKER_ONE].ptUR.x;
+			double dRightDistance = rcMarkerRects[MARKER_TWO].ptUL.x - dImageCenterX;
+
+			// if the camera is aimed more towards the right marker
+			if ( dRightDistance < dLeftDistance  )
+				return true;
+			else 
+				return false;
+
+		// else ONE (left) is hot, TWO and THREE are the vertical markers
+		} else {
+
+			// get distances from the image center to the inside edge of each vertical marker
+			double dLeftDistance = dImageCenterX - rcMarkerRects[MARKER_TWO].ptUR.x;
+			double dRightDistance = rcMarkerRects[MARKER_THREE].ptUL.x - dImageCenterX;
+
+			// if the camera is aimed more towards the left marker
+			if ( dLeftDistance < dRightDistance )
+				return true;
+			else 
+				return false;
+		}
+	}
+	return false;
 }
