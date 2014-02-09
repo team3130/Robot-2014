@@ -46,7 +46,8 @@ void Rotate::Initialize() {
 	//CommandBase::chassis->rightEncoder->Reset();
 	CommandBase::chassis->gyro->Reset();
 	CommandBase::chassis->gyro->SetPIDSourceParameter(PIDSource::kAngle);
-	CommandBase::chassis->DumbRobot();
+	CommandBase::chassis->InitEncoders();
+	CommandBase::chassis->SmartRobot();
 	timer.Reset();
 	timer.Start();
 	GetPIDController()->Reset();
@@ -76,7 +77,7 @@ double Rotate::ReturnPIDInput(){
 
 void Rotate::UsePIDOutput(double output){
 	static double pmax=1;
-	static double minVoltage = 0.15;
+	static double minVoltage = 0.0;
 	if(output<minVoltage && output >0.001)output=minVoltage;
 	if(output>-minVoltage && output <-0.001)output=-minVoltage;
 	if(output<-pmax)output=-pmax;

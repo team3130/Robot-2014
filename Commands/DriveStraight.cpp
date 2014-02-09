@@ -64,8 +64,8 @@ double DriveStraight::ReturnPIDInput(){
 
 void DriveStraight::UsePIDOutput(double output){
 	//SmartDashboard::PutNumber("DriveStraight Error", GetPIDController()->GetError());
-	if(output<0.11 && output >0.01)output=0.11;		//magic numbers. worked well in testing.
-	if(output>-0.11 && output <-0.01)output=-0.11;
+	//if(output<0.11 && output >0.01)output=0.11;		//magic numbers. worked well in testing.
+	//if(output>-0.11 && output <-0.01)output=-0.11;
 	chassis->arcadeDrive(output,0);
 }
 

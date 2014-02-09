@@ -41,8 +41,10 @@ void VelocityController::Set(float velocity, uint8_t syncGroup) {
 		if(m_smartInvertOutput)velocity*=-1;
 		double rate = GetRate();
 		double deltaAbs = fabs(velocity - rate);
-		deltaAbs = pow(deltaAbs, SmartDashboard::GetNumber("VelocityController W"));
-		double correctAmount= m_kP * deltaAbs; // * ((velocity>rate)?1.0:-1.0);
+		
+		//deltaAbs = pow(SmartDashboard::GetNumber("VelocityController W"), deltaAbs) - 1;
+		double correctAmount= m_kP * pow(deltaAbs, fabs(rate)+1);
+		//double correctAmount= m_kP * deltaAbs; // * ((velocity>rate)?1.0:-1.0);
 		if(velocity>rate)
 			m_power += correctAmount;
 		else
