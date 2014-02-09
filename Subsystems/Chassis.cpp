@@ -15,7 +15,6 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
 	drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
 	drive->SetSafetyEnabled(false);
-
 	SmartDashboard::PutNumber("Pulses Per Distance",Chassis::ENCODER_TOP_SPEED);
 }
 

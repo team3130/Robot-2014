@@ -1,7 +1,7 @@
 #include "UTestRotate.h"
 
 UTestRotate::UTestRotate() : CommandGroup("UTest Rotate") {
-	m_command = new Rotate();
+	m_command = new Rotate("UTest Rotate Command");
 	AddSequential(m_command);
 	SmartDashboard::PutData(this);
 	SmartDashboard::PutNumber("UTest Rotate Distance",90.0);

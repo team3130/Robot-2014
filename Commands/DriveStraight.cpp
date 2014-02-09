@@ -2,7 +2,7 @@
 #include "math.h"
 
 // Used be constructed with (300,0.05,1,0,0,0)
-DriveStraight::DriveStraight(): PIDCommand("Drive Straight",0,0,0){
+DriveStraight::DriveStraight(const char *name): PIDCommand(name,0,0,0){
 	Requires(CommandBase::chassis);
 	this->chassis = CommandBase::chassis;
 	SmartDashboard::PutData(this);
@@ -15,9 +15,9 @@ void DriveStraight::SetGoal(double dist, double thresh, double timeToWait) {
 	goal=dist;
 	threshold=thresh;
 	confirmTime=timeToWait;
-	SmartDashboard::PutNumber("Straight Goal",goal);
-	SmartDashboard::PutNumber("Straight Threshold",thresh);
-	SmartDashboard::PutNumber("Straight Cooldown",timeToWait);
+	SmartDashboard::PutNumber(GetName()+"Straight Goal",goal);
+	SmartDashboard::PutNumber(GetName()+"Straight Threshold",thresh);
+	SmartDashboard::PutNumber(GetName()+"Straight Cooldown",timeToWait);
 	GetPIDController()->SetSetpoint(goal);
 	GetPIDController()->SetAbsoluteTolerance(threshold);
 }

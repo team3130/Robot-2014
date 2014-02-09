@@ -20,7 +20,7 @@ private:
 	bool isConfirming;
 	Chassis* chassis;	//from commandbase. we aren't a subclass of it b/c of deadly diamond of death
 public:
-	DriveStraight();
+	DriveStraight(const char *name);
 	void SetGoal(double dist, double thresh, double timeToWait);
 	virtual void Initialize();
 	virtual void Execute();

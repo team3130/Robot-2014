@@ -18,6 +18,8 @@ UnitTest::UnitTest()
 	utestRotate = new UTestRotate();
 	utestDriveStraight = new UTestDriveStraight();
 	utestNavigateTo = new UTestNavigateTo();
+	//new Rotate("Dummy Rotate");
+	//new DriveStraight();
 }
 
 /*

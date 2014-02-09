@@ -9,7 +9,7 @@
 #include "math.h"
 
 // Used to be constructed with (180,2.5,1,-1,0,0)
-Rotate::Rotate(): PIDCommand("Rotate", 0, 0, 0){
+Rotate::Rotate(const char *name): PIDCommand(name, 0, 0, 0){
 	PIDCommand::Requires(CommandBase::chassis);
 	SmartDashboard::PutData(this);
 	SmartDashboard::PutNumber("Rotate PID P",-7);
@@ -51,6 +51,8 @@ void Rotate::Initialize() {
 	timer.Start();
 	GetPIDController()->Reset();
 	GetPIDController()->Enable();
+	
+	//SmartDashboard::PutNumber("Minimum Rotate Speed", 0.15);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -73,10 +75,12 @@ double Rotate::ReturnPIDInput(){
 }
 
 void Rotate::UsePIDOutput(double output){
-	if(output<0.11 && output >0.001)output=0.11;
-	if(output>-0.11 && output <-0.001)output=-0.11;
-	if(output<-.5)output=-.5;
-	if(output>.5)output=0.5;
+	static double pmax=1;
+	static double minVoltage = 0.15;
+	if(output<minVoltage && output >0.001)output=minVoltage;
+	if(output>-minVoltage && output <-0.001)output=-minVoltage;
+	if(output<-pmax)output=-pmax;
+	if(output>pmax)output=pmax;
 	
 	CommandBase::chassis->tankDrive(output,-output);
 }

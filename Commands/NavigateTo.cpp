@@ -17,13 +17,13 @@ NavigateTo::NavigateTo() {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-	rotateFirst = new Rotate();
-	driveStraight = new DriveStraight();
-	rotateSecond = new Rotate();
+	rotateFirst = new Rotate("NavFirstRotate");
+	driveStraight = new DriveStraight("NavStraight");
+	rotateSecond = new Rotate("NavSecondRotate");
 	firstRotateAngle=0;
 	AddSequential(rotateFirst);
-	//AddSequential(driveStraight);
-	//AddSequential(rotateSecond);
+	AddSequential(driveStraight);
+	AddSequential(rotateSecond);
 }
 
 NavigateTo::~NavigateTo() {
@@ -34,7 +34,11 @@ NavigateTo::~NavigateTo() {
 
 void NavigateTo::Initialize()
 {
-	rotateFirst->SetGoal(firstRotateAngle,2,1);
+	static double cooldown = 0.2;
+	static double threshold = 3;
+	rotateFirst->SetGoal(firstRotateAngle,threshold,cooldown);
+	driveStraight->SetGoal(moveDist,.05,1.5);
+	rotateSecond->SetGoal(finalRotateAngle,2,1);
 	// From X and Y coordinates and final angle calculate params for each step
 }
 void NavigateTo::SetGoalCartesian(double cartX, double cartY, double finalRotation){

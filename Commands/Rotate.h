@@ -25,7 +25,7 @@ private:
 	double confirmTime;
 	bool isConfirming;
 public:
-	Rotate();
+	Rotate(const char *name);
 	virtual void SetGoal(double dist, double thresh, double timeToWait);
 	virtual void Initialize();
 	virtual void Execute();
