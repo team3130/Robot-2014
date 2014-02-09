@@ -8,6 +8,8 @@
 #include "Commands/JoystickStraight.h"
 #include "Commands/JoystickTank.h"
 #include "Commands/ShootCatapult.h"
+#include "Commands/SpinIntake.h"
+#include "Commands/ExtendIntake.h"
 OI::OI() {
 	leftJoystick = new Joystick(1);
 	rightJoystick = new Joystick(2);
@@ -18,5 +20,10 @@ OI::OI() {
 	triggerShoot = new JoystickButton(gamepad, 1);
 	straightMode->WhenPressed(new JoystickStraight());
 	triggerShoot->WhenPressed(new ShootCatapult());
+	intakeTrigger = new JoystickButton(gamepad, 3);
+	extendTrigger = new JoystickButton(gamepad, 2);
+	straightMode->WhenPressed(new JoystickStraight());
+	intakeTrigger->WhenPressed(new SpinIntake());
+	extendTrigger->WhenPressed(new ExtendIntake());
 	//straightMode->WhenReleased(new JoystickTank());
 }

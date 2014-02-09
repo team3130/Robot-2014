@@ -23,12 +23,16 @@
 #define C_RIGHTMOTOR1 2
 #define C_WINCHMOTOR1 3
 #define C_SHOOTERSOLENOID1 4
+#define C_INTAKEMOTOR1 5
+#define C_EXTENDSOLENOID1 6
 #define C_ENCODER_LEFT_CHANNEL_1 3
 #define C_ENCODER_LEFT_CHANNEL_2 4
 #define C_ENCODER_RIGHT_CHANNEL_1 1
 #define C_ENCODER_RIGHT_CHANNEL_2 2
 #define C_ENCODER_WINCH_CHANNEL_1 5
 #define C_ENCODER_WINCH_CHANNEL_2 6
+#define C_ENCODER_INTAKE_CHANNEL_1 7
+#define C_ENCODER_INTAKE_CHANNEL_2 8
 
 // If you are using multiple modules, make sure to define both the port
 // number and the module. For example you with a rangefinder:

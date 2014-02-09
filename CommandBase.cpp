@@ -9,6 +9,7 @@
 #include "Commands/Scheduler.h"
 #include "Subsystems/Chassis.h"
 #include "Subsystems/Shooter.h"
+#include "Subsystems/Intake.h"
 #include "Robotmap.h"
 
 CommandBase::CommandBase(const char *name) : Command(name) {
@@ -20,6 +21,7 @@ CommandBase::CommandBase() : Command() {
 // Initialize a single static instance of all of your subsystems to NULL
 Chassis* CommandBase::chassis = NULL;
 Shooter* CommandBase::shooter = NULL;
+Intake* CommandBase::intake = NULL;
 OI* CommandBase::oi = NULL;
 
 void CommandBase::init() {
@@ -28,5 +30,6 @@ void CommandBase::init() {
 	//examplesubsystem = new ExampleSubsystem();
 	chassis = new Chassis(C_LEFTMOTOR1, C_RIGHTMOTOR1);
 	shooter = new Shooter(C_WINCHMOTOR1, C_SHOOTERSOLENOID1);
+	intake = new Intake(C_INTAKEMOTOR1, C_EXTENDSOLENOID1);
 	oi = new OI();
 }

@@ -10,6 +10,7 @@
 #include "Commands/Command.h"
 #include "Subsystems/Chassis.h"
 #include "Subsystems/Shooter.h"
+#include "Subsystems/Intake.h"
 #include "Subsystems/ExampleSubsystem.h"
 #include "OI.h"
 
@@ -28,6 +29,7 @@ public:
 	//static ExampleSubsystem *examplesubsystem;
 	static Chassis* chassis;
 	static Shooter* shooter;
+	static Intake* intake;
 	static OI *oi;
 };
 
