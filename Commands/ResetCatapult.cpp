@@ -5,39 +5,37 @@
 /* Authors: Kevin Bi, James Li                                             */
 /*-------------------------------------------------------------------------*/
 
-#include "MoveCatapult.h"
+#include "ResetCatapult.h"
 
-MoveCatapult::MoveCatapult() {
+ResetCatapult::ResetCatapult() {
 	// Use Requires() here to declare subsystem dependencies
 	Requires(shooter);
+	SmartDashboard::PutNumber("Reset Time", 1);
 }
 
 // Called just before this Command runs the first time
-void MoveCatapult::Initialize() {
-	shooter->winchEncoder->Reset();
-	shooter->winchEncoder->Start();
-	SmartDashboard::PutNumber("Time to Move Catapult", 1);
+void ResetCatapult::Initialize() {
+	moveTime = SmartDashboard::GetNumber("Reset Time");
+	shooter->adjustCatapult(-(shooter->getCatapultPosition()), moveTime);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void MoveCatapult::Execute() {
-	double level = oi->gamepad->GetRawAxis(1);
-	timeLapse = SmartDashboard::GetNumber("Time to Move Catapult");
-	shooter->adjustCatapult(level, timeLapse);
+void ResetCatapult::Execute() {
+	
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool MoveCatapult::IsFinished() {
-	return false;
+bool ResetCatapult::IsFinished() {
+	return shooter->getCatapultPosition() == 0;
 }
 
 // Called once after isFinished returns true
-void MoveCatapult::End() {
-	
+void ResetCatapult::End() {
+	shooter->adjustCatapult(0, 1);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void MoveCatapult::Interrupted() {
-	
+void ResetCatapult::Interrupted() {
+	shooter->adjustCatapult(0,1);
 }

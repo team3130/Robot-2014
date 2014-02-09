@@ -2,7 +2,7 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: James Li, Zhenghao Zhu                                         */
+/* Authors: Kevin Bi, James Li, Zhenghao Zhu                               */
 /*-------------------------------------------------------------------------*/
 
 #include "Shooter.h"
@@ -14,6 +14,7 @@ Shooter::Shooter(int winchMotorChannel, int shootChannel) : Subsystem("Shooter")
 	winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_1, C_ENCODER_WINCH_CHANNEL_2, false);
 	shoot = new Solenoid(shootChannel);
 	winch = new Jaguar(winchMotorChannel);
+	//catapult posiion 0 considered to be catapult completely winded back
 	catapultPosition = 0;
 	toggle = false;
 	shoot->Set(toggle);
@@ -35,7 +36,7 @@ void Shooter::adjustCatapult(double difference, double time){
 	//getting difference and time and setting the DistancePerPulse to those values
 	double newCatapultPosition = catapultPosition + difference;
 	
-	if(fabs(time) < 0.01) time = 0.5;
+	if(fabs(time) < 0.01) time = 1;
 	if(newCatapultPosition > 1) newCatapultPosition = 1;
 	if(newCatapultPosition < -1) newCatapultPosition = -1;
 	
@@ -47,5 +48,10 @@ void Shooter::Shoot(){
 	//In theory, switches toggle of the shoot mechanism and sets the solenoid to that
 	toggle = !toggle;
 	shoot->Set(toggle);
+}
+
+double Shooter::getCatapultPosition()
+{
+	return catapultPosition;
 }
 
