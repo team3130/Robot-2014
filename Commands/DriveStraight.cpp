@@ -36,6 +36,7 @@ void DriveStraight::Initialize() {
 	GetPIDController()->SetPID(np,ni,nd);
 	GetPIDController()->SetSetpoint(goal);
 	GetPIDController()->SetAbsoluteTolerance(threshold);
+	keepAngle = chassis->gyro->GetAngle();
 	chassis->InitEncoders();
 	chassis->SmartRobot();
 }
@@ -62,17 +63,12 @@ bool DriveStraight::IsFinished() {
 }
 
 double DriveStraight::ReturnPIDInput(){
-	double d = chassis->GetDistance();
-	SmartDashboard::PutNumber("DriveStraight Position", d);
-	SmartDashboard::PutNumber("DriveStraight Goal", GetPIDController()->GetSetpoint());
-	return d;
+	return chassis->GetDistance();
 }
 
 void DriveStraight::UsePIDOutput(double output){
-	//SmartDashboard::PutNumber("DriveStraight Error", GetPIDController()->GetError());
-	//if(output<0.11 && output >0.01)output=0.11;		//magic numbers. worked well in testing.
-	//if(output>-0.11 && output <-0.01)output=-0.11;
-	chassis->arcadeDrive(output,0);
+	double drift = driftK*(chassis->gyro->GetAngle() - keepAngle);
+	chassis->arcadeDrive(output,drift);
 }
 
 // Called once after isFinished returns true

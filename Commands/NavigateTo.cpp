@@ -1,26 +1,20 @@
+/*-------------------------------------------------------------------------*/
+/* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
+/* Open Source Software - may be modified, shared, used and reused by FRC  */
+/* teams under the same license as the WPILib code itself.                 */
+/* Authors: Ashwin Chetty, Mikhail Kyraha                                  */
+/*-------------------------------------------------------------------------*/
+
 #include "NavigateTo.h"
 #include "math.h"
+
 NavigateTo::NavigateTo() {
-        // Add Commands here:
-        // e.g. AddSequential(new Command1());
-        //      AddSequential(new Command2());
-        // these will run in order.
-
-        // To run multiple commands at the same time,
-        // use AddParallel()
-        // e.g. AddParallel(new Command1());
-        //      AddSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
 	rotateFirst = new Rotate("NavFirstRotate");
 	driveStraight = new DriveStraight("NavStraight");
 	rotateSecond = new Rotate("NavSecondRotate");
 	firstRotateAngle=0;
+	finalRotateAngle=0;
+	moveDist=0;
 	AddSequential(rotateFirst);
 	AddSequential(driveStraight);
 	AddSequential(rotateSecond);
@@ -36,10 +30,19 @@ void NavigateTo::Initialize()
 {
 	static double cooldown = 0;
 	static double threshold = 4;
-	rotateFirst->SetGoal(firstRotateAngle,threshold,cooldown);
-	driveStraight->SetGoal(moveDist,.05,1.5);
-	rotateSecond->SetGoal(finalRotateAngle,2,1, false);
-	// From X and Y coordinates and final angle calculate params for each step
+	double totalTurn = fabs(ConstrainAngle(firstRotateAngle))+fabs(ConstrainAngle(finalRotateAngle));
+	if(totalTurn<fabs(totalTurn-360)) {
+		rotateFirst->SetGoal(firstRotateAngle,threshold,cooldown);
+		driveStraight->SetGoal(moveDist,.05,1.5);
+		rotateSecond->SetGoal(finalRotateAngle,2,1, false);
+	}
+	else {
+		// Rotate will renormalize the angles
+		rotateFirst->SetGoal(firstRotateAngle-180,threshold,cooldown);
+		driveStraight->SetGoal(-moveDist,.05,1.5);
+		rotateSecond->SetGoal(finalRotateAngle-180,2,1, false);
+		
+	}
 }
 /*
  * @param cartX offset from North, in feet. Positive is to the right

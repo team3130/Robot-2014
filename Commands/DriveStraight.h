@@ -19,10 +19,12 @@
  */
 class DriveStraight: public PIDCommand{
 private:
+	static const double driftK = 1.0/180.0;
 	Timer timer;
 	double goal;
 	double threshold;
 	double confirmTime;
+	double keepAngle;
 	bool isConfirming;
 	Chassis* chassis;	//from commandbase. we aren't a subclass of it b/c of deadly diamond of death
 public:

@@ -7,6 +7,7 @@
 #ifndef COMMAND_BASE_H
 #define COMMAND_BASE_H
 
+#include "math.h"
 #include "Commands/Command.h"
 #include "Subsystems/Chassis.h"
 #include "Subsystems/Shooter.h"
@@ -34,5 +35,11 @@ public:
 	
 	static UnitTest* unitTest;
 };
+
+static inline double ConstrainAngle(double x){
+    x = fmod(x + 180,360);
+    if (x < 0) x += 360;
+    return x - 180;
+}
 
 #endif
