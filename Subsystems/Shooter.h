@@ -15,6 +15,10 @@ private:
 	Solenoid* shoot;
 	Jaguar* winch;
 	double catapultPosition;
+	//Amount catapult should move when shooting
+	double shootMovement;
+	//Amount of time shooting movement should take (To adjust speed)
+	double shootTime;
 	bool toggle;
 public:
 	Encoder* winchEncoder;
