@@ -7,6 +7,7 @@
 #include "OI.h"
 #include "Commands/JoystickStraight.h"
 #include "Commands/JoystickTank.h"
+#include "Commands/ShootCatapult.h"
 OI::OI() {
 	leftJoystick = new Joystick(1);
 	rightJoystick = new Joystick(2);
@@ -14,6 +15,8 @@ OI::OI() {
 	leftPrecision = new JoystickButton(leftJoystick, 1);
 	rightPrecision = new JoystickButton(rightJoystick, 1);
 	straightMode = new JoystickButton(rightJoystick, 2);
+	triggerShoot = new JoystickButton(gamepad, 1);
 	straightMode->WhenPressed(new JoystickStraight());
+	triggerShoot->WhenPressed(new ShootCatapult());
 	//straightMode->WhenReleased(new JoystickTank());
 }

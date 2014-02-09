@@ -2,25 +2,25 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: Ashwin Chetty                                                  */
+/* Authors: Kevin Bi, James Li                                             */
 /*-------------------------------------------------------------------------*/
-#ifndef OI_H
-#define OI_H
 
-#include "WPILib.h"
+#ifndef MOVE_CATAPULT_H
+#define MOVE_CATAPULT_H
 
-class OI {
+#include "../CommandBase.h"
+#include "WPILIB.h"
+
+class MoveCatapult: public CommandBase {
 private:
-
+	double timeLapse;
 public:
-	OI();
-	Joystick* leftJoystick;
-	Joystick* rightJoystick;
-	Joystick* gamepad;
-	JoystickButton* leftPrecision;
-	JoystickButton* rightPrecision;
-	JoystickButton* straightMode;
-	JoystickButton* triggerShoot;
+	MoveCatapult();
+	virtual void Initialize();
+	virtual void Execute();
+	virtual bool IsFinished();
+	virtual void End();
+	virtual void Interrupted();
 };
 
 #endif
