@@ -6,7 +6,6 @@
 /*-------------------------------------------------------------------------*/
 
 #include "Rotate.h"
-#include "math.h"
 
 // Used to be constructed with (180,2.5,1,-1,0,0)
 Rotate::Rotate(const char *name): PIDCommand(name, 0, 0, 0){
@@ -21,11 +20,7 @@ Rotate::Rotate(const char *name): PIDCommand(name, 0, 0, 0){
 }
 
 void Rotate::SetGoal(double dist, double thresh, double timeToWait, bool resetGyro) {
-	dist-=360*((int)(dist/360));	//ensure its absolute value is less than 360.
-	if(dist>180)dist-=360;			//choose the shortest direction to the goal
-	else if(dist<-180)dist+=360;	//choose the shortest direction to the goal
-	
-	goal=dist;
+	goal=ConstrainAngle(dist);
 	threshold=thresh;
 	confirmTime=timeToWait;
 	resetGyroOnInit=true;
