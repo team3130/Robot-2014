@@ -1,3 +1,18 @@
 L=602 R=624 Speed=0.3 - 23.75 inches 
 
 L=1201 R=1227 Speed = 0.3 - 44.75 inches
+
+SHOOTING METHOD:
+
+There will be two motors and a pinch (Solenoid). The pinch will restrict the rope to one way movement (move catapult down)
+while activated. Then, when the pinch is deactivated, it will be able to move the catapult up.
+
+The first motor will move the rope back, pulling the catapult arm back. To shoot, the first motor will pull the catapult
+all the way back, activate the pinch, the first motor will unwind the rope, then the pinch will deactivate allowing
+the rope to move through quickly.
+
+The second motor will adjust where the catapult will stop when the rope moves up to shoot so we can adjust whether we want
+a lob or a shot at the goal.
+
+In addition, the encoder for the first motor (the one that winds back) is not located on the motor itself, but
+on the catapult arm, so we will be able to tell the position of the arm and the angle/orientation it is at.

@@ -10,9 +10,10 @@
 #include "UTestDriveStraight.h"
 #include "UTestNavigateTo.h"
 #include "UTestExtendIntake.h"
-#include "UTestSpinintake.h"
-#include "UTestMoveCatapult.h"
+#include "UTestSpinIntake.h"
+#include "UTestWindCatapult.h"
 #include "UTestShootCatapult.h"
+#include "UTestChangeCatapultEnd.h"
 
 /*
  * Default constructor
@@ -24,8 +25,9 @@ UnitTest::UnitTest()
 	utestNavigateTo = new UTestNavigateTo();
 	utestExtendIntake = new UTestExtendIntake();
 	utestSpinIntake = new UTestSpinIntake();
-	utestMoveCatapult = new UTestMoveCatapult();
+	utestWindCatapult = new UTestWindCatapult();
 	utestShootCatapult = new UTestShootCatapult();
+	utestChangeCatapultEnd = new UTestChangeCatapultEnd();
 	//new Rotate("Dummy Rotate");
 	//new DriveStraight();
 }
@@ -40,6 +42,7 @@ UnitTest::~UnitTest()
 	delete utestNavigateTo;
 	delete utestExtendIntake;
 	delete utestSpinIntake;
-	delete utestMoveCatapult;
+	delete utestWindCatapult;
 	delete utestShootCatapult;
+	delete utestChangeCatapultEnd;
 }

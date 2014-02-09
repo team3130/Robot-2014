@@ -2,42 +2,43 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: Kevin Bi, James Li                                             */
+/* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
 
-#include "MoveCatapult.h"
+#include "ChangeCatapultEnd.h"
 
-MoveCatapult::MoveCatapult() {
-	// Use Requires() here to declare subsystem dependencies
+ChangeCatapultEnd::ChangeCatapultEnd() {
 	Requires(shooter);
+	SmartDashboard::PutNumber("End Position", 1);
+	SmartDashboard::PutNumber("Time Span", 1);
 }
 
 // Called just before this Command runs the first time
-void MoveCatapult::Initialize() {
-	shooter->winchEncoder->Reset();
-	shooter->winchEncoder->Start();
-	SmartDashboard::PutNumber("Time to Move Catapult", 1);
+void ChangeCatapultEnd::Initialize() {
+	endPosition = SmartDashboard::GetNumber("End Position");
+	timeSpan = SmartDashboard::GetNumber("Time Span");
+	shooter->stopEncoder->Reset();
+	shooter->stopEncoder->Start();
+	shooter->adjustEnd(endPosition, timeSpan);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void MoveCatapult::Execute() {
-	double level = oi->gamepad->GetRawAxis(1);
-	timeLapse = SmartDashboard::GetNumber("Time to Move Catapult");
-	shooter->adjustCatapult(level, timeLapse);
+void ChangeCatapultEnd::Execute() {
+	
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool MoveCatapult::IsFinished() {
-	return false;
+bool ChangeCatapultEnd::IsFinished() {
+	return endPosition == shooter->getEndPosition();
 }
 
 // Called once after isFinished returns true
-void MoveCatapult::End() {
+void ChangeCatapultEnd::End() {
 	
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void MoveCatapult::Interrupted() {
+void ChangeCatapultEnd::Interrupted() {
 	
 }

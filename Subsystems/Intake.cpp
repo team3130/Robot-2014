@@ -10,9 +10,11 @@
 #include "../Commands/SpinIntake.h"
 
 Intake::Intake(int intakeChannel, int extendChannel) : Subsystem("Intake") {
-	intakeEncoder = new Encoder(C_ENCODER_INTAKE_CHANNEL_1, C_ENCODER_INTAKE_CHANNEL_2);
+	intakeEncoder = new Encoder(C_ENCODER_INTAKE_CHANNEL_A, C_ENCODER_INTAKE_CHANNEL_B);
 	intake = new Jaguar(intakeChannel);
 	extend = new Solenoid(extendChannel);
+	isExtend = false;
+	isOn = false;
 }
     
 void Intake::InitDefaultCommand() {
@@ -20,12 +22,13 @@ void Intake::InitDefaultCommand() {
 	SetDefaultCommand(new SpinIntake());
 }
 
-void Intake::TakeBall(bool isOn){
+void Intake::TakeBall(){
+	isOn = !isOn;
 	double power = isOn ? 1 : 0;
-	intakeEncoder->SetDistancePerPulse(power);
 	intake->SetSpeed((float)power);
 }
 
-void Intake::ExtendArms(bool extended){
-	extend->Set(extended);
+void Intake::ExtendArms(){
+	isExtend = !isExtend;
+	extend->Set(isExtend);
 }

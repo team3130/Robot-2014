@@ -3,10 +3,10 @@
 UTestSpinIntake::UTestSpinIntake() : CommandGroup("UTest Spin Intake") {
 	m_command = new SpinIntake();
 	AddSequential(m_command);
-	SmartDashboard::PutData(this);
-	SmartDashboard::PutNumber("UTest Spin Intake X", .707);
-	SmartDashboard::PutNumber("UTest Spin Intake Y", .707);
-	SmartDashboard::PutNumber("UTest Spin Intake Rotation",-90);
+//	SmartDashboard::PutData(this);
+//	SmartDashboard::PutNumber("UTest Spin Intake X", .707);
+//	SmartDashboard::PutNumber("UTest Spin Intake Y", .707);
+//	SmartDashboard::PutNumber("UTest Spin Intake Rotation",-90);
 }
 
 void UTestSpinIntake::Initialize() {

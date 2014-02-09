@@ -14,21 +14,28 @@ class Shooter: public Subsystem {
 private:
 	Solenoid* shoot;
 	Jaguar* winch;
+	Jaguar* stop;
+	//current catapult position
 	double catapultPosition;
-	//Amount catapult should move when shooting
-	double shootMovement;
-	//Amount of time shooting movement should take (To adjust speed)
-	double shootTime;
+	//current end position
+	double endPosition;
+	////Amount catapult should move when shooting *currently unused
+	//double shootMovement;
+	////Amount of time shooting movement should take (To adjust speed) *currently unused
+	//double shootTime;
 	bool toggle;
 public:
 	Encoder* winchEncoder;
+	Encoder* stopEncoder;
 	
 	Shooter();
-	Shooter(int winchMotorChannel, int shootChannel);
+	Shooter(int winchMotorChannel, int stopMotorChannel, int shootChannel);
 	~Shooter();
 	void InitDefaultCommand();
 	void adjustCatapult(double level, double time);
+	void adjustEnd(double newEndPosition, double time);
 	double getCatapultPosition();
+	double getEndPosition();
 	void Shoot();
 };
 

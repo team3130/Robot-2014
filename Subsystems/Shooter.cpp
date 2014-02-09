@@ -10,11 +10,13 @@
 #include "../Commands/ShootCatapult.h"
 #include "math.h"
 
-Shooter::Shooter(int winchMotorChannel, int shootChannel) : Subsystem("Shooter") {
-	winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_1, C_ENCODER_WINCH_CHANNEL_2, false);
+Shooter::Shooter(int winchMotorChannel, int stopMotorChannel, int shootChannel) : Subsystem("Shooter") {
+	winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_A, C_ENCODER_WINCH_CHANNEL_B, false);
+	stopEncoder = new Encoder(C_ENCODER_STOP_CHANNEL_A, C_ENCODER_WINCH_CHANNEL_B, false);
 	shoot = new Solenoid(shootChannel);
 	winch = new Jaguar(winchMotorChannel);
-	//catapult posiion 0 considered to be catapult completely winded back
+	stop = new Jaguar(stopMotorChannel);
+	//catapult position 0 considered to be catapult completely winded back
 	catapultPosition = 0;
 	toggle = false;
 	shoot->Set(toggle);
@@ -22,8 +24,10 @@ Shooter::Shooter(int winchMotorChannel, int shootChannel) : Subsystem("Shooter")
 
 Shooter::~Shooter(){
 	delete winchEncoder;
+	delete stopEncoder;
 	delete shoot;
 	delete winch;
+	delete stop;
 }
 
 void Shooter::InitDefaultCommand() {
@@ -31,17 +35,29 @@ void Shooter::InitDefaultCommand() {
 	SetDefaultCommand(new ShootCatapult());
 }
 
-void Shooter::adjustCatapult(double difference, double time){
-	//experimental code to change position of catapult arm by
-	//getting difference and time and setting the DistancePerPulse to those values
-	double newCatapultPosition = catapultPosition + difference;
-	
-	if(fabs(time) < 0.01) time = 1;
+void Shooter::adjustCatapult(double newCatapultPosition, double time){
+	//code to change position of catapult arm by getting difference
+	//and time and setting the speed to those values
+	if(fabs(time) < 0.01) time = 1; //to prevent divide by 0 errors
 	if(newCatapultPosition > 1) newCatapultPosition = 1;
 	if(newCatapultPosition < -1) newCatapultPosition = -1;
 	
+	double difference = newCatapultPosition - catapultPosition;
 	winch->SetSpeed((float)difference/time);
 	catapultPosition = newCatapultPosition;
+}
+
+void Shooter::adjustEnd(double newEndPosition, double time)
+{
+	//code changes end position of catapult arm through
+	//difference and time and setting speed
+	if(fabs(time) < 0.01) time = 1; //to prevent divide by 0 errors
+	if(newEndPosition > 1) newEndPosition = 1;
+	if(newEndPosition < -1) newEndPosition = -1;
+	
+	double difference = newEndPosition - endPosition;
+	stop->SetSpeed((float)difference/time);
+	endPosition = newEndPosition;
 }
 
 void Shooter::Shoot(){
@@ -55,3 +71,7 @@ double Shooter::getCatapultPosition()
 	return catapultPosition;
 }
 
+double Shooter::getEndPosition()
+{
+	return endPosition;
+}

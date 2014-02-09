@@ -3,10 +3,10 @@
 UTestShootCatapult::UTestShootCatapult() : CommandGroup("UTest Shoot Catapult") {
 	m_command = new ShootCatapult();
 	AddSequential(m_command);
-	SmartDashboard::PutData(this);
-	SmartDashboard::PutNumber("UTest Shoot Catapult X", .707);
-	SmartDashboard::PutNumber("UTest Shoot Catapult Y", .707);
-	SmartDashboard::PutNumber("UTest Shoot Catapult Rotation",-90);
+//	SmartDashboard::PutData(this);
+//	SmartDashboard::PutNumber("UTest Shoot Catapult X", .707);
+//	SmartDashboard::PutNumber("UTest Shoot Catapult Y", .707);
+//	SmartDashboard::PutNumber("UTest Shoot Catapult Rotation",-90);
 }
 
 void UTestShootCatapult::Initialize() {

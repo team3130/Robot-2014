@@ -2,18 +2,18 @@
 #define UTESTMOVECATAPULT_H
 
 #include "Commands/CommandGroup.h"
-#include "../Commands/MoveCatapult.h"
+#include "../Commands/WindCatapult.h"
 
 /**
  *
  *
  * @author J. Li
  */
-class UTestMoveCatapult: public CommandGroup {
+class UTestWindCatapult: public CommandGroup {
 private:
-	MoveCatapult* m_command;
+	WindCatapult* m_command;
 public:	
-	UTestMoveCatapult();
+	UTestWindCatapult();
 	void Initialize();
 };
 

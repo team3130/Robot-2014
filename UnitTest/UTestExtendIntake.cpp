@@ -3,10 +3,10 @@
 UTestExtendIntake::UTestExtendIntake() : CommandGroup("UTest Extend Intake") {
 	m_command = new ExtendIntake();
 	AddSequential(m_command);
-	SmartDashboard::PutData(this);
-	SmartDashboard::PutNumber("UTest Extend Intake X", .707);
-	SmartDashboard::PutNumber("UTest Extend Intake Y", .707);
-	SmartDashboard::PutNumber("UTest Extend Intake Rotation",-90);
+	//SmartDashboard::PutData(this);
+	//SmartDashboard::PutNumber("UTest Extend Intake X", .707);
+	//SmartDashboard::PutNumber("UTest Extend Intake Y", .707);
+	//SmartDashboard::PutNumber("UTest Extend Intake Rotation",-90);
 }
 
 void UTestExtendIntake::Initialize() {
