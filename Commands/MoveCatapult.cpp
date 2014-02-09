@@ -17,12 +17,14 @@ MoveCatapult::MoveCatapult() {
 void MoveCatapult::Initialize() {
 	shooter->winchEncoder->Reset();
 	shooter->winchEncoder->Start();
+	SmartDashboard::PutNumber("Time to Move Catapult", 1);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void MoveCatapult::Execute() {
 	double level = oi->gamepad->GetRawAxis(1);
-	shooter->adjustCatapult(level);
+	timeLapse = SmartDashboard::GetNumber("Time to Move Catapult");
+	shooter->adjustCatapult(level, timeLapse);
 }
 
 // Make this return true when this Command no longer needs to run execute()

@@ -14,14 +14,16 @@ class Shooter: public Subsystem {
 private:
 	Solenoid* shoot;
 	Jaguar* winch;
+	double catapultPosition;
 	bool toggle;
 public:
 	Encoder* winchEncoder;
 	
 	Shooter();
 	Shooter(int winchMotorChannel, int shootChannel);
+	~Shooter();
 	void InitDefaultCommand();
-	void adjustCatapult(double level);
+	void adjustCatapult(double level, double time);
 	void Shoot();
 };
 
