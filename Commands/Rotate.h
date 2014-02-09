@@ -24,9 +24,10 @@ private:
 	double threshold;
 	double confirmTime;
 	bool isConfirming;
+	bool resetGyroOnInit;
 public:
 	Rotate(const char *name);
-	virtual void SetGoal(double dist, double thresh, double timeToWait);
+	virtual void SetGoal(double dist, double thresh, double timeToWait, bool resetGyro=true);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

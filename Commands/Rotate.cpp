@@ -20,7 +20,7 @@ Rotate::Rotate(const char *name): PIDCommand(name, 0, 0, 0){
 	SmartDashboard::PutNumber("Rotate Cooldown",0);
 }
 
-void Rotate::SetGoal(double dist, double thresh, double timeToWait) {
+void Rotate::SetGoal(double dist, double thresh, double timeToWait, bool resetGyro) {
 	dist-=360*((int)(dist/360));	//ensure its absolute value is less than 360.
 	if(dist>180)dist-=360;			//choose the shortest direction to the goal
 	else if(dist<-180)dist+=360;	//choose the shortest direction to the goal
@@ -28,9 +28,11 @@ void Rotate::SetGoal(double dist, double thresh, double timeToWait) {
 	goal=dist;
 	threshold=thresh;
 	confirmTime=timeToWait;
+	resetGyroOnInit=true;
 	SmartDashboard::PutNumber("Rotate Goal",goal);
 	SmartDashboard::PutNumber("Rotate Threshold",thresh);
 	SmartDashboard::PutNumber("Rotate Cooldown",timeToWait);
+	resetGyroOnInit = resetGyro;
 }
 
 // Called just before this Command runs the first time
@@ -44,7 +46,7 @@ void Rotate::Initialize() {
 	GetPIDController()->SetAbsoluteTolerance(threshold);
 	//CommandBase::chassis->leftEncoder->Reset();
 	//CommandBase::chassis->rightEncoder->Reset();
-	CommandBase::chassis->gyro->Reset();
+	if(resetGyroOnInit)CommandBase::chassis->gyro->Reset();
 	CommandBase::chassis->gyro->SetPIDSourceParameter(PIDSource::kAngle);
 	CommandBase::chassis->InitEncoders();
 	CommandBase::chassis->SmartRobot();
@@ -88,11 +90,11 @@ void Rotate::UsePIDOutput(double output){
 
 // Called once after isFinished returns true
 void Rotate::End() {
-	
+	CommandBase::chassis->gyro->Reset();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void Rotate::Interrupted() {
-	
+	CommandBase::chassis->gyro->Reset();
 }

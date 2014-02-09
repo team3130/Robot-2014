@@ -34,21 +34,30 @@ NavigateTo::~NavigateTo() {
 
 void NavigateTo::Initialize()
 {
-	static double cooldown = 0.2;
-	static double threshold = 3;
+	static double cooldown = 0;
+	static double threshold = 4;
 	rotateFirst->SetGoal(firstRotateAngle,threshold,cooldown);
 	driveStraight->SetGoal(moveDist,.05,1.5);
-	rotateSecond->SetGoal(finalRotateAngle,2,1);
+	rotateSecond->SetGoal(finalRotateAngle,2,1, false);
 	// From X and Y coordinates and final angle calculate params for each step
 }
+/*
+ * @param cartX offset from North, in feet. Positive is to the right
+ * @param cartY offset toward the North, in feet.
+ * @finalRotation the new North relative to initial North.
+ */
 void NavigateTo::SetGoalCartesian(double cartX, double cartY, double finalRotation){
+	// It's X over Y because the angle is from the North
 	firstRotateAngle = 360*atan2(cartX, cartY)/(2*3.1415926536);	
-	finalRotateAngle = finalRotation;
 	moveDist = sqrt(cartX*cartX + cartY*cartY);
-	SetGoalPolar(firstRotateAngle, moveDist, finalRotateAngle);
+	SetGoalPolar(firstRotateAngle, moveDist, finalRotation);
 }
+/*
+ * @rotate rotation angle
+ * @distance distance in FEET
+ */
 void NavigateTo::SetGoalPolar(double rotate, double distance, double finalRotation){
 	firstRotateAngle = rotate;
-	finalRotateAngle = finalRotation;
-	moveDist = distance;
+	finalRotateAngle = finalRotation - firstRotateAngle;
+	moveDist = Chassis::feetToEncoderUnits(distance);
 }
