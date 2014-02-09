@@ -11,7 +11,7 @@
 #include "Subsystems/Chassis.h"
 #include "Subsystems/Shooter.h"
 #include "Subsystems/Intake.h"
-#include "Subsystems/ExampleSubsystem.h"
+#include "UnitTest/UnitTest.h"
 #include "OI.h"
 
 
@@ -31,6 +31,8 @@ public:
 	static Shooter* shooter;
 	static Intake* intake;
 	static OI *oi;
+	
+	static UnitTest* unitTest;
 };
 
 #endif

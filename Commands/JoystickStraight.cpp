@@ -12,25 +12,18 @@ JoystickStraight::JoystickStraight(){
 }
 // Called just before this Command runs the first time
 void JoystickStraight::Initialize() {
-	chassis->leftEncoder->Reset();
-	chassis->rightEncoder->Reset();
-	chassis->leftEncoder->Start();
-	chassis->rightEncoder->Start();
-	timer.Reset();
-	timer.Start();
-	chassis->resetBias();
+	chassis->InitEncoders();
+	chassis->SmartRobot();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickStraight::Execute() {
-	double power = oi->leftJoystick->GetY()+oi->rightJoystick->GetY();
-	if(power>0.1 || power<-0.1){
-		chassis->straightDrive(power/2.0);
-	}
-	else{
-		chassis->resetBias();
-		chassis->tankDrive(0,0);
-	}
+	double power = oi->rightJoystick->GetY();
+	if(fabs(power)<0.07) power=0;
+	double turn = oi->leftJoystick->GetX();
+	if(fabs(turn)<0.2) turn = 0;
+	
+	chassis->arcadeDrive(power,turn);
 }
 
 // Make this return true when this Command no longer needs to run execute()

@@ -4,11 +4,12 @@
 /* teams under the same license as the WPILib code itself.                 */
 /* Authors: Ashwin Chetty                                                  */
 /*-------------------------------------------------------------------------*/
-#ifndef MOVE_STRAIGHT_H
-#define MOVE_STRAIGHT_H
+#ifndef DRIVE_STRAIGHT_H
+#define DRIVE_STRAIGHT_H
 
 #include "../CommandBase.h"
 #include "WPILib.h"
+#include "../Subsystems/Chassis.h"
 
 /**
  * @author Ashwin
@@ -16,20 +17,24 @@
  * to move straight--either forward or backward--by a specific
  * distance.
  */
-class DriveStraight: public CommandBase {
+class DriveStraight: public PIDCommand{
 private:
 	Timer timer;
 	double goal;
-	double distanceToGoal;
 	double threshold;
 	double confirmTime;
+	bool isConfirming;
+	Chassis* chassis;	//from commandbase. we aren't a subclass of it b/c of deadly diamond of death
 public:
-	DriveStraight(double dist, double thresh, double timeToWait);
+	DriveStraight(const char *name);
+	void SetGoal(double dist, double thresh, double timeToWait);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+	virtual double ReturnPIDInput();
+	virtual void UsePIDOutput(double output);
 };
 
 #endif
