@@ -16,6 +16,10 @@ private:
 	Command* utestRotate;
 	Command* utestDriveStraight;
 	Command* utestNavigateTo;
+	Command* utestExtendIntake;
+	Command* utestSpinIntake;
+	Command* utestMoveCatapult;
+	Command* utestShootCatapult;
 public:
 	UnitTest();
 	~UnitTest();
