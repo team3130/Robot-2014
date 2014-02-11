@@ -16,6 +16,7 @@ private:
 	double moveTime;
 public:
 	ResetCatapult();
+	void Reset();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

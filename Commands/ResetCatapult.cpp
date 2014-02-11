@@ -13,10 +13,14 @@ ResetCatapult::ResetCatapult() {
 	SmartDashboard::PutNumber("Reset Time", 1);
 }
 
+void ResetCatapult::Reset(){
+	moveTime = SmartDashboard::GetNumber("Reset Time");
+	shooter->adjustCatapult(-(shooter->getCatapultPosition()), moveTime);
+}
+
 // Called just before this Command runs the first time
 void ResetCatapult::Initialize() {
 	moveTime = SmartDashboard::GetNumber("Reset Time");
-	shooter->adjustCatapult(-(shooter->getCatapultPosition()), moveTime);
 }
 
 // Called repeatedly when this Command is scheduled to run
