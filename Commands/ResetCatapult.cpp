@@ -2,37 +2,40 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: James Li, Kevin Bi                                             */
+/* Authors: Kevin Bi, James Li                                             */
 /*-------------------------------------------------------------------------*/
 
-#include "ShootCatapult.h"
+#include "ResetCatapult.h"
 
-ShootCatapult::ShootCatapult() {
+ResetCatapult::ResetCatapult() {
+	// Use Requires() here to declare subsystem dependencies
 	Requires(shooter);
+	SmartDashboard::PutNumber("Reset Time", 1);
 }
 
 // Called just before this Command runs the first time
-void ShootCatapult::Initialize() {
-	shooter->Shoot();
+void ResetCatapult::Initialize() {
+	moveTime = SmartDashboard::GetNumber("Reset Time");
+	shooter->adjustCatapult(-(shooter->getCatapultPosition()), moveTime);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ShootCatapult::Execute() {
+void ResetCatapult::Execute() {
 	
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool ShootCatapult::IsFinished() {
-	return false;
+bool ResetCatapult::IsFinished() {
+	return shooter->getCatapultPosition() == 0;
 }
 
 // Called once after isFinished returns true
-void ShootCatapult::End() {
-	
+void ResetCatapult::End() {
+	shooter->adjustCatapult(0, 1);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ShootCatapult::Interrupted() {
-	
+void ResetCatapult::Interrupted() {
+	shooter->adjustCatapult(0,1);
 }

@@ -13,18 +13,17 @@ ExtendIntake::ExtendIntake() {
 
 // Called just before this Command runs the first time
 void ExtendIntake::Initialize() {
-	isExtend = false;
+	intake->ExtendArms();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ExtendIntake::Execute() {
-	isExtend = !isExtend;
-	intake->ExtendArms(isExtend);
+	
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendIntake::IsFinished() {
-	return false;
+	return true;
 }
 
 // Called once after isFinished returns true

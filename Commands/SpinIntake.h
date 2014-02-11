@@ -12,8 +12,6 @@
 #include "WPILib.h"
 
 class SpinIntake: public CommandBase {
-private:
-	bool on;
 public:
 	SpinIntake();
 	virtual void Initialize();

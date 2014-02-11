@@ -2,37 +2,43 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: James Li, Kevin Bi                                             */
+/* Authors: Kevin Bi, James Li                                             */
 /*-------------------------------------------------------------------------*/
 
-#include "ShootCatapult.h"
+#include "WindCatapult.h"
 
-ShootCatapult::ShootCatapult() {
+WindCatapult::WindCatapult() {
 	Requires(shooter);
+	SmartDashboard::PutNumber("New Catapult Position", 1);
+	SmartDashboard::PutNumber("Time to Move Catapult", 1);
 }
 
 // Called just before this Command runs the first time
-void ShootCatapult::Initialize() {
-	shooter->Shoot();
+void WindCatapult::Initialize() {
+	movePosition = SmartDashboard::GetNumber("New Catapult Position");
+	timeLapse = SmartDashboard::GetNumber("Time to Move Catapult");
+	shooter->winchEncoder->Reset();
+	shooter->winchEncoder->Start();
+	shooter->adjustCatapult(movePosition, timeLapse);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ShootCatapult::Execute() {
+void WindCatapult::Execute() {
 	
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool ShootCatapult::IsFinished() {
-	return false;
+bool WindCatapult::IsFinished() {
+	return movePosition == shooter->getCatapultPosition();
 }
 
 // Called once after isFinished returns true
-void ShootCatapult::End() {
+void WindCatapult::End() {
 	
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ShootCatapult::Interrupted() {
+void WindCatapult::Interrupted() {
 	
 }
