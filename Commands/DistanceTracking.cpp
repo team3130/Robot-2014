@@ -40,19 +40,19 @@ double DistanceTracking::findRectangleHeight(const SPointRect & rect)
 
 double DistanceTracking::findRectangleWidth(const SPointRect & rect) 
 {
-	// get the average Y values for the top and bottom of the rect
+	// get the average X values for the top and bottom of the rect
 	double dRightCenterX = (rect.ptUR.x + rect.ptLR.x) / 2.0;
 	double dLeftCenterX = (rect.ptUL.x + rect.ptLL.x) / 2.0;
 
-	// calculate the height, in pixels, of the rect
+	// calculate the width, in pixels, of the rect
 	return (dRightCenterX - dLeftCenterX);
 }
 
 // find the height of a triangle based on the three side lengths
 double DistanceTracking::findTriangleHeight(const double & dSideA, const double & dSideB, const double & dTotalBase){
 	double s = (dSideA+dSideB + dTotalBase) / 2.0; //Herons area sd
-	double area = sqrt(s * (s - dSideA)*(s - dSideB) * (s + dTotalBase)); // Herons area
-	double height = (dTotalBase / (2.0 * area));
+	double area = sqrt(s * (s - dSideA)*(s - dSideB) * (s - dTotalBase)); // Herons area
+	double height = ((2.0 * area) / dTotalBase); //area = base * height /2, thus height = 2 * area / base
 	return height;
 }
 
@@ -76,7 +76,7 @@ void DistanceTracking::SortCoords( SCoordSort * coords, int size )
 }
 
 double DistanceTracking::LawOfCosines(const double & dA, const double & dB, const double & dC) {
-	return acos((dA * dA + dB * dB - dC * dC) / 2.0 * dA * dB);
+	return acos((dA * dA + dB * dB - dC * dC) / (2.0 * dA * dB));
 }
 
 void DistanceTracking::GetMarkerData( NumberArray & coords, SPointRect * prcMarkerRects, double * pdMarkerHeights /*=NULL*/ ) {
