@@ -2,42 +2,38 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: Ashwin Chetty                                                  */
+/* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
-#include "JoystickStraight.h"
-#include "math.h"
 
-JoystickStraight::JoystickStraight(){
-	Requires(chassis);
+#include "ExtendIntake.h"
+
+ExtendIntake::ExtendIntake() {
+	Requires(intake);
 }
+
 // Called just before this Command runs the first time
-void JoystickStraight::Initialize() {
-	chassis->InitEncoders();
-	chassis->SmartRobot();
+void ExtendIntake::Initialize() {
+	isExtend = false;
 }
 
 // Called repeatedly when this Command is scheduled to run
-void JoystickStraight::Execute() {
-	double power = oi->rightJoystick->GetY();
-	if(fabs(power)<0.07) power=0;
-	double turn = oi->leftJoystick->GetX();
-	if(fabs(turn)<0.2) turn = 0;
-	
-	chassis->arcadeDrive(power,turn);
+void ExtendIntake::Execute() {
+	isExtend = !isExtend;
+	intake->ExtendArms(isExtend);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool JoystickStraight::IsFinished() {
-	return !oi->straightMode->Get();
+bool ExtendIntake::IsFinished() {
+	return false;
 }
 
 // Called once after isFinished returns true
-void JoystickStraight::End() {
+void ExtendIntake::End() {
 	
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void JoystickStraight::Interrupted() {
+void ExtendIntake::Interrupted() {
 	
 }

@@ -2,42 +2,43 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: Ashwin Chetty                                                  */
+/* Authors: Kevin Bi, James Li                                             */
 /*-------------------------------------------------------------------------*/
-#include "JoystickStraight.h"
-#include "math.h"
 
-JoystickStraight::JoystickStraight(){
+#include "MoveCatapult.h"
+
+MoveCatapult::MoveCatapult() {
+	// Use Requires() here to declare subsystem dependencies
+	// eg. Requires(chassis);
 	Requires(chassis);
 }
+
 // Called just before this Command runs the first time
-void JoystickStraight::Initialize() {
-	chassis->InitEncoders();
-	chassis->SmartRobot();
+void MoveCatapult::Initialize() {
+	shooter->winchEncoder->Reset();
+	shooter->winchEncoder->Start();
+	SmartDashboard::PutNumber("Time to Move Catapult", 1);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void JoystickStraight::Execute() {
-	double power = oi->rightJoystick->GetY();
-	if(fabs(power)<0.07) power=0;
-	double turn = oi->leftJoystick->GetX();
-	if(fabs(turn)<0.2) turn = 0;
-	
-	chassis->arcadeDrive(power,turn);
+void MoveCatapult::Execute() {
+	double level = oi->gamepad->GetRawAxis(1);
+	timeLapse = SmartDashboard::GetNumber("Time to Move Catapult");
+	shooter->adjustCatapult(level, timeLapse);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool JoystickStraight::IsFinished() {
-	return !oi->straightMode->Get();
+bool MoveCatapult::IsFinished() {
+	return false;
 }
 
 // Called once after isFinished returns true
-void JoystickStraight::End() {
+void MoveCatapult::End() {
 	
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void JoystickStraight::Interrupted() {
+void MoveCatapult::Interrupted() {
 	
 }

@@ -8,7 +8,8 @@
 #define CHASSIS_H
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
-#include "../NaivePidController.h"
+#include "VelocityController.h"
+#include "string.h"
 
 /**
  *
@@ -17,27 +18,25 @@
  */
 class Chassis: public Subsystem{
 private:
-	RobotDrive* drive;
-	Jaguar* left;
-	Jaguar* right;
-	double bias;
-	double rightInvert;
-	double leftInvert;
+	VelocityController* leftController;
+	VelocityController* rightController;
 public:
-	Encoder* leftEncoder;
-	Encoder* rightEncoder;
-	
+	static const int ENCODER_TOP_SPEED=3000;
+	static const double WHEEL_RADIUS_INCHES=2;
+	RobotDrive* drive;
+	Gyro* gyro;
 	Chassis();
-	Chassis(int leftMotorChannel, int rightMotorChannel);
+	virtual ~Chassis();
 	void InitDefaultCommand();
+	void InitEncoders();
 	void tankDrive(float leftSpeed, float rightSpeed);
 	void arcadeDrive(float move, float turn);
-	void straightDrive(float speed);
-	void resetBias();
-	
-//	void morePrecision();
-//	void lessPrecision();
-//	void resetPrecision();
+	void SmartRobot(bool smart=true);
+	void DumbRobot() {SmartRobot(false);}
+	void ProjectSensors();
+	double GetDistance();
+	static double encoderUnitsToFeet(double in);
+	static double feetToEncoderUnits(double in);
 };
 
 #endif

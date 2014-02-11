@@ -7,9 +7,12 @@
 #ifndef COMMAND_BASE_H
 #define COMMAND_BASE_H
 
+#include "math.h"
 #include "Commands/Command.h"
 #include "Subsystems/Chassis.h"
-#include "Subsystems/ExampleSubsystem.h"
+#include "Subsystems/Shooter.h"
+#include "Subsystems/Intake.h"
+#include "UnitTest/UnitTest.h"
 #include "OI.h"
 
 
@@ -26,7 +29,17 @@ public:
 	// Create a single static instance of all of your subsystems
 	//static ExampleSubsystem *examplesubsystem;
 	static Chassis* chassis;
+	static Shooter* shooter;
+	static Intake* intake;
 	static OI *oi;
+	
+	static UnitTest* unitTest;
 };
+
+static inline double ConstrainAngle(double x){
+    x = fmod(x + 180,360);
+    if (x < 0) x += 360;
+    return x - 180;
+}
 
 #endif
