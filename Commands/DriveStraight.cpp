@@ -67,7 +67,7 @@ double DriveStraight::ReturnPIDInput(){
 }
 
 void DriveStraight::UsePIDOutput(double output){
-	double drift = driftK*(chassis->gyro->GetAngle() - keepAngle);
+	double drift = driftK*(chassis->gyro->GetAngle() - keepAngle)*fabs(output);
 	chassis->arcadeDrive(output,drift);
 }
 
