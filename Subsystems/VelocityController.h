@@ -11,15 +11,16 @@
 #include "WPILib.h"
 //#include "string.h"
 
-class VelocityController: public Jaguar, public Encoder {
+class VelocityController: public Talon, public Encoder {
 private:
 	double m_kP;
 	double m_power;
+	Talon* m_satellite;
 	bool m_smart;
 	bool m_reversedEncoder;
 	bool m_smartInvertOutput;
 public:
-	VelocityController(uint32_t channel, uint32_t aChannel, uint32_t bChannel,
+	VelocityController(uint32_t channel, uint32_t sat_channel, uint32_t aChannel, uint32_t bChannel,
 			bool reversedEncoder=false, Encoder::EncodingType encodingType = Encoder::k4X);
 	~VelocityController();
 	virtual void Set(float speed, uint8_t syncGroup=0);
