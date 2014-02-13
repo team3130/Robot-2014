@@ -11,7 +11,7 @@ UTestWindCatapult::UTestWindCatapult() : CommandGroup("UTest Move Catapult") {
 
 void UTestWindCatapult::Initialize() {
 	// distance is in encoder units, 1 unit = N of pulses in 1 sec at top speed.
-	m_command->Execute(
+	m_command->Initialize(
 			//SmartDashboard::GetNumber("UTest Wind Catapult X"),
 			//SmartDashboard::GetNumber("UTest Wind Catapult Y"),
 			//SmartDashboard::GetNumber("UTest Wind Catapult Rotation")

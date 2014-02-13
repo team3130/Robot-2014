@@ -7,7 +7,7 @@
 
 #include "Shooter.h"
 #include "../Robotmap.h"
-#include "../Commands/ShootCatapult.h"
+#include "../Commands/ResetCatapult.h"
 #include "math.h"
 
 Shooter::Shooter(int winchMotorChannel, int stopMotorChannel, int shootChannel) : Subsystem("Shooter") {
@@ -18,8 +18,7 @@ Shooter::Shooter(int winchMotorChannel, int stopMotorChannel, int shootChannel) 
 	stop = new Jaguar(stopMotorChannel);
 	//catapult position 0 considered to be catapult completely winded back
 	catapultPosition = 0;
-	toggle = false;
-	shoot->Set(toggle);
+	shoot->Set(false);
 }
 
 Shooter::~Shooter(){
@@ -32,7 +31,7 @@ Shooter::~Shooter(){
 
 void Shooter::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new ShootCatapult());
+	SetDefaultCommand(new ResetCatapult());
 }
 
 void Shooter::adjustCatapult(double newCatapultPosition, double time){
@@ -60,9 +59,15 @@ void Shooter::adjustEnd(double newEndPosition, double time)
 	endPosition = newEndPosition;
 }
 
-void Shooter::Shoot(){
-	//In theory, switches toggle of the shoot mechanism and sets the solenoid to that
-	toggle = !toggle;
+void Shooter::setWinchSpeed(double speed){
+	winch->SetSpeed((float)speed);
+}
+
+void Shooter::setStopSpeed(double speed){
+	stop->SetSpeed((float)speed);
+}
+
+void Shooter::setShoot(bool toggle){
 	shoot->Set(toggle);
 }
 
@@ -74,4 +79,8 @@ double Shooter::getCatapultPosition()
 double Shooter::getEndPosition()
 {
 	return endPosition;
+}
+
+bool Shooter::getShootToggle(){
+	return shoot->Get();
 }

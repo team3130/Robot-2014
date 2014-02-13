@@ -5,22 +5,27 @@
 /* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
 
-#ifndef SPIN_INTAKE_H
-#define SPIN_INTAKE_H
+#include "ShootCycle.h"
+#include "math.h"
 
-#include "../CommandBase.h"
-#include "WPILib.h"
+ShootCycle::ShootCycle() {
+	shoot = new ShootCatapult();
+	reset = new ResetCatapult();
+	wind = new WindCatapult();
+	AddSequential(reset);
+	AddSequential(wind);
+	AddSequential(shoot);
+}
 
-class SpinIntake: public CommandBase {
-private:
-	bool spinning;
-public:
-	SpinIntake();
-	virtual void Initialize();
-	virtual void Execute();
-	virtual bool IsFinished();
-	virtual void End();
-	virtual void Interrupted();
-};
+ShootCycle::~ShootCycle() {
+	delete shoot;
+	delete reset;
+	delete wind;
+}
 
-#endif
+void ShootCycle::Initialize()
+{
+	wind->ResetArm();
+	reset->Initialize();
+	shoot->Initialize();
+}

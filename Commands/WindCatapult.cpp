@@ -13,6 +13,11 @@ WindCatapult::WindCatapult() {
 	SmartDashboard::PutNumber("Time to Move Catapult", 1);
 }
 
+void WindCatapult::ResetArm(){
+	timeLapse = SmartDashboard::GetNumber("Time to Move Catapult");
+	shooter->adjustCatapult(0,timeLapse);
+}
+
 // Called just before this Command runs the first time
 void WindCatapult::Initialize() {
 	movePosition = SmartDashboard::GetNumber("New Catapult Position");

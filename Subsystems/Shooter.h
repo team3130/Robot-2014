@@ -23,7 +23,6 @@ private:
 	//double shootMovement;
 	////Amount of time shooting movement should take (To adjust speed) *currently unused
 	//double shootTime;
-	bool toggle;
 public:
 	Encoder* winchEncoder;
 	Encoder* stopEncoder;
@@ -34,9 +33,12 @@ public:
 	void InitDefaultCommand();
 	void adjustCatapult(double level, double time);
 	void adjustEnd(double newEndPosition, double time);
+	void setWinchSpeed(double speed);
+	void setStopSpeed(double speed);
+	void setShoot(bool toggle);
 	double getCatapultPosition();
 	double getEndPosition();
-	void Shoot();
+	bool getShootToggle();
 };
 
 #endif

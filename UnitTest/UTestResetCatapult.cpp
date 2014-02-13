@@ -7,7 +7,7 @@ UTestResetCatapult::UTestResetCatapult() : CommandGroup("UTest Reset Catapult") 
 
 void UTestResetCatapult::Initialize() {
 	// distance is in encoder units, 1 unit = N of pulses in 1 sec at top speed.
-	m_command->Reset(
+	m_command->Initialize(
 			
 		);
 }
