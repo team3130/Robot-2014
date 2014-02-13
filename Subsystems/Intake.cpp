@@ -7,7 +7,7 @@
 
 #include "Intake.h"
 #include "../Robotmap.h"
-#include "../Commands/SpinIntake.h"
+#include "../Commands/StopIntake.h"
 
 Intake::Intake(int intakeChannel, int extendChannel) : Subsystem("Intake") {
 	intakeEncoder = new Encoder(C_ENCODER_INTAKE_CHANNEL_A, C_ENCODER_INTAKE_CHANNEL_B);
@@ -17,7 +17,7 @@ Intake::Intake(int intakeChannel, int extendChannel) : Subsystem("Intake") {
     
 void Intake::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new SpinIntake());
+	SetDefaultCommand(new StopIntake());
 }
 
 void Intake::TakeBall(bool isOn){
