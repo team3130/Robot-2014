@@ -20,6 +20,7 @@ class Chassis: public Subsystem{
 private:
 	VelocityController* leftController;
 	VelocityController* rightController;
+	Solenoid* shifter;
 public:
 	static const int ENCODER_TOP_SPEED=3000;
 	static const double WHEEL_RADIUS_INCHES=2;
@@ -37,6 +38,7 @@ public:
 	double GetDistance();
 	static double encoderUnitsToFeet(double in);
 	static double feetToEncoderUnits(double in);
+	void ShiftGear(bool isHigh);
 };
 
 #endif

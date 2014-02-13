@@ -12,6 +12,7 @@
 #include "Commands/ExtendIntake.h"
 #include "Commands/DriveStraight.h"
 #include "Commands/Rotate.h"
+#include "Commands/DriveHighGear.h"
 
 OI::OI() {
 	leftJoystick = new Joystick(1);
@@ -20,8 +21,10 @@ OI::OI() {
 	leftPrecision = new JoystickButton(leftJoystick, 1);
 	rightPrecision = new JoystickButton(rightJoystick, 1);
 	straightMode = new JoystickButton(rightJoystick, 2);
+	shifterButton = new JoystickButton(rightJoystick, 3);
 	triggerShoot = new JoystickButton(gamepad, 1);
 	straightMode->WhenPressed(new JoystickStraight());
+	shifterButton->WhenPressed(new DriveHighGear());
 	triggerShoot->WhenPressed(new ShootCatapult());
 	intakeTrigger = new JoystickButton(gamepad, 3);
 	extendTrigger = new JoystickButton(gamepad, 2);

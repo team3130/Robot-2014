@@ -19,6 +19,8 @@
 // following variables to use with your drivetrain subsystem.
 
 // It is convention to name all #defined constants with all caps names.
+#define C_PRESSURE_SWITCH 0
+#define C_COMPRESSOR_RELAY 0
 #define C_WINCHMOTOR1 3
 #define C_SHOOTERSOLENOID1 4
 #define C_INTAKEMOTOR1 5
@@ -36,6 +38,8 @@
 #define C_ENCODER_RIGHT_A 1
 #define C_ENCODER_RIGHT_B 2
 #define C_GYRO 1
+#define C_SHIFTER 0
+#define C_SHIFTER_MODULE 1
 
 // If you are using multiple modules, make sure to define both the port
 // number and the module. For example you with a rangefinder:

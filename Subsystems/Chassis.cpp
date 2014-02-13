@@ -16,6 +16,7 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B, false);
 	rightController->SetSmartInvertedMotor(true);
 	//leftController->SetInverted(true);
+	shifter = new Solenoid(C_SHIFTER_MODULE,C_SHIFTER);
 	gyro  = new Gyro(C_GYRO);
 	drive = new RobotDrive(leftController, rightController);
 	drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
@@ -83,4 +84,8 @@ double Chassis::feetToEncoderUnits(double in){
 	static double conversionFactor = (Chassis::ENCODER_TOP_SPEED/360)*WHEEL_RADIUS_INCHES*WHEEL_RADIUS_INCHES*3.141592654/12;
 	//1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.
 	return in/conversionFactor;
+}
+
+void Chassis::ShiftGear(bool isHigh) {
+		shifter->Set(isHigh);
 }
