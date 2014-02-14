@@ -2,20 +2,22 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: James Li                                                       */
+/* Authors: Kevin Bi, James Li                                             */
 /*-------------------------------------------------------------------------*/
 
-#ifndef SPIN_INTAKE_H
-#define SPIN_INTAKE_H
+#ifndef WIND_CATAPULT_H
+#define WIND_CATAPULT_H
 
 #include "../CommandBase.h"
-#include "WPILib.h"
+#include "WPILIB.h"
 
-class SpinIntake: public CommandBase {
+class WindCatapult: public CommandBase {
 private:
-	bool spinning;
+	double timeLapse;
+	double movePosition;
 public:
-	SpinIntake();
+	WindCatapult();
+	void ResetArm();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

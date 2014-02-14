@@ -15,18 +15,18 @@ SpinIntake::SpinIntake() {
 void SpinIntake::Initialize() {
 	intake->intakeEncoder->Reset();
 	intake->intakeEncoder->Start();
-	on = false;
+	spinning = false;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SpinIntake::Execute() {
-	on = oi->intakeTrigger->Get();
-	intake->TakeBall(on);
+	spinning = !spinning;
+	intake->TakeBall(spinning);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool SpinIntake::IsFinished() {
-	return false;
+	return spinning == intake->getSpinState();
 }
 
 // Called once after isFinished returns true

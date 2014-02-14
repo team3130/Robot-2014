@@ -5,17 +5,14 @@
 /* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
 
-#ifndef SPIN_INTAKE_H
-#define SPIN_INTAKE_H
+#ifndef STOP_INTAKE_H
+#define EXAMPLE_COMMAND_H
 
 #include "../CommandBase.h"
-#include "WPILib.h"
 
-class SpinIntake: public CommandBase {
-private:
-	bool spinning;
+class StopIntake: public CommandBase {
 public:
-	SpinIntake();
+	StopIntake();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

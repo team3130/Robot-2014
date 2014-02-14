@@ -12,6 +12,8 @@
 #include "WPILib.h"
 
 class ShootCatapult: public CommandBase {
+private:
+	bool shootToggle;
 public:
 	ShootCatapult();
 	virtual void Initialize();

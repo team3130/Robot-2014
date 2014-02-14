@@ -21,7 +21,9 @@ public:
 	Intake(int intakeChannel, int extendChannel);
 	void InitDefaultCommand();
 	void TakeBall(bool isOn);
-	void ExtendArms(bool extended);
+	void ExtendArms(bool isExtend);
+	bool getExtendState();
+	bool getSpinState();
 };
 
 #endif

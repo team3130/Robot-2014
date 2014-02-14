@@ -8,24 +8,23 @@
 #include "ShootCatapult.h"
 
 ShootCatapult::ShootCatapult() {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(chassis);
 	Requires(shooter);
 }
 
 // Called just before this Command runs the first time
 void ShootCatapult::Initialize() {
-	
+	shootToggle = false;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ShootCatapult::Execute() {
-	shooter->Shoot();
+	shootToggle = !shootToggle;
+	shooter->setShoot(shootToggle);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ShootCatapult::IsFinished() {
-	return false;
+	return shootToggle == shooter->getShootToggle();
 }
 
 // Called once after isFinished returns true

@@ -13,7 +13,7 @@
 
 class ExtendIntake: public CommandBase {
 private:
-	bool isExtend;
+	bool extended;
 public:
 	ExtendIntake();
 	virtual void Initialize();
