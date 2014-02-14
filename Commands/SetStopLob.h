@@ -15,9 +15,9 @@
  *
  * @author ExampleAuthor
  */
-class SetStobLob: public CommandBase {
+class SetStopLob: public CommandBase {
 public:
-	SetStobLob();
+	SetStopLob();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

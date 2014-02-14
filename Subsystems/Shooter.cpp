@@ -110,12 +110,12 @@ bool Shooter::getReady()
 
 void Shooter::setWinchSpeed(double speed)
 {
-	winch->setSpeed(speed);
+	winch->SetSpeed(speed);
 }
 
 void Shooter::setStopSpeed(double speed)
 {
-	stopper->setSpeed(speed);
+	stopper->SetSpeed(speed);
 }
 
 void Shooter::setPinch(bool pinch1on)
