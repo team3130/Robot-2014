@@ -5,17 +5,15 @@
 /* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
 
-#ifndef EXTEND_INTAKE_H
-#define EXTEND_INTAKE_H
+#ifndef JOYSTICK_INTAKE_H
+#define JOYSTICK_INTAKE_H
 
 #include "../CommandBase.h"
 #include "WPILib.h"
 
-class ExtendIntake: public CommandBase {
-private:
-	bool isExtend;
+class JoystickIntake: public CommandBase {
 public:
-	ExtendIntake();
+	JoystickIntake();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

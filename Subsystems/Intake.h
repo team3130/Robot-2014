@@ -12,15 +12,18 @@
 
 class Intake: public Subsystem {
 private:
-	Jaguar* intake;
+	Talon* intake;
 	Solenoid* extend;
+	Solenoid* idle;
 public:
 	Encoder* intakeEncoder;
 	
 	Intake();
-	Intake(int intakeChannel, int extendChannel);
+	Intake(int intakeChannel, int extendChannel, int solIdleChannel);
 	void InitDefaultCommand();
 	void TakeBall(bool isOn);
+	void SetBall(bool isOn);
+	void SetIdle(bool in);
 	void ExtendArms(bool extended);
 };
 

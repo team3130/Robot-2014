@@ -5,35 +5,53 @@
 /* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
 
-#include "ExtendIntake.h"
+#include "JoystickIntake.h"
 
-ExtendIntake::ExtendIntake() {
+JoystickIntake::JoystickIntake() : CommandBase("Manual Intake") {
 	Requires(intake);
 }
 
 // Called just before this Command runs the first time
-void ExtendIntake::Initialize() {
-	isExtend = false;
+void JoystickIntake::Initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ExtendIntake::Execute() {
-	isExtend = !isExtend;
-	intake->ExtendArms(isExtend);
+void JoystickIntake::Execute() {
+	if(oi->gamepad->GetRawButton(B_EXTENDARMS)){
+		intake->ExtendArms(true);
+	}
+	
+	if(oi->gamepad->GetRawButton(B_PULLARMS)){
+		intake->ExtendArms(false);
+	}
+	
+	if(oi->gamepad->GetRawButton(B_IDLEARMS)){
+		intake->SetIdle(true);
+	}
+	else {
+		intake->SetIdle(false);
+	}
+	
+	if(oi->gamepad->GetRawButton(B_BEATERBAR)){
+		intake->TakeBall(true);
+	}
+	else {
+		intake->TakeBall(false);
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool ExtendIntake::IsFinished() {
-	return false;
+bool JoystickIntake::IsFinished() {
+	return true;
 }
 
 // Called once after isFinished returns true
-void ExtendIntake::End() {
+void JoystickIntake::End() {
 	
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ExtendIntake::Interrupted() {
+void JoystickIntake::Interrupted() {
 	
 }

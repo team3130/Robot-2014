@@ -9,7 +9,6 @@
 #include "Commands/JoystickTank.h"
 #include "Commands/ShootCatapult.h"
 #include "Commands/SpinIntake.h"
-#include "Commands/ExtendIntake.h"
 #include "Commands/DriveStraight.h"
 #include "Commands/Rotate.h"
 #include "Commands/DriveHighGear.h"
@@ -30,5 +29,4 @@ OI::OI() {
 	extendTrigger = new JoystickButton(gamepad, 2);
 	straightMode->WhenPressed(new JoystickStraight());
 	intakeTrigger->WhenPressed(new SpinIntake());
-	extendTrigger->WhenPressed(new ExtendIntake());
 }
