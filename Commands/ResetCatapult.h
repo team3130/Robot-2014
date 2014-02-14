@@ -27,11 +27,11 @@ private:
 	const int UNWINDING = 2;
 	const int FINISHED = 3;
 	//Undetermined value
-	double ResetTime = 3;
+	double WindSpeed = 0;
 	//Undetermined value
 	double UnwindAmount = 0;
 	//Undetermine value
-	double UnwindTime = 0;
+	double UnwindSpeed = 0;
 };
 
 #endif

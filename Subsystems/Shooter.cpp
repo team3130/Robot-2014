@@ -103,6 +103,11 @@ bool Shooter::getPinch2()
 	return pinch2->Get();
 }
 
+bool Shooter::getReady()
+{
+	return Ready;
+}
+
 void Shooter::setWinchSpeed(double speed)
 {
 	winch->setSpeed(speed);
@@ -117,4 +122,9 @@ void Shooter::setPinch(bool pinch1on)
 {
 	pinch1->Set(pinch1on);
 	pinch2->Set(!pinch1on);
+}
+
+void Shooter::setReady(bool value)
+{
+	Ready = value; 
 }
