@@ -34,6 +34,17 @@ public:
 	void LockPincher(bool lock=true);
 	void UnlockPincher() {LockPincher(false);}
 	void ProjectSensors();
+	
+	//Get/set methods
+	double getCatapultPosition();
+	double getStopPosition();
+	double getWinchPosition();
+	bool getPinch1();
+	bool getPinch2();
+	void setWinchSpeed(double speed);
+	void setStopSpeed(double speed);
+	void setPinch(bool on); 
+	
 };
 
 #endif

@@ -76,3 +76,45 @@ void Shooter::ProjectSensors() {
 	SmartDashboard::PutNumber("Shooter Winch Rope", winchEncoder->GetRaw());
 	SmartDashboard::PutNumber("Shooter Stopper Rope", stopperEncoder->GetRaw());
 }
+
+//Get/set methods
+double Shooter::getCatapultPosition()
+{
+	return armEncoder->Get();
+}
+
+double Shooter::getWinchPosition()
+{
+	return winchEncoder->Get();
+}
+
+double Shooter::getStopPosition()
+{
+	return stopperEncoder->Get();
+}
+
+bool Shooter::getPinch1()
+{
+	return pinch1->Get();
+}
+
+bool Shooter::getPinch2()
+{
+	return pinch2->Get();
+}
+
+void Shooter::setWinchSpeed(double speed)
+{
+	winch->setSpeed(speed);
+}
+
+void Shooter::setStopSpeed(double speed)
+{
+	stopper->setSpeed(speed);
+}
+
+void Shooter::setPinch(bool pinch1on)
+{
+	pinch1->Set(pinch1on);
+	pinch2->Set(!pinch1on);
+}
