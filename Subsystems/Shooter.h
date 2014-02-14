@@ -12,19 +12,23 @@
 
 class Shooter: public Subsystem {
 private:
-	Solenoid* shoot;
+	Solenoid* pinch;
 	Jaguar* winch;
 	Jaguar* stop;
 	//current catapult position
-	double catapultPosition;
+	double winchPosition;
 	//current end position
 	double endPosition;
 	////Amount catapult should move when shooting *currently unused
 	//double shootMovement;
 	////Amount of time shooting movement should take (To adjust speed) *currently unused
 	//double shootTime;
-	bool toggle;
+	
+	//Boolean for whether catapult is ready to fire
+	bool Ready;
 public:
+	//Need to differentiate between Winch Encoder and Catapult Encoder
+	
 	Encoder* winchEncoder;
 	Encoder* stopEncoder;
 	
@@ -34,9 +38,18 @@ public:
 	void InitDefaultCommand();
 	void adjustCatapult(double level, double time);
 	void adjustEnd(double newEndPosition, double time);
+	//Get/set functions
+	void setWinchSpeed(double speed);
+	void setStopSpeed(double speed);
+	void setShoot(bool toggle);
+	double getWinchPosition();
+	void setWinchPosition(double pos);
 	double getCatapultPosition();
 	double getEndPosition();
-	void Shoot();
+	bool getPinch();
+	void setPinch(bool value);
+	void setReady(bool value);
+	bool getReady();
 };
 
 #endif

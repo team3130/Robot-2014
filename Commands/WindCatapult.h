@@ -17,6 +17,7 @@ private:
 	double movePosition;
 public:
 	WindCatapult();
+	void ResetArm();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

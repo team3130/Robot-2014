@@ -12,6 +12,8 @@
 #include "WPILib.h"
 
 class ExtendIntake: public CommandBase {
+private:
+	bool extended;
 public:
 	ExtendIntake();
 	virtual void Initialize();

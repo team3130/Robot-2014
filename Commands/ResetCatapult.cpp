@@ -10,32 +10,73 @@
 ResetCatapult::ResetCatapult() {
 	// Use Requires() here to declare subsystem dependencies
 	Requires(shooter);
-	SmartDashboard::PutNumber("Reset Time", 1);
 }
 
 // Called just before this Command runs the first time
 void ResetCatapult::Initialize() {
-	moveTime = SmartDashboard::GetNumber("Reset Time");
-	shooter->adjustCatapult(-(shooter->getCatapultPosition()), moveTime);
+	shooter->setStopSpeed(0);
+	//Sets CurAction to Winding
+	CurAction = WINDING;
+	//Sets to rewind for a certain amount of time
+	shooter->adjustCatapult(-shooter->getCatapultPosition(), ResetTime);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ResetCatapult::Execute() {
-	
+void ResetCatapult::Execute() 
+{
+	switch(CurAction)
+	{
+	//Action to do while catapult is winding
+	case WINDING:
+		//Checks to see if catapult is at start position
+		if(shooter->getCatapultPosition() <= 0)
+		{
+			//Sets winch speed to 0
+			shooter->setWinchSpeed(0);
+			//Sets CurAction to Pinching
+			CurAction = PINCHING;
+		}
+		break;
+	//Activates pinch and sets Winch to unwind
+	case PINCHING:
+		//Activates pinch
+		shooter->setPinch(true);
+		//Sets CurAction to Unwinding
+		CurAction = UNWINDING;
+		//Resets Winch Position to 0 to be in sync with Encoder
+		shooter->setWinchPosition(0);
+		//Sets winch to unwind a predetermined amount over a predetermined time
+		shooter->adjustCatapult(UnwindAmount, UnwindTime);
+		break;
+	//Action while Catapult is unwinding
+	case UNWINDING:
+		//Checks if Winch has moved sufficient amount
+		if(shooter->getWinchPosition() >= UnwindAmount)
+		{
+			//Stops Winch
+			shooter->setWinchSpeed(0);
+			//Finishes command
+			CurAction = FINISHED;
+		}
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ResetCatapult::IsFinished() {
-	return shooter->getCatapultPosition() == 0;
+	return CurAction == FINISHED;
 }
 
 // Called once after isFinished returns true
-void ResetCatapult::End() {
-	shooter->adjustCatapult(0, 1);
+void ResetCatapult::End() 
+{
+	//Sets shooter as ready to fire
+	shooter->setReady(true);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ResetCatapult::Interrupted() {
-	shooter->adjustCatapult(0,1);
+void ResetCatapult::Interrupted() 
+{
+	//Stops motor in case command is interrupted
+	shooter->setWinchSpeed(0);
 }

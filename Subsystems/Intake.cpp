@@ -7,28 +7,32 @@
 
 #include "Intake.h"
 #include "../Robotmap.h"
-#include "../Commands/SpinIntake.h"
+#include "../Commands/StopIntake.h"
 
 Intake::Intake(int intakeChannel, int extendChannel) : Subsystem("Intake") {
 	intakeEncoder = new Encoder(C_ENCODER_INTAKE_CHANNEL_A, C_ENCODER_INTAKE_CHANNEL_B);
 	intake = new Jaguar(intakeChannel);
 	extend = new Solenoid(extendChannel);
-	isExtend = false;
-	isOn = false;
 }
     
 void Intake::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new SpinIntake());
+	SetDefaultCommand(new StopIntake());
 }
 
-void Intake::TakeBall(){
-	isOn = !isOn;
+void Intake::TakeBall(bool isOn){
 	double power = isOn ? 1 : 0;
 	intake->SetSpeed((float)power);
 }
 
-void Intake::ExtendArms(){
-	isExtend = !isExtend;
+void Intake::ExtendArms(bool isExtend){
 	extend->Set(isExtend);
+}
+
+bool Intake::getExtendState(){
+	return extend->Get();
+}
+
+bool Intake::getSpinState(){
+	return (intake->Get() != 0);
 }

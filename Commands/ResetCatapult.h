@@ -12,8 +12,6 @@
 
 
 class ResetCatapult: public CommandBase {
-private:
-	double moveTime;
 public:
 	ResetCatapult();
 	virtual void Initialize();
@@ -21,6 +19,19 @@ public:
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+private:
+	//Determines "phase"
+	int CurAction;
+	const int WINDING = 0;
+	const int PINCHING = 1; 
+	const int UNWINDING = 2;
+	const int FINISHED = 3;
+	//Undetermined value
+	double ResetTime = 3;
+	//Undetermined value
+	double UnwindAmount = 0;
+	//Undetermine value
+	double UnwindTime = 0;
 };
 
 #endif
