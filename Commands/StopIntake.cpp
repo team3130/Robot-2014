@@ -14,8 +14,8 @@ StopIntake::StopIntake() {
 
 // Called just before this Command runs the first time
 void StopIntake::Initialize() {
-	intake->TakeBall(false);
-	intake->ExtendArms(false);
+	intake->setSpin(false);
+	intake->setExtend(false);
 }
 
 // Called repeatedly when this Command is scheduled to run

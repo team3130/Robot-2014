@@ -9,30 +9,43 @@
 #include "../Robotmap.h"
 #include "../Commands/StopIntake.h"
 
-Intake::Intake(int intakeChannel, int extendChannel) : Subsystem("Intake") {
+Intake::Intake(int intakeChannel, int extendChannelA, int extendChannelB) : Subsystem("Intake") {
 	intakeEncoder = new Encoder(C_ENCODER_INTAKE_CHANNEL_A, C_ENCODER_INTAKE_CHANNEL_B);
 	intake = new Jaguar(intakeChannel);
-	extend = new Solenoid(extendChannel);
+	extend1 = new Solenoid(extendChannelA);
+	extend2 = new Solenoid(extendChannelB);
 }
-    
+
+Intake::~Intake(){
+	delete intakeEncoder;
+	delete intake;
+	delete extend1;
+	delete extend2;
+}
+
 void Intake::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new StopIntake());
 }
 
-void Intake::TakeBall(bool isOn){
+bool Intake::getExtend1(){
+	return extend1->Get();
+}
+
+bool Intake::getExtend2(){
+	return extend2->Get();
+}
+
+bool Intake::getSpin(){
+	return intake->Get() != 0;
+}
+
+void Intake::setSpin(bool isOn){
 	double power = isOn ? 1 : 0;
 	intake->SetSpeed((float)power);
 }
 
-void Intake::ExtendArms(bool isExtend){
-	extend->Set(isExtend);
-}
-
-bool Intake::getExtendState(){
-	return extend->Get();
-}
-
-bool Intake::getSpinState(){
-	return (intake->Get() != 0);
+void Intake::setExtend(bool isExtend){
+	extend1->Set(isExtend);
+	extend2->Set(isExtend);
 }

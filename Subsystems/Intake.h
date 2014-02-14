@@ -13,17 +13,20 @@
 class Intake: public Subsystem {
 private:
 	Jaguar* intake;
-	Solenoid* extend;
+	Solenoid* extend1;
+	Solenoid* extend2;
 public:
 	Encoder* intakeEncoder;
 	
 	Intake();
-	Intake(int intakeChannel, int extendChannel);
+	Intake(int intakeChannel, int extendChannelA, int extendChannelB);
+	~Intake();
 	void InitDefaultCommand();
-	void TakeBall(bool isOn);
-	void ExtendArms(bool isExtend);
-	bool getExtendState();
-	bool getSpinState();
+	bool getSpin();
+	bool getExtend1();
+	bool getExtend2();
+	void setSpin(bool isOn);
+	void setExtend(bool isExtend);
 };
 
 #endif

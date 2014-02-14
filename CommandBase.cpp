@@ -30,7 +30,7 @@ void CommandBase::init() {
 	// line should be repeated for each subsystem in the project.
 	//examplesubsystem = new ExampleSubsystem();
 	shooter = new Shooter(C_WINCHMOTOR, C_STOPMOTOR, C_SHOOTERSOLENOID);
-	intake = new Intake(C_INTAKEMOTOR, C_EXTENDSOLENOID);
+	intake = new Intake(C_INTAKEMOTOR, C_EXTENDSOLENOIDA, C_EXTENDSOLENOIDB);
 	chassis = new Chassis();
 	oi = new OI();
 	unitTest = new UnitTest();

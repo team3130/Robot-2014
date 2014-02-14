@@ -19,12 +19,12 @@ void ExtendIntake::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void ExtendIntake::Execute() {
 	extended = !extended;
-	intake->ExtendArms(extended);
+	intake->setExtend(extended);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendIntake::IsFinished() {
-	return extended == intake->getExtendState();
+	return extended == (intake->getExtend1() && intake->getExtend2());
 }
 
 // Called once after isFinished returns true

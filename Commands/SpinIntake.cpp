@@ -21,12 +21,12 @@ void SpinIntake::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void SpinIntake::Execute() {
 	spinning = !spinning;
-	intake->TakeBall(spinning);
+	intake->setSpin(spinning);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool SpinIntake::IsFinished() {
-	return spinning == intake->getSpinState();
+	return spinning == intake->getSpin();
 }
 
 // Called once after isFinished returns true
