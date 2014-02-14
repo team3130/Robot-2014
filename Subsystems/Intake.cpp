@@ -15,7 +15,13 @@ Intake::Intake(int intakeChannel, int extendChannel, int solIdleChannel) : Subsy
 	extend = new Solenoid(extendChannel);
 	idle = new Solenoid(solIdleChannel);
 }
-    
+
+Intake::~Intake(){
+	delete intake;
+	delete extend;
+	delete idle;
+}
+
 void Intake::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new JoystickIntake());
@@ -35,4 +41,16 @@ void Intake::ExtendArms(bool extended){
 }
 void Intake::SetIdle(bool in){
 	idle->Set(in);
+}
+
+double Intake::getSpeed(){
+	return intake->Get();
+}
+
+bool Intake::getExtend(){
+	return extend->Get();
+}
+
+bool Intake::getIdle(){
+	return idle->Get();
 }
