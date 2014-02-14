@@ -14,21 +14,21 @@ Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : 
 	winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_1, C_ENCODER_WINCH_CHANNEL_2, false);
 	stopperEncoder = new Encoder(C_ENCODER_STOPPER_A,C_ENCODER_STOPPER_B,false);
 	armEncoder = new Encoder(C_ENCODER_CATAPULT_A,C_ENCODER_CATAPULT_B,false);
-	shoot1 = new Solenoid(shootChannel1);
-	shoot2 = new Solenoid(shootChannel2);
+	pinch1 = new Solenoid(shootChannel1);
+	pinch2 = new Solenoid(shootChannel2);
 	winch = new Jaguar(winchMotorChannel);
 	stopper = new Talon(C_STOPPERMOTOR);
 	catapultPosition = 0;
 	toggle = false;
-	shoot1->Set(toggle);
-	shoot2->Set(!toggle);
+	pinch1->Set(toggle);
+	pinch2->Set(!toggle);
 }
 
 Shooter::~Shooter(){
 	delete winchEncoder;
 	delete winch;
-	delete shoot1;
-	delete shoot2;
+	delete pinch1;
+	delete pinch2;
 	delete stopper;
 	delete armEncoder;
 	delete stopperEncoder;
@@ -62,13 +62,13 @@ void Shooter::setStopperDirect(double speed){
 void Shooter::SetShoot(bool in){
 	//In theory, switches toggle of the shoot mechanism and sets the solenoid to that
 	toggle = !toggle;
-	shoot1->Set(toggle);
-	shoot2->Set(!toggle);
+	pinch1->Set(toggle);
+	pinch2->Set(!toggle);
 }
 
 void Shooter::LockPincher(bool lock){
-	shoot1->Set(lock);
-	shoot2->Set(!lock);
+	pinch1->Set(lock);
+	pinch2->Set(!lock);
 }
 
 void Shooter::ProjectSensors() {
