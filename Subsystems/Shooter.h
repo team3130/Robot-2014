@@ -18,6 +18,7 @@ private:
 	Talon* stopper;
 	double catapultPosition;
 	bool toggle;
+	bool Ready;
 public:
 	Encoder* winchEncoder;
 	Encoder* stopperEncoder;
@@ -41,10 +42,11 @@ public:
 	double getWinchPosition();
 	bool getPinch1();
 	bool getPinch2();
+	bool getReady();
 	void setWinchSpeed(double speed);
 	void setStopSpeed(double speed);
-	void setPinch(bool on); 
-	
+	void setPinch(bool on);
+	void setReady(bool value);
 };
 
 #endif
