@@ -22,16 +22,16 @@ public:
 private:
 	//Determines "phase"
 	int CurAction;
-	const int WINDING = 0;
-	const int PINCHING = 1; 
-	const int UNWINDING = 2;
-	const int FINISHED = 3;
+	int WINDING;
+	int PINCHING; 
+	int UNWINDING;
+	int FINISHED;
 	//Undetermined value
-	double ResetTime = 3;
+	double ResetTime;
 	//Undetermined value
-	double UnwindAmount = 0;
+	double UnwindAmount;
 	//Undetermine value
-	double UnwindTime = 0;
+	double UnwindTime;
 };
 
 #endif

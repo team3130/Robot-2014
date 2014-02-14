@@ -92,8 +92,9 @@ double Shooter::getEndPosition()
 
 double Shooter::getCatapultPosition()
 {
-	//Get Catapult arm encoder
+	return 1.0;//Get Catapult arm encoder
 }
+
 bool Shooter::getPinch()
 {
 	return pinch->Get();

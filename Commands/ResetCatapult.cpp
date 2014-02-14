@@ -14,6 +14,13 @@ ResetCatapult::ResetCatapult() {
 
 // Called just before this Command runs the first time
 void ResetCatapult::Initialize() {
+	WINDING = 0;
+	PINCHING = 1; 
+	UNWINDING = 2;
+	FINISHED = 3;
+	ResetTime = 3;
+	UnwindAmount = 0;
+	UnwindTime = 0;
 	shooter->setStopSpeed(0);
 	//Sets CurAction to Winding
 	CurAction = WINDING;
@@ -27,7 +34,7 @@ void ResetCatapult::Execute()
 	switch(CurAction)
 	{
 	//Action to do while catapult is winding
-	case WINDING:
+	case 0://WINDING:
 		//Checks to see if catapult is at start position
 		if(shooter->getCatapultPosition() <= 0)
 		{
@@ -38,7 +45,7 @@ void ResetCatapult::Execute()
 		}
 		break;
 	//Activates pinch and sets Winch to unwind
-	case PINCHING:
+	case 1://PINCHING:
 		//Activates pinch
 		shooter->setPinch(true);
 		//Sets CurAction to Unwinding
@@ -49,7 +56,7 @@ void ResetCatapult::Execute()
 		shooter->adjustCatapult(UnwindAmount, UnwindTime);
 		break;
 	//Action while Catapult is unwinding
-	case UNWINDING:
+	case 2://UNWINDING:
 		//Checks if Winch has moved sufficient amount
 		if(shooter->getWinchPosition() >= UnwindAmount)
 		{
