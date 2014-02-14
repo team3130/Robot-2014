@@ -12,15 +12,15 @@
 #include "string.h"
 
 Chassis::Chassis() : Subsystem("Chassis"){
-	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B, true);
-	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B, false);
+	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B, true, true);
+	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B, true, true);
 	rightController->SetSmartInvertedMotor(true);
 	//leftController->SetInverted(true);
 	shifter = new Solenoid(C_SHIFTER);
 	gyro  = new Gyro(C_GYRO);
 	drive = new RobotDrive(leftController, rightController);
-	drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
-	drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
+	//drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
+	//drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
 	drive->SetSafetyEnabled(false);
 	SmartDashboard::PutNumber("Pulses Per Distance",Chassis::ENCODER_TOP_SPEED);
 }

@@ -8,7 +8,7 @@
 #include "JoystickShoot.h"
 
 JoystickShoot::JoystickShoot() {
-	Requires(intake);
+	Requires(shooter);
 }
 
 // Called just before this Command runs the first time
