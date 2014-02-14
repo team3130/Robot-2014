@@ -20,12 +20,16 @@ public:
 	
 	Intake();
 	Intake(int intakeChannel, int extendChannel, int solIdleChannel);
+	~Intake();
 	void InitDefaultCommand();
 	void BeaterBar(double speed);
 	void TakeBall(bool isOn);
 	void SetBall(bool isOn);
 	void SetIdle(bool in);
 	void ExtendArms(bool extended);
+	double getSpeed();
+	bool getExtend();
+	bool getIdle();
 };
 
 #endif
