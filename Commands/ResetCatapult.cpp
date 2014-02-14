@@ -29,7 +29,7 @@ void ResetCatapult::Execute()
 	//Action to do while catapult is winding
 	case WINDING:
 		//Checks to see if catapult is at start position
-		if(shooter->getCatapultPosition() == 0)
+		if(shooter->getCatapultPosition() <= 0)
 		{
 			//Sets winch speed to 0
 			shooter->setWinchSpeed(0);
@@ -44,7 +44,7 @@ void ResetCatapult::Execute()
 		//Sets CurAction to Unwinding
 		CurAction = UNWINDING;
 		//Resets Winch Position to 0 to be in sync with Encoder
-		shooter->setWinchPosition = 0;
+		shooter->setWinchPosition(0);
 		//Sets winch to unwind a predetermined amount over a predetermined time
 		shooter->adjustCatapult(UnwindAmount, UnwindTime);
 		break;
