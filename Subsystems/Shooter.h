@@ -12,19 +12,28 @@
 
 class Shooter: public Subsystem {
 private:
-	Solenoid* shoot;
+	Solenoid* shoot1;
+	Solenoid* shoot2;
 	Jaguar* winch;
+	Talon* stopper;
 	double catapultPosition;
 	bool toggle;
 public:
 	Encoder* winchEncoder;
+	Encoder* stopperEncoder;
+	Encoder* armEncoder;
 	
 	Shooter();
-	Shooter(int winchMotorChannel, int shootChannel);
+	Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2);
 	~Shooter();
 	void InitDefaultCommand();
 	void adjustCatapult(double level, double time);
-	void Shoot();
+	void setWinchDirect(double speed);
+	void setStopperDirect(double speed);
+	void SetShoot(bool in);
+	void LockPincher(bool lock=true);
+	void UnlockPincher() {LockPincher(false);}
+	void ProjectSensors();
 };
 
 #endif

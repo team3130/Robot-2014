@@ -14,7 +14,7 @@
 #include "Subsystems/Intake.h"
 #include "UnitTest/UnitTest.h"
 #include "OI.h"
-
+#include "Robotmap.h"
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.

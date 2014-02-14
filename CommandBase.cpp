@@ -31,8 +31,8 @@ void CommandBase::init() {
 	// line should be repeated for each subsystem in the project.
 	//examplesubsystem = new ExampleSubsystem();
 	compressor = new Compressor(C_PRESSURE_SWITCH, C_COMPRESSOR_RELAY);
-	shooter = new Shooter(C_WINCHMOTOR1, C_SHOOTERSOLENOID1);
-	intake = new Intake(C_INTAKEMOTOR1, C_EXTENDSOLENOID1);
+	shooter = new Shooter(C_WINCHMOTOR1, C_SHOOTERSOLENOID1, C_SHOOTERSOLENOID2);
+	intake = new Intake(C_INTAKEMOTOR1, C_EXTENDSOLENOID1, C_IDLESOLENOID);
 	chassis = new Chassis();
 	oi = new OI();
 	unitTest = new UnitTest();
