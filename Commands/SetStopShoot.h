@@ -2,35 +2,27 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: Kevin Bi, James Li                                             */
+/* Authors: <Kevin Bi>                                                     */
 /*-------------------------------------------------------------------------*/
 
-#ifndef RESET_CATAPULT_H
-#define RESET_CATAPULT_H
+#ifndef SET_STOP_SHOOT_H
+#define SET_STOP_SHOOT_H
 
 #include "../CommandBase.h"
 
-class ResetCatapult: public CommandBase {
+/**
+ *
+ *
+ * @author ExampleAuthor
+ */
+class SetStobShoot: public CommandBase {
 public:
-	ResetCatapult();
+	SetStobShoot();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
-private:
-	//Determines "phase"
-	int CurAction;
-	const int WINDING = 0;
-	const int PINCHING = 1; 
-	const int UNWINDING = 2;
-	const int FINISHED = 3;
-	//Undetermined value
-	double WindSpeed = 0;
-	//Undetermined value
-	double UnwindAmount = 0;
-	//Undetermine value
-	double UnwindSpeed = 0;
 };
 
 #endif
