@@ -13,18 +13,18 @@
 Shooter::Shooter(int winchMotorChannel, int stopMotorChannel, int shootChannel) : Subsystem("Shooter") {
 	winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_A, C_ENCODER_WINCH_CHANNEL_B, false);
 	stopEncoder = new Encoder(C_ENCODER_STOP_CHANNEL_A, C_ENCODER_WINCH_CHANNEL_B, false);
-	shoot = new Solenoid(shootChannel);
+	pinch = new Solenoid(shootChannel);
 	winch = new Jaguar(winchMotorChannel);
 	stop = new Jaguar(stopMotorChannel);
 	//catapult position 0 considered to be catapult completely winded back
-	catapultPosition = 0;
-	shoot->Set(false);
+	winchPosition = 0;
+	pinch->Set(false);
 }
 
 Shooter::~Shooter(){
 	delete winchEncoder;
 	delete stopEncoder;
-	delete shoot;
+	delete pinch;
 	delete winch;
 	delete stop;
 }
@@ -34,16 +34,21 @@ void Shooter::InitDefaultCommand() {
 	SetDefaultCommand(new ResetCatapult());
 }
 
-void Shooter::adjustCatapult(double newCatapultPosition, double time){
+void Shooter::adjustCatapult(double newWinchPosition, double time){
 	//code to change position of catapult arm by getting difference
 	//and time and setting the speed to those values
+	if(time == 0)
+	{
+		winch->SetSpeed(0);
+		return;
+	}
 	if(fabs(time) < 0.01) time = 1; //to prevent divide by 0 errors
-	if(newCatapultPosition > 1) newCatapultPosition = 1;
-	if(newCatapultPosition < -1) newCatapultPosition = -1;
+	if(newWinchPosition > 1) newWinchPosition = 1;
+	if(newWinchPosition < -1) newWinchPosition = -1;
 	
-	double difference = newCatapultPosition - catapultPosition;
+	double difference = newWinchPosition - winchPosition;
 	winch->SetSpeed((float)difference/time);
-	catapultPosition = newCatapultPosition;
+	winchPosition = newWinchPosition;
 }
 
 void Shooter::adjustEnd(double newEndPosition, double time)
@@ -68,19 +73,44 @@ void Shooter::setStopSpeed(double speed){
 }
 
 void Shooter::setShoot(bool toggle){
-	shoot->Set(toggle);
+	pinch->Set(toggle);
 }
 
-double Shooter::getCatapultPosition()
+double Shooter::getWinchPosition()
 {
-	return catapultPosition;
+	return winchPosition;
 }
 
+void Shooter::setWinchPosition(double pos)
+{
+	winchPosition = pos;
+}
 double Shooter::getEndPosition()
 {
 	return endPosition;
 }
 
-bool Shooter::getShootToggle(){
-	return shoot->Get();
+double Shooter::getCatapultPosition()
+{
+	//Get Catapult arm encoder
 }
+bool Shooter::getPinch()
+{
+	return pinch->Get();
+}
+
+void Shooter::setPinch(bool on)
+{
+	pinch->Set(on);
+}
+
+void Shooter::setReady(bool value)
+{
+	Ready = value;
+}
+
+bool Shooter::getReady()
+{
+	return Ready; 
+}
+
