@@ -34,7 +34,7 @@ void JoystickIntake::Execute() {
 	
 	float trigger_beaterbar = oi->gamepad->GetRawAxis(A_BEATERBAR); 
 	if(fabs(trigger_beaterbar)>0.5){
-		intake->BeaterBar(trigger_beaterbar>0);
+		intake->BeaterBar(trigger_beaterbar);
 	}
 	else {
 		intake->BeaterBar(0);
