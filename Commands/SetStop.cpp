@@ -2,7 +2,7 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: <INSERT AUTHOR(S) OF CODE>                                     */
+/* Authors: <Kevin Bi>                                                     */
 /*-------------------------------------------------------------------------*/
 
 #include "SetStop.h"
@@ -17,11 +17,11 @@ SetStop::SetStop(double position) {
 // Called just before this Command runs the first time
 void SetStop::Initialize() 
 {
-	if(shooter->getStopPosition() - position > 0)
+	if(shooter->getStopPosition() - Position > 0)
 	{
 		Direction = -1;
 	}
-	else if (shooter->getStopPosition() - position < 0) 
+	else if (shooter->getStopPosition() - Position < 0) 
 	{
 		Direction = 1;
 	}

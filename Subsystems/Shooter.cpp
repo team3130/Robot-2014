@@ -136,5 +136,5 @@ void Shooter::setReady(bool value)
 
 void Shooter::setStopState(int value)
 {
-	StopState == value;
+	StopState = value;
 }
