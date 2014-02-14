@@ -19,11 +19,19 @@ private:
 	double catapultPosition;
 	bool toggle;
 	bool Ready;
+	int StopState; 
 public:
 	Encoder* winchEncoder;
 	Encoder* stopperEncoder;
 	Encoder* armEncoder;
 	
+	//Undetermined value
+	static const double STOP_LOB_POSITION = 0;
+	//Undetermined value
+	static const double STOP_SHOOT_POSITION = 0;
+	
+	static const int STOP_LOB = 0;
+	static const int STOP_SHOOT = 1;
 	Shooter();
 	Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2);
 	~Shooter();
@@ -43,10 +51,12 @@ public:
 	bool getPinch1();
 	bool getPinch2();
 	bool getReady();
+	int getStopState();
 	void setWinchSpeed(double speed);
 	void setStopSpeed(double speed);
 	void setPinch(bool on);
 	void setReady(bool value);
+	void setStopState(int value);
 };
 
 #endif
