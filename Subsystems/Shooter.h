@@ -12,8 +12,8 @@
 
 class Shooter: public Subsystem {
 private:
-	Solenoid* shoot1;
-	Solenoid* shoot2;
+	Solenoid* pinch1;
+	Solenoid* pinch2;
 	Jaguar* winch;
 	Talon* stopper;
 	double catapultPosition;
