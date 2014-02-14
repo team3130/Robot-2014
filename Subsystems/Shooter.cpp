@@ -80,17 +80,17 @@ void Shooter::ProjectSensors() {
 //Get/set methods
 double Shooter::getCatapultPosition()
 {
-	return armEncoder->Get();
+	return armEncoder->GetDistance();
 }
 
 double Shooter::getWinchPosition()
 {
-	return winchEncoder->Get();
+	return winchEncoder->GetDistance();
 }
 
 double Shooter::getStopPosition()
 {
-	return stopperEncoder->Get();
+	return stopperEncoder->GetDistance();
 }
 
 bool Shooter::getPinch1()
