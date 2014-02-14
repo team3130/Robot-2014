@@ -15,9 +15,9 @@
  *
  * @author ExampleAuthor
  */
-class SetStobShoot: public CommandBase {
+class SetStopShoot: public CommandBase {
 public:
-	SetStobShoot();
+	SetStopShoot();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

@@ -18,7 +18,7 @@ void ResetCatapult::Initialize() {
 	//Sets CurAction to Winding
 	CurAction = WINDING;
 	//Sets to rewind for a certain amount of time
-	shooter->adjustCatapult(-shooter->getCatapultPosition(), ResetTime);
+	shooter->setWinchSpeed(WindSpeed);
 }
 
 // Called repeatedly when this Command is scheduled to run
