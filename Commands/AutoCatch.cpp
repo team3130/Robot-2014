@@ -18,9 +18,7 @@ void AutoCatch::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void AutoCatch::Execute() {
-	int leftPrecision = oi->leftPrecision->Get()?1:0;		//1 if button pressed, 0 otherwise. Google the Question Mark Operator
-	int rightPrecision = oi->rightPrecision->Get()?1:0;		//1 if button pressed, 0 otherwise. Google the Question Mark Operator
-	//chassis->tankDrive(oi->leftJoystick,oi->rightJoystick,leftPrecision + rightPrecision);
+
 }
 
 // Make this return true when this Command no longer needs to run execute()

@@ -17,11 +17,11 @@ void JoystickIntake::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickIntake::Execute() {
-	if(oi->gamepad->GetRawButton(B_EXTENDARMS)){
+	if(oi->gamepad->GetRawButton(B_EXTENDARMS)||oi->leftJoystick->GetRawButton(3)){
 		intake->ExtendArms(true);
 	}
 	
-	if(oi->gamepad->GetRawButton(B_PULLARMS)){
+	if(oi->gamepad->GetRawButton(B_PULLARMS)||oi->leftJoystick->GetRawButton(2)){
 		intake->ExtendArms(false);
 	}
 	
@@ -32,11 +32,12 @@ void JoystickIntake::Execute() {
 		intake->SetIdle(false);
 	}
 	
-	if(oi->gamepad->GetRawButton(B_BEATERBAR)){
-		intake->TakeBall(true);
+	float trigger_beaterbar = oi->gamepad->GetRawAxis(A_BEATERBAR); 
+	if(fabs(trigger_beaterbar)>0.5){
+		intake->BeaterBar(trigger_beaterbar>0);
 	}
 	else {
-		intake->TakeBall(false);
+		intake->BeaterBar(0);
 	}
 }
 

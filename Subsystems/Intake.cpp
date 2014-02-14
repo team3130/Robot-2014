@@ -11,7 +11,6 @@
 #include "../Commands/JoystickIntake.h"
 
 Intake::Intake(int intakeChannel, int extendChannel, int solIdleChannel) : Subsystem("Intake") {
-	//intakeEncoder = new Encoder(C_ENCODER_INTAKE_CHANNEL_1, C_ENCODER_INTAKE_CHANNEL_2);
 	intake = new Talon(intakeChannel);
 	extend = new Solenoid(extendChannel);
 	idle = new Solenoid(solIdleChannel);
@@ -20,6 +19,10 @@ Intake::Intake(int intakeChannel, int extendChannel, int solIdleChannel) : Subsy
 void Intake::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new JoystickIntake());
+}
+
+void Intake::BeaterBar(double speed){
+	intake->SetSpeed(speed);
 }
 
 void Intake::TakeBall(bool isOn){

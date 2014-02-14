@@ -21,6 +21,7 @@ public:
 	Intake();
 	Intake(int intakeChannel, int extendChannel, int solIdleChannel);
 	void InitDefaultCommand();
+	void BeaterBar(double speed);
 	void TakeBall(bool isOn);
 	void SetBall(bool isOn);
 	void SetIdle(bool in);

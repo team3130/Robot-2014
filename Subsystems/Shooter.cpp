@@ -13,7 +13,7 @@
 Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : Subsystem("Shooter") {
 	winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_1, C_ENCODER_WINCH_CHANNEL_2, false);
 	stopperEncoder = new Encoder(C_ENCODER_STOPPER_A,C_ENCODER_STOPPER_B,false);
-	armEncoder = new Encoder(C_ENCODER_ARM_A,C_ENCODER_ARM_B,false);
+	armEncoder = new Encoder(C_ENCODER_CATAPULT_A,C_ENCODER_CATAPULT_B,false);
 	shoot1 = new Solenoid(shootChannel1);
 	shoot2 = new Solenoid(shootChannel2);
 	winch = new Jaguar(winchMotorChannel);
