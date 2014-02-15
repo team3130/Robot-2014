@@ -1,3 +1,28 @@
 L=602 R=624 Speed=0.3 - 23.75 inches 
 
 L=1201 R=1227 Speed = 0.3 - 44.75 inches
+
+
+Encoders:
+Winch Encoder - 9, 10
+Arm Encoder - 7,8
+Stopper Encoder - 5,6
+Left Encoder - 3,4
+Right Encoder - 1,2
+
+Relays:
+Compressor - Relay 1
+
+Motors:
+Left 1 - PWM1
+Left 2 - PWM2
+Right 3 - PWM3
+Right 4 - PWM4
+Stopper - PWM5
+Beater Bar - PWM6
+Winch - PWM7
+
+Intake Idler - 1
+Intake - 2
+Drive Shifter - 3
+Shooter - 4,5
