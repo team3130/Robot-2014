@@ -16,15 +16,13 @@ void JoystickIntake::Initialize() {
 }
 // Called repeatedly when this Command is scheduled to run
 void JoystickIntake::Execute() {
-	static bool beaterup=false;
-	static bool extendPressed=false;
-	if(!extendPressed && (oi->gamepad->GetRawButton(B_EXTENDARMS))){
-		beaterup=!beaterup;
+	if(oi->gamepad->GetRawButton(B_EXTENDARMS)){
 		intake->SetIdle(false);
-		intake->ExtendArms(beaterup);
-		extendPressed=true;
-	}else{
-		extendPressed=(oi->gamepad->GetRawButton(B_EXTENDARMS));
+		intake->ExtendArms(true);
+	}
+	if(oi->gamepad->GetRawButton(B_RETRACTARMS)){
+		intake->SetIdle(false);
+		intake->ExtendArms(false);
 	}
 	if(oi->gamepad->GetRawButton(B_IDLEARMS)){
 		intake->SetIdle(true);
