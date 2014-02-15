@@ -18,8 +18,8 @@ Left 1 - PWM1
 Left 2 - PWM2
 Right 3 - PWM3
 Right 4 - PWM4
-Stopper - PWM5
-Beater Bar - PWM6
+Beater Bar - PWM5
+Stopper - PWM6
 Winch - PWM7
 
 Intake Idler - 1
