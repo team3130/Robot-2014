@@ -19,6 +19,7 @@ void ResetCatapult::Initialize() {
 	CurAction = WINDING;
 	//Sets to rewind for a certain amount of time
 	shooter->setWinchSpeed(WindSpeed);
+	//Resets the timer just in case
 	timer.Reset();
 }
 
