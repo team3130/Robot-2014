@@ -18,15 +18,19 @@ private:
 	Talon* stopper;
 	double catapultPosition;
 	bool toggle;
+	//Is the robot ready to shoot
 	bool Ready;
+	//The state of the Stop Motor (Lob or Shoot)
 	int StopState; 
 public:
 	Encoder* winchEncoder;
 	Encoder* stopperEncoder;
 	Encoder* armEncoder;
 	
+	//Encoder value for the Lob Position
 	//Undetermined value
 	static const double STOP_LOB_POSITION = 0;
+	//Encoder value for the Shoot Position
 	//Undetermined value
 	static const double STOP_SHOOT_POSITION = 0;
 	
