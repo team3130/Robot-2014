@@ -18,23 +18,20 @@ void ExampleCommand::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void ExampleCommand::Execute() {
-<<<<<<< HEAD
 	char count='a';
-	char bn[] = "JButton X  ";
+	char bn[] = "JButton   ";
 	for(int i=0;i<14;i++){
 		bn[9]=count;
 		SmartDashboard::PutNumber(std::string(bn), oi->gamepad->GetRawButton(i));
 		count++;
 	}
 	count='a';
-	char an[]= "JAxis X  ";
+	char an[]= "JAxis   ";
 	for(int i=0;i<10;i++){
 		an[6]=count;
 		SmartDashboard::PutNumber(std::string(an), oi->gamepad->GetRawAxis(i));
 		count++;
 	}
-=======
->>>>>>> 955395e11745ae8e33374fdb8bc497ed9c89537d
 }
 
 // Make this return true when this Command no longer needs to run execute()

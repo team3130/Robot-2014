@@ -5,13 +5,8 @@
 /* Authors: <INSERT AUTHOR(S) OF CODE>                                     */
 /*-------------------------------------------------------------------------*/
 
-<<<<<<< HEAD
 #ifndef EXAMPLE_COMMAND_H2
 #define EXAMPLE_COMMAND_H2
-=======
-#ifndef EXAMPLE_COMMAND_H
-#define EXAMPLE_COMMAND_H
->>>>>>> 955395e11745ae8e33374fdb8bc497ed9c89537d
 #include "../CommandBase.h"
 #include "WPILib.h"
 
