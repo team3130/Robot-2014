@@ -28,9 +28,10 @@ private:
 	//Undetermined value
 	static const double WindSpeed = 0;  
 	//Undetermined value
-	static const double UnwindAmount = 0;
+	static const double UnwindTime = 0;
 	//Undetermine value
 	static const double UnwindSpeed = 0;
+	Timer timer;
 };
 
 #endif

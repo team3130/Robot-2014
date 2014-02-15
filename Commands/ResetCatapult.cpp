@@ -19,6 +19,7 @@ void ResetCatapult::Initialize() {
 	CurAction = WINDING;
 	//Sets to rewind for a certain amount of time
 	shooter->setWinchSpeed(WindSpeed);
+	timer.Reset();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -45,15 +46,14 @@ void ResetCatapult::Execute()
 		CurAction = UNWINDING;
 		//Sets winch to unwind a predetermined amount over a predetermined time
 		shooter->setWinchSpeed(UnwindSpeed);
+		timer.Start();
 		break;
 	//Action while Catapult is unwinding
 	case UNWINDING:
 		//Checks if Winch has moved sufficient amount
-		if(shooter->getWinchPosition() >= UnwindAmount)
+		if(timer.Get() >= UnwindTime)
 		{
-			//Stops Winch
 			shooter->setWinchSpeed(0);
-			//Finishes command
 			CurAction = FINISHED;
 		}
 	}
