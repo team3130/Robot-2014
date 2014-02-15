@@ -352,17 +352,19 @@ bool DistanceTracking::IsClosestTargetHot() {
 				}
 			}
 	
+			// thre rectangles - two verticals and a horizontal
 			else if ( iNumRects == 3 ) { 
-				// if THREE is less than ONE, THREE (right) is the hot marker, ONE and TWO are the vertical markers
+				
+				// if THREE is shorter than ONE, THREE (right) is the hot marker, ONE and TWO are the vertical markers
 				if ( dMarkerHeights[MARKER_THREE] < dMarkerHeights[MARKER_ONE] ) {
 
-					// larger height is closer, if TWO is larger then closer to it and the hot marker
+					// if TWO is larger than ONE then it's closer to the robot, hot is true since TWO is next to THREE
 					if ( dMarkerHeights[MARKER_TWO] > dMarkerHeights[MARKER_ONE] )
 						return true;
 					else
 						return false;
 
-				// else ONE is hot, TWO and THREE are the vertical markers
+				// if TWO is larger than ONE then it's closer to the robot, hot is true since TWO is next to ONE
 				} else {
 					// larger height is closer, if TWO is larger then closer to it and the hot marker
 					if ( dMarkerHeights[MARKER_TWO] > dMarkerHeights[MARKER_THREE] )
