@@ -15,8 +15,8 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B, true, true);
 	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B, true, true);
 	rightController->SetSmartInvertedMotor(true);
-	input1 = new DigitalInput(9);
-	input2 = new DigitalInput(10);
+	input1 = new DigitalInput(7);
+	input2 = new DigitalInput(8);
 	//leftController->SetInverted(true);
 	shifter = new Solenoid(C_SHIFTER);
 	gyro  = new Gyro(C_GYRO);

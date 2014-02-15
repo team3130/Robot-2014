@@ -20,6 +20,8 @@ void JoystickTank::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickTank::Execute() {
+	if(oi->leftJoystick->GetRawButton(11))chassis->ShiftGear(true);
+	else chassis->ShiftGear(false);
 	//deadzones
 	float leftStick = oi->leftJoystick->GetY();
 	float rightStick = oi->rightJoystick->GetY();
