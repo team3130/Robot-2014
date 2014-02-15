@@ -11,19 +11,23 @@
 #include "math.h"
 
 Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : Subsystem("Shooter") {
+	//winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_1, C_ENCODER_WINCH_CHANNEL_2, false);
 	stopperEncoder = new Encoder(C_ENCODER_STOPPER_A,C_ENCODER_STOPPER_B,false);
 	armEncoder = new Encoder(C_ENCODER_CATAPULT_A,C_ENCODER_CATAPULT_B,false);
 	pinch1 = new Solenoid(shootChannel1);
 	pinch2 = new Solenoid(shootChannel2);
+	limitSwitch=new DigitalInput(C_WINCH_TAUT);
 	winch = new Jaguar(winchMotorChannel);
 	stopper = new Talon(C_STOPPERMOTOR);
 	catapultPosition = 0;
 	toggle = false;
 	pinch1->Set(toggle);
 	pinch2->Set(!toggle);
+	Ready=true;
 }
 
 Shooter::~Shooter(){
+	//delete winchEncoder;
 	delete winch;
 	delete pinch1;
 	delete pinch2;
@@ -64,6 +68,12 @@ void Shooter::SetShoot(bool in){
 	pinch2->Set(!toggle);
 }
 
+//Sets pinch1 and sets pinch2 to the opposite of pinch1
+void Shooter::setPinch(bool pinch1on)
+{
+	LockPincher(pinch1on);
+}
+
 void Shooter::LockPincher(bool lock){
 	pinch1->Set(lock);
 	pinch2->Set(!lock);
@@ -71,9 +81,10 @@ void Shooter::LockPincher(bool lock){
 
 void Shooter::ProjectSensors() {
 	SmartDashboard::PutNumber("Shooter Arm Angle", armEncoder->GetRaw());
+	//SmartDashboard::PutNumber("Shooter Winch Rope", winchEncoder->GetRaw());
 	SmartDashboard::PutNumber("Shooter Stopper Rope", stopperEncoder->GetRaw());
+	SmartDashboard::PutBoolean("Shooter Limit Switch", (limitSwitch->Get()?true:false));
 }
-
 //Get/set methods
 double Shooter::getCatapultPosition()
 {
@@ -121,13 +132,6 @@ void Shooter::setStopSpeed(double speed)
 	stopper->SetSpeed(speed);
 }
 
-//Sets pinch1 and sets pinch2 to the opposite of pinch1
-void Shooter::setPinch(bool pinch1on)
-{
-	pinch1->Set(pinch1on);
-	pinch2->Set(!pinch1on);
-}
-
 //Sets Ready
 void Shooter::setReady(bool value)
 {
@@ -139,3 +143,4 @@ void Shooter::setStopState(int value)
 {
 	StopState = value;
 }
+

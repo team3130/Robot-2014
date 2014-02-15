@@ -23,7 +23,6 @@ public:
 	Encoder* intakeEncoder;
 	
 	Intake();
-	Intake(int intakeChannel, int extendChannel, int solIdleChannel);
 	~Intake();
 	void InitDefaultCommand();
 	//sets the speed of the beater bar

@@ -18,7 +18,8 @@ private:
 	Timer timer;
 	//Time the robot should wait after deactivating Solenoids
 	//Undetermined value #UNDETERMINED
-	static const double WaitTime = 0; 
+	double WaitTime;
+	bool done;
 public:
 	ShootCatapult();
 	virtual void Initialize();

@@ -21,22 +21,22 @@ void JoystickShoot::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickShoot::Execute() {
+	shooter->setPinch(false);
 	SmartDashboard::PutNumber("JoystickShoot Arm Encoder",shooter->armEncoder->GetDistance());
 	SmartDashboard::PutNumber("JoystickShoot Stopper Encoder",shooter->stopperEncoder->GetDistance());
-	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.1){
-		shooter->setWinchDirect(oi->gamepad->GetRawAxis(B_POWERWINCH));
+	double d= oi->gamepad->GetRawAxis(B_POWERWINCH);
+	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.2){
+		shooter->setWinchDirect(oi->gamepad->GetRawAxis(B_POWERWINCH)/2.0);
 	}else shooter->setWinchDirect(0);
 
-	if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.1){
-		shooter->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH));
+	if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
+		shooter->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/2.0);
 	}else shooter->setStopperDirect(0);
-
+/*
 	if(oi->gamepad->GetRawButton(B_SHOOT)){
-		shooter->UnlockPincher();
-	}
-	if(oi->gamepad->GetRawButton(B_LOCKSHOOTER)){
-		shooter->LockPincher();
-	}
+		shooter->setPinch(true);
+	}else shooter->setPinch(false);
+	*/
 	shooter->ProjectSensors();
 }
 

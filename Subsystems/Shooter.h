@@ -16,12 +16,14 @@ private:
 	Solenoid* pinch2;
 	Jaguar* winch;
 	Talon* stopper;
+	DigitalInput* limitSwitch;
 	double catapultPosition;
 	bool toggle;
 	//Is the robot ready to shoot
 	bool Ready;
 	//The state of the Stop Motor (Lob or Shoot)
 	int StopState; 
+	Timer timer;
 public:
 	//Encoder* winchEncoder;
 	Encoder* stopperEncoder;

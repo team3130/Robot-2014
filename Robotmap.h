@@ -33,6 +33,8 @@
 #define C_ENCODER_RIGHT_A 1
 #define C_ENCODER_RIGHT_B 2
 
+#define C_WINCH_TAUT 13
+
 // Analog Input channels
 #define C_GYRO 1
 
@@ -48,8 +50,8 @@
 
 // PWM Motors (Jag and Talons)
 #define C_WINCHMOTOR1 7
-#define C_STOPPERMOTOR 5
-#define C_INTAKEMOTOR1 6
+#define C_STOPPERMOTOR 6	
+#define C_INTAKEMOTOR1 5	//positive is INTAKE direction.
 #define C_LEFTMOTOR 1
 #define C_RIGHTMOTOR 3
 #define C_LEFTSATELLITE 2
@@ -57,14 +59,14 @@
 
 // Buttons and axis
 #define B_HIGHGEAR 3
-#define B_EXTENDARMS 4
-#define B_PULLARMS 1
-#define B_IDLEARMS 2
+#define B_EXTENDARMS 5
+#define B_IDLEARMS 10
 #define A_BEATERBAR 3
+#define B_BEATERBARFWD 2
 #define B_POWERWINCH 2
-#define B_STOPPERWINCH 5
-#define B_SHOOT 8
-#define B_LOCKSHOOTER 3
+#define B_STOPPERWINCH 4
+#define B_SHOOT 6
+#define B_LOCKSHOOTER 9
 
 // If you are using multiple modules, make sure to define both the port
 // number and the module. For example you with a rangefinder:

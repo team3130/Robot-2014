@@ -32,7 +32,7 @@ void CommandBase::init() {
 	//examplesubsystem = new ExampleSubsystem();
 	compressor = new Compressor(C_PRESSURE_SWITCH, C_COMPRESSOR_RELAY);
 	shooter = new Shooter(C_WINCHMOTOR1, C_SHOOTERSOLENOID1, C_SHOOTERSOLENOID2);
-	intake = new Intake(C_INTAKEMOTOR1, C_EXTENDSOLENOID1, C_IDLESOLENOID);
+	intake = new Intake();
 	chassis = new Chassis();
 	oi = new OI();
 	unitTest = new UnitTest();

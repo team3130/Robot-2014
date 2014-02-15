@@ -7,6 +7,7 @@
 #include "../Robotmap.h"
 #include "../Commands/JoystickTank.h"
 #include "../Commands/JoystickStraight.h"
+#include "../Commands/ExampleCommand.h"
 #include "Chassis.h"
 #include "math.h"
 #include "string.h"
@@ -38,6 +39,7 @@ Chassis::~Chassis()
 void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new JoystickTank());
+	//SetDefaultCommand(new ExampleCommand());
 }
 
 void Chassis::InitEncoders() {
@@ -89,5 +91,5 @@ double Chassis::feetToEncoderUnits(double in){
 }
 
 void Chassis::ShiftGear(bool isHigh) {
-		shifter->Set(isHigh);
+	shifter->Set(isHigh);
 }

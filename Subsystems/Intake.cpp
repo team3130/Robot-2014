@@ -10,10 +10,10 @@
 #include "../Commands/SpinIntake.h"
 #include "../Commands/JoystickIntake.h"
 
-Intake::Intake(int intakeChannel, int extendChannel, int solIdleChannel) : Subsystem("Intake") {
-	intake = new Talon(intakeChannel);
-	extend = new Solenoid(extendChannel);
-	idle = new Solenoid(solIdleChannel);
+Intake::Intake() : Subsystem("Intake") {
+	intake = new Talon(C_INTAKEMOTOR1);
+	extend = new Solenoid(C_EXTENDSOLENOID1);
+	idle = new Solenoid(C_IDLESOLENOID);
 }
 
 Intake::~Intake(){
