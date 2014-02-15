@@ -9,13 +9,14 @@
 ShootCatapult::ShootCatapult() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	WaitTime=2;
+	WaitTime=1.3;
 	Requires(shooter);
 	Requires(intake);
 	shooter->setReady(true);
-	SmartDashboard::PutNumber("Winch Wait",2);
+	SmartDashboard::PutNumber("Winch Wait",1.3);
 	timer.Reset();
 	done=false;
+	SmartDashboard::PutData(this);
 }
 
 // Called just before this Command runs the first time
@@ -33,6 +34,8 @@ void ShootCatapult::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void ShootCatapult::Execute() {
 	WaitTime=SmartDashboard::GetNumber("Winch Wait");
+	bool shootReady =intake->getReadyToShoot();
+	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
 	//Checks if delay time has been met
 	if(timer.Get() >= WaitTime){
 		shooter->setPinch(true);

@@ -16,6 +16,7 @@ DriveStraightGyro::DriveStraightGyro(const char *name): PIDCommand(name,0,0,0){
 	SmartDashboard::PutNumber("NO ENCODER Straight PID I",0);
 	SmartDashboard::PutNumber("NO ENCODER Straight PID D",0);
 	SetGoal(1,0.8);
+	SmartDashboard::PutData(this);
 }
 
 void DriveStraightGyro::SetGoal(double time, double speed) {
