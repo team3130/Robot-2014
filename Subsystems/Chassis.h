@@ -25,6 +25,8 @@ public:
 	static const int ENCODER_TOP_SPEED=3000;
 	static const double WHEEL_RADIUS_INCHES=2;
 	RobotDrive* drive;
+	DigitalInput* input1;
+	DigitalInput* input2;
 	Gyro* gyro;
 	Chassis();
 	virtual ~Chassis();
