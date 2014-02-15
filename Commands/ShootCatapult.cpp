@@ -18,11 +18,14 @@ ShootCatapult::ShootCatapult() {
 // Called just before this Command runs the first time
 void ShootCatapult::Initialize() 
 {
-	//Deactivates the intake to move out of way
-	intake->ExtendArms(false);
-	intake->SetIdle(true);
-	//Makes sure there is a delay for the intake to fall down
-	timer.Start();
+	if(shooter->getReady())
+	{
+		//Deactivates the intake to move out of way
+		intake->ExtendArms(false);
+		intake->SetIdle(true);
+		//Makes sure there is a delay for the intake to fall down
+		timer.Start();
+	}
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -40,7 +43,8 @@ void ShootCatapult::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool ShootCatapult::IsFinished() {
 	//If pinch1 is deactivated and pinch2 is active, then end command
-	return shooter->getPinch1() == false && shooter->getPinch2() == true;
+	if(shooter->getReady()) return shooter->getPinch1() == false && shooter->getPinch2() == true;
+	else return true;
 }
 
 // Called once after isFinished returns true

@@ -21,6 +21,11 @@ void ResetCatapult::Initialize() {
 	shooter->setWinchSpeed(WindSpeed);
 	//Resets the timer just in case
 	timer.Reset();
+	if(shooter->getReady())
+	{
+		shooter->setWinchSpeed(0);
+		CurAction = FINISHED; 
+	}
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -69,7 +74,7 @@ bool ResetCatapult::IsFinished() {
 void ResetCatapult::End() 
 {
 	//Sets shooter as ready to fire
-	shooter->setReady(true);
+	if(shooter->getReady() == false) shooter->setReady(true);
 }
 
 // Called when another command which requires one or more of the same
