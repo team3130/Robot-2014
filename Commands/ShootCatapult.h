@@ -19,7 +19,6 @@ private:
 	//Time the robot should wait after deactivating Solenoids
 	//Undetermined value #UNDETERMINED
 	double WaitTime;
-	bool IntakeSafe;
 public:
 	ShootCatapult();
 	virtual void Initialize();
