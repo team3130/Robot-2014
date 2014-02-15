@@ -36,4 +36,5 @@ void CommandBase::init() {
 	chassis = new Chassis();
 	oi = new OI();
 	unitTest = new UnitTest();
+	compressor->Start();
 }
