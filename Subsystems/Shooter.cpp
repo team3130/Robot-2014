@@ -80,52 +80,61 @@ double Shooter::getCatapultPosition()
 	return armEncoder->GetDistance();
 }
 
+//Gets the stop encoder
 double Shooter::getStopPosition()
 {
 	return stopperEncoder->GetDistance();
 }
 
+//Gets whether Pinch1 is active
 bool Shooter::getPinch1()
 {
 	return pinch1->Get();
 }
 
+//Gets whether Pinch2 is active
 bool Shooter::getPinch2()
 {
 	return pinch2->Get();
 }
 
+//Gets the ready variable
 bool Shooter::getReady()
 {
 	return Ready;
 }
 
+//Gets the stop state
 int Shooter::getStopState()
 {
 	return StopState;
 }
 
+//Sets speed of Winch
 void Shooter::setWinchSpeed(double speed)
 {
 	winch->SetSpeed(speed);
 }
-
+//Sets stop motor speed
 void Shooter::setStopSpeed(double speed)
 {
 	stopper->SetSpeed(speed);
 }
 
+//Sets pinch1 and sets pinch2 to the opposite of pinch1
 void Shooter::setPinch(bool pinch1on)
 {
 	pinch1->Set(pinch1on);
 	pinch2->Set(!pinch1on);
 }
 
+//Sets Ready
 void Shooter::setReady(bool value)
 {
 	Ready = value; 
 }
 
+//Sets stop state 
 void Shooter::setStopState(int value)
 {
 	StopState = value;
