@@ -60,7 +60,6 @@
 // Buttons and axis
 #define B_HIGHGEAR 3
 #define B_EXTENDARMS 5
-#define B_RETRACTARMS 7
 #define B_IDLEARMS 10
 #define A_BEATERBAR 3
 #define B_BEATERBARFWD 2
