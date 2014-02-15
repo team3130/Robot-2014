@@ -12,23 +12,34 @@
 
 class Intake: public Subsystem {
 private:
+	//motor that controls beater bar, the actual intake mechanism
 	Talon* intake;
+	//solenoid that controls position of beater bar
 	Solenoid* extend;
+	//solenoid that controls whether extend solenoid gets air
 	Solenoid* idle;
 public:
+	//encoder for beater bar
 	Encoder* intakeEncoder;
 	
 	Intake();
 	Intake(int intakeChannel, int extendChannel, int solIdleChannel);
 	~Intake();
 	void InitDefaultCommand();
+	//sets the speed of the beater bar
 	void BeaterBar(double speed);
+	//takes a boolean and determines speed of beater bar
+	//0 if false, some undetermined value if true
 	void TakeBall(bool isOn);
-	void SetBall(bool isOn);
+	//sets state of idle solenoid
 	void SetIdle(bool in);
+	//sets state of extend solenoid
 	void ExtendArms(bool extended);
+	//gets speed of beater bar
 	double getSpeed();
+	//gets state of extend solenoid
 	bool getExtend();
+	//gets state of idle solenoid
 	bool getIdle();
 };
 
