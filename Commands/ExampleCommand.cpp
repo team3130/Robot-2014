@@ -14,11 +14,11 @@ ExampleCommand::ExampleCommand() {
 
 // Called just before this Command runs the first time
 void ExampleCommand::Initialize() {
-	
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ExampleCommand::Execute() {
+<<<<<<< HEAD
 	char count='a';
 	char bn[] = "JButton X  ";
 	for(int i=0;i<14;i++){
@@ -33,6 +33,9 @@ void ExampleCommand::Execute() {
 		SmartDashboard::PutNumber(std::string(an), oi->gamepad->GetRawAxis(i));
 		count++;
 	}
+=======
+
+>>>>>>> 5985738bed1a1f1f96334ae381d8b3c3864fda3e
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -48,5 +51,4 @@ void ExampleCommand::End() {
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void ExampleCommand::Interrupted() {
-	
 }
