@@ -25,11 +25,11 @@ private:
 	static const int PINCHING = 1;
 	static const int UNWINDING = 2; 
 	static const int FINISHED = 3; 
-	//Undetermined value
+	//Undetermined value #UNDETERMINED
 	static const double WindSpeed = 0;  
-	//Undetermined value
+	//Undetermined value #UNDETERMINED
 	static const double UnwindTime = 0;
-	//Undetermine value
+	//Undetermine value #UNDETERMINED
 	static const double UnwindSpeed = 0;
 	Timer timer;
 };
