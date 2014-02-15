@@ -17,7 +17,7 @@ private:
 	//Timer to let the robot wait
 	Timer timer;
 	//Time the robot should wait after deactivating Solenoids
-	//Undetermined value
+	//Undetermined value #UNDETERMINED
 	static const double WaitTime = 0; 
 public:
 	ShootCatapult();

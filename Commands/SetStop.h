@@ -20,7 +20,7 @@ private:
 	//Position that stopper will move to
 	double Position;
 	//Speed that the Stop motor will move
-	//Undetermined value
+	//Undetermined value #UNDETERMINED
 	static const double Speed = 0;
 	//Direction that the Stop Motor has to move to get to position
 	int Direction;
