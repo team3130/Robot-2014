@@ -12,8 +12,13 @@
 #include "string.h"
 
 Chassis::Chassis() : Subsystem("Chassis"){
+<<<<<<< HEAD
 	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B, true, true);
 	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B, true, true);
+=======
+	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B, true);
+	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B, false);
+>>>>>>> Talons, 4 of them. Ports redefined for Alloy Bot.
 	rightController->SetSmartInvertedMotor(true);
 	input1 = new DigitalInput(7);
 	input2 = new DigitalInput(8);
