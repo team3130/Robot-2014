@@ -19,7 +19,11 @@
  * @author M.Kyraha
  */
 VelocityController::VelocityController(uint32_t channel, uint32_t sat_channel, uint32_t aChannel, uint32_t bChannel,
+<<<<<<< HEAD
 		bool reversedEncoder, bool invertSat, Encoder::EncodingType encodingType)
+=======
+		bool reversedEncoder, Encoder::EncodingType encodingType)
+>>>>>>> Talons, 4 of them. Ports redefined for Alloy Bot.
 	: Talon(channel), Encoder(aChannel, bChannel, reversedEncoder, encodingType) {
 	m_satellite = new Talon(sat_channel);
 	m_kP = 1;
@@ -82,6 +86,7 @@ void VelocityController::Set(float velocity, uint8_t syncGroup) {
 	else {
 		m_power = velocity;
 	}
+<<<<<<< HEAD
 /*
 	if(m_smartInvertOutput){
 		Talon::Set(-m_power,syncGroup);
@@ -98,5 +103,16 @@ void VelocityController::Set(float velocity, uint8_t syncGroup) {
 	else Talon::Set(m_power);
 	if(m_satInverted)m_satellite->Set(-m_power);
 	else m_satellite->Set(m_power);
+=======
+
+	if(m_smart && m_smartInvertOutput){
+		Talon::Set(-m_power,syncGroup);
+		m_satellite->Set(-m_power,syncGroup);
+	}
+	else {
+		Talon::Set(m_power,syncGroup);
+		m_satellite->Set(m_power,syncGroup);
+	}
+>>>>>>> Talons, 4 of them. Ports redefined for Alloy Bot.
 	skipWrite++;
 }

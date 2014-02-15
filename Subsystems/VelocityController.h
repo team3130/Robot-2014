@@ -22,7 +22,11 @@ private:
 	bool m_satInverted;		//satellite inverted.
 public:
 	VelocityController(uint32_t channel, uint32_t sat_channel, uint32_t aChannel, uint32_t bChannel,
+<<<<<<< HEAD
 			bool reversedEncoder, bool invertSat, Encoder::EncodingType encodingType = Encoder::k4X);
+=======
+			bool reversedEncoder=false, Encoder::EncodingType encodingType = Encoder::k4X);
+>>>>>>> Talons, 4 of them. Ports redefined for Alloy Bot.
 	~VelocityController();
 	virtual void Set(float speed, uint8_t syncGroup=0);
 	void UseEncoder(bool use=true) {m_smart = use;}

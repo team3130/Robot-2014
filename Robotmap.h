@@ -19,6 +19,7 @@
 // following variables to use with your drivetrain subsystem.
 
 // It is convention to name all #defined constants with all caps names.
+<<<<<<< HEAD
 
 // Digital Input channels
 #define C_PRESSURE_SWITCH 14 
@@ -30,6 +31,22 @@
 #define C_ENCODER_CATAPULT_B 8
 #define C_ENCODER_LEFT_A  3
 #define C_ENCODER_LEFT_B  4
+=======
+#define C_WINCHMOTOR1 3
+#define C_SHOOTERSOLENOID1 4
+#define C_INTAKEMOTOR1 5
+#define C_EXTENDSOLENOID1 6
+#define C_ENCODER_WINCH_CHANNEL_1 5
+#define C_ENCODER_WINCH_CHANNEL_2 6
+#define C_ENCODER_INTAKE_CHANNEL_1 7
+#define C_ENCODER_INTAKE_CHANNEL_2 8
+#define C_LEFTMOTOR 2
+#define C_RIGHTMOTOR 1
+#define C_LEFTSATELLITE 4
+#define C_RIGHTSATELLITE 3
+#define C_ENCODER_LEFT_A 3
+#define C_ENCODER_LEFT_B 4
+>>>>>>> Talons, 4 of them. Ports redefined for Alloy Bot.
 #define C_ENCODER_RIGHT_A 1
 #define C_ENCODER_RIGHT_B 2
 
