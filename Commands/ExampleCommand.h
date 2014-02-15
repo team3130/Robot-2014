@@ -8,7 +8,9 @@
 #ifndef EXAMPLE_COMMAND_H
 #define EXAMPLE_COMMAND_H
 
+#include "DistanceTracking.h"
 #include "../CommandBase.h"
+#include "WPILib.h"
 
 /**
  *
@@ -23,6 +25,7 @@ public:
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+	DistanceTracking distanceTracking;
 };
 
 #endif

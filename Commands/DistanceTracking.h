@@ -28,10 +28,7 @@ private:
 	double		findRectangleWidth(const SPointRect & rect);
 	void		SortCoords( SCoordSort * coords, int size );
 	double		LawOfCosines(const double & dA, const double & dB, const double & dC);
-	void		GetMarkerData( NumberArray & coords, SPointRect * prcMarkerRects, double * pdMarkerHeights=NULL );
-
-	// void		GetMarkerData( const NumberArray & coords, double * dMarkerHeights, SPointRect * rcMarkerRects );
-	// void		GetMarkerHeightData( const NumberArray & coords, double * dMarkerHeights );
+	int 		GetMarkerData( NumberArray & coords, SPointRect * rcMarkerRects, double * dMarkerHeights=NULL, double * dMarkerWidths=NULL );
 
 public:
 				DistanceTracking();
