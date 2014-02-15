@@ -4,12 +4,14 @@ WaitForHot::WaitForHot() {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
     distanceTracking = new DistanceTracking();
+	SmartDashboard::PutData(this);
 }
 
 // Called just before this Command runs the first time
 void WaitForHot::Initialize() {
 	hotCount = 0;
 	hotIterate = 0;
+	timer.Reset();
 	timer.Start();
 }
 
@@ -46,6 +48,7 @@ bool WaitForHot::IsFinished() {
 
 // Called once after isFinished returns true
 void WaitForHot::End() {
+	
 }
 
 // Called when another command which requires one or more of the same

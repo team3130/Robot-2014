@@ -23,12 +23,32 @@ ShootCatapult::ShootCatapult() {
 void ShootCatapult::Initialize() 
 {
 	//Deactivates the intake to move out of way
+<<<<<<< HEAD
 	intake->ExtendArms(false);
 	intake->SetIdle(true);
 	//Makes sure there is a delay for the intake to fall down
 	timer.Reset();
 	timer.Start();
 	done=false;
+=======
+
+	if(shooter->getReady())
+	{
+		//Deactivates the intake to move out of way
+		if(intake->getExtend() == true)
+		{
+			IntakeSafe = false;
+			intake->ExtendArms(false);
+			intake->SetIdle(true);
+			//Makes sure there is a delay for the intake to fall down
+			timer.Start();
+		}
+		else
+		{
+			IntakeSafe = true;
+		}
+	}
+>>>>>>> 955395e11745ae8e33374fdb8bc497ed9c89537d
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -37,9 +57,16 @@ void ShootCatapult::Execute() {
 	bool shootReady =intake->getReadyToShoot();
 	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
 	//Checks if delay time has been met
+<<<<<<< HEAD
 	if(timer.Get() >= WaitTime){
 		shooter->setPinch(true);
 	}if(timer.Get()>WaitTime+1.5){
+=======
+	if(timer.Get() >= WaitTime)
+	{
+		//Stops timer
+	}if(timer.Get()>WaitTime*2){
+>>>>>>> 955395e11745ae8e33374fdb8bc497ed9c89537d
 		shooter->setPinch(false);
 		done=true;
 		timer.Stop();
@@ -49,7 +76,14 @@ void ShootCatapult::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool ShootCatapult::IsFinished() {
+<<<<<<< HEAD
 	return done;
+=======
+	//If pinch1 is deactivated and pinch2 is active, then end command
+	return shooter->getPinch1() == false && shooter->getPinch2() == true;
+	if(shooter->getReady()) return shooter->getPinch1() == false && shooter->getPinch2() == true;
+	else return true;
+>>>>>>> 955395e11745ae8e33374fdb8bc497ed9c89537d
 }
 
 // Called once after isFinished returns true
