@@ -21,6 +21,7 @@ ShootCatapult::ShootCatapult() {
 // Called just before this Command runs the first time
 void ShootCatapult::Initialize() 
 {
+	done=false;
 	//Deactivates the intake to move out of way
 	intake->ExtendArms(false);
 	intake->SetIdle(true);
