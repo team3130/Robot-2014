@@ -33,8 +33,9 @@ public:
 	//Encoder value for the Shoot Position
 	//Undetermined value
 	static const double STOP_SHOOT_POSITION = 0;
-	
+	//StopState for the Stop motor in the Lob position
 	static const int STOP_LOB = 0;
+	//StopState for the Stop motor in the Shoot position
 	static const int STOP_SHOOT = 1;
 	Shooter();
 	Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2);

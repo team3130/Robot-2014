@@ -10,7 +10,8 @@
 ShootCatapult::ShootCatapult() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires(shooter, intake);
+	Requires(shooter);
+	Requires(intake);
 	timer.Reset();
 }
 
@@ -19,7 +20,7 @@ void ShootCatapult::Initialize()
 {
 	//Deactivates the intake to move out of way
 	intake->ExtendArms(false);
-	intake->setIdle(true);
+	intake->SetIdle(true);
 	//Makes sure there is a delay for the intake to fall down
 	timer.Start();
 }
@@ -39,7 +40,7 @@ void ShootCatapult::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool ShootCatapult::IsFinished() {
 	//If pinch1 is deactivated and pinch2 is active, then end command
-	return shooter->getPinch1() == false && shooter0>getPinch2() == true;
+	return shooter->getPinch1() == false && shooter->getPinch2() == true;
 }
 
 // Called once after isFinished returns true
