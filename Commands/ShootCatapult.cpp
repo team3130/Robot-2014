@@ -11,6 +11,7 @@ ShootCatapult::ShootCatapult() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
 	Requires(shooter, intake);
+	timer.Reset();
 }
 
 // Called just before this Command runs the first time
@@ -19,12 +20,20 @@ void ShootCatapult::Initialize()
 	//Deactivates the intake to move out of way
 	intake->ExtendArms(false);
 	intake->setIdle(true);
-	//Releases pinch launching catapult
-	shooter->setPinch(false);
+	//Makes sure there is a delay for the intake to fall down
+	timer.Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ShootCatapult::Execute() {
+	//Checks if delay time has been met
+	if(timer.Get() >= WaitTime)
+	{
+		//Release the pinch to shoot
+		shooter->setPinch(false);
+		//Stops timer
+		timer.Stop();
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
