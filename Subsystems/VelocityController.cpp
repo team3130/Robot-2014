@@ -28,6 +28,7 @@ VelocityController::VelocityController(uint32_t channel, uint32_t sat_channel, u
 	m_reversedEncoder=reversedEncoder;
 	m_smartInvertOutput = false;
 	m_satInverted=invertSat;
+	Encoder::Start();
 	SmartDashboard::PutNumber("VelocityController P",1000);
 	SmartDashboard::PutNumber("VelocityController W",2);
 }
@@ -43,6 +44,8 @@ void VelocityController::Set(float velocity, uint8_t syncGroup) {
 	if(m_smart && velocity != 0) {
 		if(m_smartInvertOutput)velocity*=-1;
 		double rate = GetRate();
+		
+		
 		double deltaAbs = fabs(velocity - rate);
 		
 		//deltaAbs = pow(SmartDashboard::GetNumber("VelocityController W"), deltaAbs) - 1;
