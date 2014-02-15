@@ -6,7 +6,7 @@
 /*-------------------------------------------------------------------------*/
 #include "WPILib.h"
 #include "Commands/Command.h"
-#include "Commands/ExampleCommand.h"
+#include "Commands/AutonomousGroup.h"
 #include "CommandBase.h"
 #include "string.h"
 #include "Commands/JoystickStraight.h"
@@ -18,7 +18,7 @@ private:
 	
 	virtual void RobotInit() {
 		CommandBase::init();
-		autonomousCommand = new ExampleCommand();
+		autonomousCommand = new AutonomousGroup();
 		lw = LiveWindow::GetInstance();
 	}
 	
