@@ -14,19 +14,11 @@ ExampleCommand::ExampleCommand() {
 
 // Called just before this Command runs the first time
 void ExampleCommand::Initialize() {
-	DigitalOutput * pLEDRelay = new DigitalOutput(5);
-	pLEDRelay->Set(0);
-	delete pLEDRelay;
-	pLEDRelay = NULL;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ExampleCommand::Execute() {
-	DriverStationLCD *ds = DriverStationLCD::GetInstance();
-	bool bIsHot = distanceTracking.IsAimedTargetHot();
-	double Distance = distanceTracking.GetDistanceToTarget();
-	ds->PrintfLine(DriverStationLCD::kUser_Line5, "D=%.1lf,Hot=%ld", Distance, bIsHot );
-	ds->UpdateLCD();
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
