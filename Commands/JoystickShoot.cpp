@@ -13,8 +13,6 @@ JoystickShoot::JoystickShoot() {
 
 // Called just before this Command runs the first time
 void JoystickShoot::Initialize() {
-	shooter->winchEncoder->Reset();
-	shooter->winchEncoder->Start();
 	shooter->armEncoder->Reset();
 	shooter->stopperEncoder->Reset();
 	shooter->armEncoder->Start();
@@ -23,7 +21,6 @@ void JoystickShoot::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickShoot::Execute() {
-	SmartDashboard::PutNumber("JoystickShoot Winch Encoder",shooter->winchEncoder->GetDistance());
 	SmartDashboard::PutNumber("JoystickShoot Arm Encoder",shooter->armEncoder->GetDistance());
 	SmartDashboard::PutNumber("JoystickShoot Stopper Encoder",shooter->stopperEncoder->GetDistance());
 	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.1){

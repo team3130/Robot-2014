@@ -23,7 +23,7 @@ private:
 	//The state of the Stop Motor (Lob or Shoot)
 	int StopState; 
 public:
-	Encoder* winchEncoder;
+	//Encoder* winchEncoder;
 	Encoder* stopperEncoder;
 	Encoder* armEncoder;
 	
@@ -52,7 +52,7 @@ public:
 	//Get/set methods
 	double getCatapultPosition();
 	double getStopPosition();
-	double getWinchPosition();
+	//double getWinchPosition();
 	bool getPinch1();
 	bool getPinch2();
 	bool getReady();

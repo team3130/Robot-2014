@@ -15,8 +15,6 @@ MoveCatapult::MoveCatapult() {
 
 // Called just before this Command runs the first time
 void MoveCatapult::Initialize() {
-	shooter->winchEncoder->Reset();
-	shooter->winchEncoder->Start();
 	SmartDashboard::PutNumber("Time to Move Catapult", 1);
 }
 
