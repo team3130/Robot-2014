@@ -21,10 +21,18 @@ void ShootCatapult::Initialize()
 	if(shooter->getReady())
 	{
 		//Deactivates the intake to move out of way
-		intake->ExtendArms(false);
-		intake->SetIdle(true);
-		//Makes sure there is a delay for the intake to fall down
-		timer.Start();
+		if(intake->getExtend() == true)
+		{
+			IntakeSafe = false;
+			intake->ExtendArms(false);
+			intake->SetIdle(true);
+			//Makes sure there is a delay for the intake to fall down
+			timer.Start();
+		}
+		else
+		{
+			IntakeSafe = true;
+		}
 	}
 }
 
@@ -33,10 +41,14 @@ void ShootCatapult::Execute() {
 	//Checks if delay time has been met
 	if(timer.Get() >= WaitTime)
 	{
-		//Release the pinch to shoot
-		shooter->setPinch(false);
 		//Stops timer
 		timer.Stop();
+		IntakeSafe = true;
+	}
+	if(IntakeSafe)
+	{
+		//Release the pinch to shoot
+		shooter->setPinch(false);
 	}
 }
 
