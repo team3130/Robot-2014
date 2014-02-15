@@ -30,7 +30,9 @@ void JoystickIntake::Execute() {
 		intake->SetIdle(true);
 	}
 	if(oi->gamepad->GetRawButton(B_BEATERBARFWD)){
-		intake->BeaterBar(1.0);
+		intake->BeaterBar(0.75);
+	}else if(oi->gamepad->GetRawButton(B_BEATERBARREV)){
+		intake->BeaterBar(-0.75);
 	}else intake->BeaterBar(0.0);
 	
 	/*

@@ -2,6 +2,7 @@
 #include "DriveStraight.h"
 #include "WaitForHot.h"
 #include "ShootCatapult.h"
+#include "DriveStraightGyro.h"
 AutonomousGroup::AutonomousGroup() {
         // Add Commands here:
         // e.g. AddSequential(new Command1());
@@ -21,5 +22,7 @@ AutonomousGroup::AutonomousGroup() {
         // arm.
 	AddSequential(new WaitForHot());
 	AddSequential(new ShootCatapult());
+	AddSequential(new DriveStraightGyro("AUto Straight"));
+	
 }
 

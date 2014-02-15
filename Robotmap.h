@@ -63,6 +63,7 @@
 #define B_IDLEARMS 10
 #define A_BEATERBAR 3
 #define B_BEATERBARFWD 2
+#define B_BEATERBARREV 4
 #define B_POWERWINCH 2
 #define B_STOPPERWINCH 4
 #define B_SHOOT 6
