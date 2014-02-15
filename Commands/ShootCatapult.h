@@ -18,7 +18,7 @@ private:
 	Timer timer;
 	//Time the robot should wait after deactivating Solenoids
 	//Undetermined value #UNDETERMINED
-	static const double WaitTime = 1;
+	static const double WaitTime = 500;
 	bool IntakeSafe;
 public:
 	ShootCatapult();
