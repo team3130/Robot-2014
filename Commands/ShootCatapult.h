@@ -13,7 +13,10 @@
 
 class ShootCatapult: public CommandBase {
 private:
-	bool Finished; 
+	//bool Finished; 
+	//Time the robot should wait after deactivating Solenoids
+	//Undetermined value
+	static const double WaitTime = 0; 
 public:
 	ShootCatapult();
 	virtual void Initialize();

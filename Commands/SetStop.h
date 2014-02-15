@@ -17,9 +17,14 @@
  */
 class SetStop: public CommandBase {
 private:
+	//Position that stopper will move to
 	double Position;
+	//Speed that the Stop motor will move
+	//Undetermined value
 	static const double Speed = 0;
+	//Direction that the Stop Motor has to move to get to position
 	int Direction;
+	//Determines whether the command is finished. 
 	bool Finished;
 public:
 	SetStop(double position);

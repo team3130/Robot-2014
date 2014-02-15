@@ -16,26 +16,26 @@ ShootCatapult::ShootCatapult() {
 // Called just before this Command runs the first time
 void ShootCatapult::Initialize() 
 {
+	//Deactivates the intake to move out of way
 	intake->ExtendArms(false);
 	intake->setIdle(true);
+	//Releases pinch launching catapult
 	shooter->setPinch(false);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ShootCatapult::Execute() {
-	if(shooter->getPinch1() == false && shooter->getPinch2() == true)
-	{
-		Finished = true;
-	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ShootCatapult::IsFinished() {
-	return Finished; 
+	//If pinch1 is deactivated and pinch2 is active, then end command
+	return shooter->getPinch1() == false && shooter0>getPinch2() == true;
 }
 
 // Called once after isFinished returns true
 void ShootCatapult::End() {
+	//Sets shooter as not ready to shoot. 
 	shooter->setReady(false);
 }
 
