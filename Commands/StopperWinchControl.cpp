@@ -71,7 +71,6 @@ bool StopperWinchControl::IsFinished() {
 double StopperWinchControl::ReturnPIDInput(){
 	return CommandBase::chassis->gyro->GetAngle();
 }
-
 void StopperWinchControl::UsePIDOutput(double output){
 	static double pmax=1;
 	static double minVoltage = 0.0;

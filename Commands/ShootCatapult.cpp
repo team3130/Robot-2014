@@ -12,7 +12,6 @@ ShootCatapult::ShootCatapult() {
 	WaitTime=1.0;
 	Requires(shooter);
 	Requires(stopper);
-	Requires(intake);
 	shooter->setReady(true);
 	SmartDashboard::PutNumber("Winch Wait",1.0);
 	timer.Reset();
@@ -42,6 +41,8 @@ void ShootCatapult::Execute() {
 	//Checks if delay time has been met
 	if(state==0){	//release pinch.
 		if(shootReady){
+			intake->SetIdle(true);
+			intake->ExtendArms(true);
 			timer.Reset();
 			timer.Start();
 			beginWaiting=true;
@@ -51,13 +52,21 @@ void ShootCatapult::Execute() {
 		}
 	}else if(state==1){	//wait for .5 seconds
 		if(timer.Get()>0.5){
+			intake->SetIdle(true);
+			intake->ExtendArms(true);
 			state=2;
 			shooter->setWinchDirect(0);
 		}
-	}else if(state==2){
-		if(!oi->triggerShoot->Get())shooter->setWinchDirect(0.5);
+	}else{
+		if(oi->gamepad->GetRawButton(B_SHOOT))shooter->setPinch(true);
+		else shooter->setPinch(false);
+		shooter->setWinchDirect(0.0);
+
+		done=true;
+		//if(!oi->triggerShoot->Get())shooter->setWinchDirect(0.5);
+		//else shooter->setWinchDirect(0.5);
 	}
-	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.4){
+	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.2){
 		done=true;
 	}
 	SmartDashboard::PutNumber("Timer Time", timer.Get());

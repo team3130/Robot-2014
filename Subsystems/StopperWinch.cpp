@@ -33,7 +33,7 @@ void StopperWinch::setStopperDirect(double speed){
 void StopperWinch::ProjectSensors(){
 	SmartDashboard::PutNumber("StopperWinch Distance", stopperEncoder->GetDistance());
 	SmartDashboard::PutNumber("StopperWinch Arm2 Encoder", armEncoder->GetDistance());
-	SmartDashboard::PutBoolean("StopperWinch Arm Switch", limitSwitch->Get());
+	SmartDashboard::PutBoolean("StopperWinch Arm Switch", (limitSwitch->Get()?true:false));
 }
 void StopperWinch::setGoal(double angle){
 	
