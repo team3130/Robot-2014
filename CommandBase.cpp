@@ -26,7 +26,7 @@ StopperWinch* CommandBase::stopper = NULL;
 Intake* CommandBase::intake = NULL;
 OI* CommandBase::oi = NULL;
 UnitTest* CommandBase::unitTest = NULL;
-Preferences* preferences = NULL;
+Preferences* CommandBase::preferences = NULL;
 
 void CommandBase::init() {
     // Create a single static instance of all of your subsystems. The following
