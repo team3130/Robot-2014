@@ -5,34 +5,39 @@
 /* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
 
-#include "IdleIntake.h"
+#include "JoystickStopperWinch.h"
 
-IdleIntake::IdleIntake() : CommandBase("Idle Intake") {
-	Requires(intake);
-	//SmartDashboard::PutData(this);
+JoystickStopperWinch::JoystickStopperWinch() : CommandBase("Manual ") {
+	Requires(stopper);
+	stopper->stopperEncoder->Reset();
+	stopper->stopperEncoder->Start();
 }
 
 // Called just before this Command runs the first time
-void IdleIntake::Initialize() {
-	intake->SetIdle(true);
+void JoystickStopperWinch::Initialize() {
 }
 // Called repeatedly when this Command is scheduled to run
-void IdleIntake::Execute() {
-
+void JoystickStopperWinch::Execute() {
+	static bool beaterup=false;
+	static bool extendPressed=false;
+	if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
+		stopper->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
+	}else stopper->setStopperDirect(0);
+	stopper->ProjectSensors();
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool IdleIntake::IsFinished() {
-	return true;
+bool JoystickStopperWinch::IsFinished() {
+	return false;
 }
 
 // Called once after isFinished returns true
-void IdleIntake::End() {
+void JoystickStopperWinch::End() {
 	
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void IdleIntake::Interrupted() {
+void JoystickStopperWinch::Interrupted() {
 	
 }

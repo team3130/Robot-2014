@@ -4,8 +4,8 @@ WaitForHot::WaitForHot() {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
     distanceTracking = new DistanceTracking();
-	SmartDashboard::PutData(this);
 	SmartDashboard::PutNumber("Autonomous Hot Check Method",0);
+	//SmartDashboard::PutData(this);
 }
 
 // Called just before this Command runs the first time
