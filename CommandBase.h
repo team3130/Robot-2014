@@ -10,6 +10,7 @@
 #include "math.h"
 #include "Commands/Command.h"
 #include "Subsystems/Chassis.h"
+#include "Subsystems/StopperWinch.h"
 #include "Subsystems/Shooter.h"
 #include "Subsystems/Intake.h"
 #include "UnitTest/UnitTest.h"
@@ -33,6 +34,7 @@ public:
 	static Chassis* chassis;
 	static Shooter* shooter;
 	static Intake* intake;
+	static StopperWinch* stopper;
 	static OI *oi;
 	
 	static UnitTest* unitTest;

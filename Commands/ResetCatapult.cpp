@@ -14,7 +14,7 @@ ResetCatapult::ResetCatapult() {
 
 // Called just before this Command runs the first time
 void ResetCatapult::Initialize() {
-	shooter->setStopSpeed(0);
+	stopper->setStopperDirect(0);
 	//Sets CurAction to Winding
 	CurAction = WINDING;
 	//Sets to rewind for a certain amount of time
