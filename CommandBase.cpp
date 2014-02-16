@@ -22,6 +22,7 @@ CommandBase::CommandBase() : Command() {
 Compressor* CommandBase::compressor = NULL;
 Chassis* CommandBase::chassis = NULL;
 Shooter* CommandBase::shooter = NULL;
+StopperWinch* CommandBase::stopper = NULL;
 Intake* CommandBase::intake = NULL;
 OI* CommandBase::oi = NULL;
 UnitTest* CommandBase::unitTest = NULL;

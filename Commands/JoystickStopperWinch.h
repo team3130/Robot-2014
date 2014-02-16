@@ -2,32 +2,18 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: <Kevin Bi>                                                     */
+/* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
 
-#ifndef SET_STOP_H
-#define SET_STOP_H
+#ifndef JOYSTICK_STOPPERWINCH_H
+#define JOYSTICK_STOPPERWINCH_H
 
 #include "../CommandBase.h"
+#include "WPILib.h"
 
-/**
- *
- *
- * @author ExampleAuthor
- */
-class SetStop: public CommandBase {
-private:
-	//Position that stopper will move to
-	double Position;
-	//Speed that the Stop motor will move
-	//Undetermined value #UNDETERMINED
-	static const double Speed = 0;
-	//Direction that the Stop Motor has to move to get to position
-	int Direction;
-	//Determines whether the command is finished. 
-	bool Finished;
+class JoystickStopperWinch: public CommandBase {
 public:
-	SetStop(double position);
+	JoystickStopperWinch();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

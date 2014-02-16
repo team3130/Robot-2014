@@ -5,48 +5,50 @@
 /* Authors: James Li, Zhenghao Zhu                                         */
 /*-------------------------------------------------------------------------*/
 
-#ifndef SHOOTER_H
-#define SHOOTER_H
+#ifndef STOPPERWINCH_H
+#define STOPPERWINCH_H
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 
-class Shooter: public Subsystem {
+class StopperWinch: public Subsystem {
 private:
-	Solenoid* pinch1;
-	Solenoid* pinch2;
-	Jaguar* winch;
+	Talon* stopper;
 	DigitalInput* limitSwitch;
 	double catapultPosition;
-	bool toggle;
+	double stopGoal;	//in inches.
 	//Is the robot ready to shoot
 	bool Ready;
 	//The state of the Stop Motor (Lob or Shoot)
-	int StopState; 
+	int StopState;
 	Timer timer;
 public:
 	//Encoder* winchEncoder;
+	Encoder* stopperEncoder;
 	Encoder* armEncoder;
-	Shooter();
-	Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2);
-	~Shooter();
-	void InitDefaultCommand();
-	void adjustCatapult(double level, double time);
-	void setWinchDirect(double speed);
-	void SetShoot(bool in);
-	void LockPincher(bool lock=true);
-	void UnlockPincher() {LockPincher(false);}
-	void ProjectSensors();
 	
+	//Encoder value for the Lob Position
+	//Undetermined value #UNDETERMINED
+	static const double STOP_LOB_POSITION = 0;
+	//Encoder value for the Shoot Position
+	//Undetermined value #UNDETERMINED
+	static const double STOP_SHOOT_POSITION = 0;
+	//StopState for the Stop motor in the Lob position
+	static const int STOP_LOB = 0;
+	//StopState for the Stop motor in the Shoot position
+	static const int STOP_SHOOT = 1;
+	StopperWinch();
+	~StopperWinch();
+	void InitDefaultCommand();
+	void setStopperDirect(double speed);
+	void ProjectSensors();
+	void resetStopEncoder();
 	//Get/set methods
+	void setGoal(double angle);
 	double getCatapultPosition();
+	double getStopPosition();
 	//double getWinchPosition();
-	bool getPinch1();
-	bool getPinch2();
 	bool getReady();
-	void setWinchSpeed(double speed);
-	void setPinch(bool on);
-	void setReady(bool value);
-	void setStopState(int value);
+	int getStopState();
 };
 
 #endif

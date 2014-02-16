@@ -11,6 +11,7 @@ ShootCatapult::ShootCatapult() {
 	// eg. Requires(chassis);
 	WaitTime=1.0;
 	Requires(shooter);
+	Requires(stopper);
 	Requires(intake);
 	shooter->setReady(true);
 	SmartDashboard::PutNumber("Winch Wait",1.0);
@@ -49,7 +50,6 @@ void ShootCatapult::Execute() {
 		timer.Stop();
 	}
 	shooter->setWinchDirect(0);
-	shooter->setStopSpeed(0);
 	SmartDashboard::PutNumber("Timer Time", timer.Get());
 }
 
