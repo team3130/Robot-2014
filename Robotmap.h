@@ -76,4 +76,10 @@
 
 //#define C_SHIFTER_MODULE 1
 
+// Geometry
+#define N_WHEEL_DIAMETER 4.125
+#define N_ENCODER_PPR 256
+#define N_CHAIN_RATIO (28.0/22.0)
+#define N_WHEEL_ENCODER_RATIO ((36.0/12.0)/N_CHAIN_RATIO)
+
 #endif

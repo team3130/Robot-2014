@@ -28,6 +28,7 @@ public:
 	static void init();
 	// Create a single static instance of all of your subsystems
 	//static ExampleSubsystem *examplesubsystem;
+	static Preferences* preferences;
 	static Compressor* compressor;
 	static Chassis* chassis;
 	static Shooter* shooter;
