@@ -26,12 +26,17 @@ void JoystickShoot::Execute() {
 	SmartDashboard::PutNumber("JoystickShoot Stopper Encoder",shooter->stopperEncoder->GetDistance());
 	double d= oi->gamepad->GetRawAxis(B_POWERWINCH);
 	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.2){
-		shooter->setWinchDirect(oi->gamepad->GetRawAxis(B_POWERWINCH)/2.0);
+		shooter->setWinchDirect(oi->gamepad->GetRawAxis(B_POWERWINCH)/1.5);
 	}else shooter->setWinchDirect(0);
 
 	if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
-		shooter->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/2.0);
+		shooter->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
 	}else shooter->setStopperDirect(0);
+	if(oi->gamepad->GetRawButton(B_SHOOT)){
+		shooter->setPinch(true);
+	}else shooter->setPinch(false);
+	bool shootReady =intake->getReadyToShoot();
+	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
 /*
 	if(oi->gamepad->GetRawButton(B_SHOOT)){
 		shooter->setPinch(true);

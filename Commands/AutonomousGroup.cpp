@@ -2,6 +2,8 @@
 #include "DriveStraight.h"
 #include "WaitForHot.h"
 #include "ShootCatapult.h"
+#include "DriveStraightGyro.h"
+#include "IdleIntake.h"
 AutonomousGroup::AutonomousGroup() {
         // Add Commands here:
         // e.g. AddSequential(new Command1());
@@ -19,7 +21,10 @@ AutonomousGroup::AutonomousGroup() {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+	AddSequential(new IdleIntake());
 	AddSequential(new WaitForHot());
 	AddSequential(new ShootCatapult());
+	AddSequential(new DriveStraightGyro("AUto Straight"));
+	
 }
 

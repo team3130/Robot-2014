@@ -35,22 +35,26 @@ void Intake::TakeBall(bool isOn){
 	double power = isOn ? 1 : 0;
 	intake->SetSpeed(power);
 }
-
 void Intake::ExtendArms(bool extended){
 	extend->Set(extended);
 }
 void Intake::SetIdle(bool in){
+	if(in==true)readyTimer.Start();
+	else{
+		readyTimer.Reset();
+		readyTimer.Stop();
+	}
 	idle->Set(in);
 }
-
 double Intake::getSpeed(){
 	return intake->Get();
 }
-
 bool Intake::getExtend(){
 	return extend->Get();
 }
-
 bool Intake::getIdle(){
 	return idle->Get();
+}
+bool Intake::getReadyToShoot(){
+	return readyTimer.Get()>1;	//idle for at least one second.
 }

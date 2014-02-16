@@ -2,25 +2,18 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: James Li, Kevin Bi                                             */
+/* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
 
-#ifndef SHOOT_CATAPULT_H
-#define SHOOT_CATAPULT_H
+#ifndef IDLE_INTAKE_H
+#define IDLE_INTAKE_H
 
 #include "../CommandBase.h"
 #include "WPILib.h"
 
-class ShootCatapult: public CommandBase {
-private:
-	bool done;
-	//Timer to let the robot wait
-	Timer timer;
-	//Time the robot should wait after deactivating Solenoids
-	//Undetermined value #UNDETERMINED
-	double WaitTime;
+class IdleIntake: public CommandBase {
 public:
-	ShootCatapult();
+	IdleIntake();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
