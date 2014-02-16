@@ -17,18 +17,19 @@ ShootCatapult::ShootCatapult() {
 	SmartDashboard::PutNumber("Winch Wait",1.0);
 	timer.Reset();
 	done=false;
-	SmartDashboard::PutData(this);
+	//SmartDashboard::PutData(this);
 }
 
 // Called just before this Command runs the first time
 void ShootCatapult::Initialize() 
 {
+	state=0;
 	intake->SetIdle(true);
 	intake->ExtendArms(true);
 	//Makes sure there is a delay for the intake to fall down
 	timer.Reset();
-	timer.Start();
 	done=false;
+	timer.Stop();
 	timer.Reset();
 	beginWaiting=false;
 }
@@ -39,17 +40,26 @@ void ShootCatapult::Execute() {
 	bool shootReady =intake->getReadyToShoot();
 	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
 	//Checks if delay time has been met
-	if(shootReady && !beginWaiting){
-		timer.Reset();
-		timer.Start();
-		beginWaiting=true;
-		shooter->setPinch(true);
-	}if(timer.Get()>WaitTime){
-		shooter->setPinch(false);
-		done=true;
-		timer.Stop();
+	if(state==0){	//release pinch.
+		if(shootReady){
+			timer.Reset();
+			timer.Start();
+			beginWaiting=true;
+			shooter->setPinch(true);
+			state=1;
+			shooter->setWinchDirect(0);
+		}
+	}else if(state==1){	//wait for .5 seconds
+		if(timer.Get()>0.5){
+			state=2;
+			shooter->setWinchDirect(0);
+		}
+	}else if(state==2){
+		shooter->setWinchDirect(0.3);
 	}
-	shooter->setWinchDirect(0);
+	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.2){
+		done=true;
+	}
 	SmartDashboard::PutNumber("Timer Time", timer.Get());
 }
 
@@ -60,12 +70,13 @@ bool ShootCatapult::IsFinished() {
 
 // Called once after isFinished returns true
 void ShootCatapult::End() {
-	//Sets shooter as not ready to shoot. 
+	shooter->setPinch(false);
 	shooter->setReady(false);
+	shooter->setWinchDirect(0);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void ShootCatapult::Interrupted() {
-	
+	End();
 }

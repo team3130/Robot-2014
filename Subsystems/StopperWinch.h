@@ -17,10 +17,10 @@ private:
 	double catapultPosition;
 	double stopGoal;	//in inches.
 	//Is the robot ready to shoot
-	bool Ready;
 	//The state of the Stop Motor (Lob or Shoot)
 	int StopState;
 	Timer timer;
+	bool calibratedWithArm;
 public:
 	//Encoder* winchEncoder;
 	Encoder* stopperEncoder;
@@ -49,6 +49,8 @@ public:
 	//double getWinchPosition();
 	bool getReady();
 	int getStopState();
+
+	bool armSwitchState();
 };
 
 #endif

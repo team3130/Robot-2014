@@ -9,7 +9,7 @@
 
 IdleIntake::IdleIntake() : CommandBase("Idle Intake") {
 	Requires(intake);
-	SmartDashboard::PutData(this);
+	//SmartDashboard::PutData(this);
 }
 
 // Called just before this Command runs the first time

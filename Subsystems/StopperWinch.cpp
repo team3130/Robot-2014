@@ -15,7 +15,8 @@ StopperWinch::StopperWinch() : Subsystem("StopperWinch") {
 	stopperEncoder->SetDistancePerPulse(114.53);
 	armEncoder = new Encoder(C_ENCODER_CATAPULT_A,C_ENCODER_CATAPULT_B,false);
 	stopper = new Talon(C_STOPPERMOTOR);
-	Ready=false;
+	limitSwitch =new DigitalInput(C_ARM_SWITCH);
+	calibratedWithArm=false;
 }
 StopperWinch::~StopperWinch(){
 	//delete winchEncoder;
@@ -31,6 +32,8 @@ void StopperWinch::setStopperDirect(double speed){
 }
 void StopperWinch::ProjectSensors(){
 	SmartDashboard::PutNumber("StopperWinch Distance", stopperEncoder->GetDistance());
+	SmartDashboard::PutNumber("StopperWinch Arm2 Encoder", armEncoder->GetDistance());
+	SmartDashboard::PutBoolean("StopperWinch Arm Switch", limitSwitch->Get());
 }
 void StopperWinch::setGoal(double angle){
 	
@@ -43,11 +46,11 @@ double StopperWinch::getCatapultPosition(){
 double StopperWinch::getStopPosition(){
 	
 }
+bool StopperWinch::armSwitchState(){
+	return limitSwitch->Get();
+}
 //double getWinchPosition();
 bool StopperWinch::getReady(){
-	return Ready;
-}
-void setGoal(){
 	
 }
 int StopperWinch::getStopState(){}

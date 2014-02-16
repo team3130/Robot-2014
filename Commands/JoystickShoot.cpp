@@ -25,12 +25,11 @@ void JoystickShoot::Execute() {
 	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.2){
 		shooter->setWinchDirect(oi->gamepad->GetRawAxis(B_POWERWINCH)/1);
 	}else shooter->setWinchDirect(0);
-
-	/*
+	
 	if(oi->gamepad->GetRawButton(B_SHOOT)){
 		shooter->setPinch(true);
 	}else shooter->setPinch(false);
-	*/
+	
 	bool shootReady =intake->getReadyToShoot();
 	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
 /*

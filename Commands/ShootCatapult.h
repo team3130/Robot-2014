@@ -14,6 +14,7 @@
 class ShootCatapult: public CommandBase {
 private:
 	bool done;
+	int state;
 	//Timer to let the robot wait
 	Timer timer;
 	//Time the robot should wait after deactivating Solenoids

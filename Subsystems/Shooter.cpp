@@ -76,7 +76,7 @@ void Shooter::LockPincher(bool lock){
 }
 
 void Shooter::ProjectSensors() {
-	SmartDashboard::PutNumber("Shooter Arm Angle", armEncoder->GetRaw());
+	//SmartDashboard::PutNumber("Shooter Arm Angle", armEncoder->GetRaw());
 	//SmartDashboard::PutNumber("Shooter Winch Rope", winchEncoder->GetRaw());
 	//SmartDashboard::PutNumber("Shooter Stopper Rope", stopperEncoder->GetRaw());
 	SmartDashboard::PutBoolean("Shooter Limit Switch", (limitSwitch->Get()?true:false));

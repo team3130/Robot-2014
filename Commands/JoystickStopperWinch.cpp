@@ -8,7 +8,7 @@
 #include "JoystickStopperWinch.h"
 
 JoystickStopperWinch::JoystickStopperWinch() : CommandBase("Manual ") {
-	Requires(intake);
+	Requires(stopper);
 	stopper->stopperEncoder->Reset();
 	stopper->stopperEncoder->Start();
 }
@@ -23,6 +23,7 @@ void JoystickStopperWinch::Execute() {
 	if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
 		stopper->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
 	}else stopper->setStopperDirect(0);
+	stopper->ProjectSensors();
 }
 
 // Make this return true when this Command no longer needs to run execute()

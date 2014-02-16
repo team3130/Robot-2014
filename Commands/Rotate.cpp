@@ -10,7 +10,7 @@
 // Used to be constructed with (180,2.5,1,-1,0,0)
 Rotate::Rotate(const char *name): PIDCommand(name, 0, 0, 0){
 	PIDCommand::Requires(CommandBase::chassis);
-	SmartDashboard::PutData(this);
+	//SmartDashboard::PutData(this);
 	SmartDashboard::PutNumber("Rotate PID P",-7);
 	SmartDashboard::PutNumber("Rotate PID I",0);
 	SmartDashboard::PutNumber("Rotate PID D",0);
