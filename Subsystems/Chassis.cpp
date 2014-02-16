@@ -25,7 +25,7 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	//drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
 	//drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
 	drive->SetSafetyEnabled(false);
-	preferences->GetDouble("EncoderTopSpeed",3000);
+	CommandBase::preferences->GetDouble("EncoderTopSpeed",3000);
 }
 
 Chassis::~Chassis()
@@ -43,8 +43,8 @@ void Chassis::InitDefaultCommand() {
 }
 
 void Chassis::InitEncoders() {
-	leftController->SetDistancePerPulse(1.0/preferences->GetDouble("EncoderTopSpeed",3000));
-	rightController->SetDistancePerPulse(1.0/preferences->GetDouble("EncoderTopSpeed",3000));
+	leftController->SetDistancePerPulse(1.0/CommandBase::preferences->GetDouble("EncoderTopSpeed",3000));
+	rightController->SetDistancePerPulse(1.0/CommandBase::preferences->GetDouble("EncoderTopSpeed",3000));
 	leftController->Reset();
 	rightController->Reset();
 	leftController->Start();
@@ -81,14 +81,14 @@ void Chassis::ProjectSensors() {
 double Chassis::encoderUnitsToFeet(double units){
 	//1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.
 	double conversionFactor = 3.141592654 * N_WHEEL_DIAMETER / 12.0;
-	conversionFactor *= preferences->GetDouble("EncoderTopSpeed") / N_ENCODER_PPR;
+	conversionFactor *= CommandBase::preferences->GetDouble("EncoderTopSpeed") / N_ENCODER_PPR;
 	return units*conversionFactor;
 }
 
 double Chassis::feetToEncoderUnits(double feet){
 	// 1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.
 	double conversionFactor = 3.141592654 * N_WHEEL_DIAMETER / 12.0;
-	conversionFactor *= preferences->GetDouble("EncoderTopSpeed") / N_ENCODER_PPR;
+	conversionFactor *= CommandBase::preferences->GetDouble("EncoderTopSpeed") / N_ENCODER_PPR;
 	return feet/conversionFactor;
 }
 
