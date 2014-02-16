@@ -18,10 +18,6 @@ AutonomousGroup::AutonomousGroup() {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
 	
-	// store default autonomous values in the dashboard
-	SmartDashboard::PutNumber("Autonomous Move To Shoot Distance",0.0);
-	SmartDashboard::PutNumber("Autonomous Drive Speed",0.8);
-
 	// allocate and store pointers to commands
 	idle = new IdleIntake();
 	driveStraight1 = new DriveStraightGyro("Initial Drive");
@@ -60,14 +56,21 @@ AutonomousGroup::~AutonomousGroup(){
 
 void AutonomousGroup::Initialize(){
 	
-	double dDistanceToMove = SmartDashboard::GetNumber("Autonomous Move To Shoot Distance");
-	double dSpeed = SmartDashboard::GetNumber("Autonomous Drive Speed");
-	
+	double dDistanceToMove = CommandBase::preferences->GetDouble("AutonomousInitialMoveDistance",0.0);
+	double dSpeed = CommandBase::preferences->GetDouble("AutonomousDriveSpeed",2.0);
+
+	// calculate seconds of movement based on distance to move and speed
 	double dSeconds = dDistanceToMove / dSpeed;
-	
-	//if robot has moved less than a certain distance, then it will move again to ensure that it's in the zone
-	driveStraight1->SetGoal(dSeconds,dSpeed);
-	if(dDistanceToMove < 3){
+
+	// set pre-shot drive strait params
+	driveStraight1->SetGoal( dSeconds, dSpeed );
+
+	// if we didn't move far enough on the pre-shot move, move forward a few feet
+	if ( dDistanceToMove < 4.0 ) {
+		dSpeed = 2.0;
+		dSeconds = 2.0;
+	// else don't move (much)
+	} else {
 		dSpeed = 0.1;
 		dSeconds = 0.1;
 	}

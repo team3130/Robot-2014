@@ -4,18 +4,23 @@ WaitForHot::WaitForHot() {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
     distanceTracking = new DistanceTracking();
-	SmartDashboard::PutNumber("Autonomous Hot Check Method",0);
-	//SmartDashboard::PutData(this);
+}
+
+WaitForHot::~WaitForHot() {
+	if ( distanceTracking )
+		delete distanceTracking;
 }
 
 // Called just before this Command runs the first time
 void WaitForHot::Initialize() {
 	
-	hotMethod = (int) SmartDashboard::GetNumber("Autonomous Hot Check Method");
-	
+	hotMethod = (int) CommandBase::preferences->GetDouble("AutonomousDetectHotMethod",0.0);
+		
 	hotCount = 0;
 	hotIterate = 0;
-	//timer.Reset();
+	
+	// reset the timer, then start again
+	timer.Reset();
 	timer.Start();
 }
 

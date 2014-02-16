@@ -11,6 +11,7 @@
 class WaitForHot: public CommandBase {
 public:
 	WaitForHot();
+	~WaitForHot();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
