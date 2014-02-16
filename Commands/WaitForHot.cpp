@@ -5,10 +5,14 @@ WaitForHot::WaitForHot() {
 	// eg. requires(chassis);
     distanceTracking = new DistanceTracking();
 	SmartDashboard::PutData(this);
+	SmartDashboard::PutNumber("Autonomous Hot Check Method",0);
 }
 
 // Called just before this Command runs the first time
 void WaitForHot::Initialize() {
+	
+	hotMethod = (int) SmartDashboard::GetNumber("Autonomous Hot Check Method");
+	
 	hotCount = 0;
 	hotIterate = 0;
 	//timer.Reset();
@@ -20,9 +24,20 @@ void WaitForHot::Execute() {
 	
 	// we'll check for hot the first 10 times called (0-9)
 	if ( hotIterate < 10 ) {
-		// if the closer target is hot, increment hot count
-		if ( distanceTracking->IsClosestTargetHot() ) {
-			hotCount ++;
+		
+		// if using aimed method to test for hot
+		if ( hotMethod == 0 ) {
+			// if the aimed target is hot, increment hot count
+			if ( distanceTracking->IsAimedTargetHot() ) {
+				hotCount ++;
+			}
+			
+		// else use closest method for hot test
+		} else {
+			// if the closer target is hot, increment hot count
+			if ( distanceTracking->IsClosestTargetHot() ) {
+				hotCount ++;
+			}
 		}
 		// increment hot iteration counter
 		hotIterate++;
