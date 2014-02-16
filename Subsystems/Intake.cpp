@@ -36,6 +36,11 @@ void Intake::TakeBall(bool isOn){
 	intake->SetSpeed(power);
 }
 void Intake::ExtendArms(bool extended){
+	if(extended || idle->Get())readyTimer.Start();
+	else{
+		readyTimer.Reset();
+		readyTimer.Stop();
+	}
 	extend->Set(extended);
 }
 void Intake::SetIdle(bool in){

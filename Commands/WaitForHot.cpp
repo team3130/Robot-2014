@@ -11,7 +11,7 @@ WaitForHot::WaitForHot() {
 void WaitForHot::Initialize() {
 	hotCount = 0;
 	hotIterate = 0;
-	timer.Reset();
+	//timer.Reset();
 	timer.Start();
 }
 

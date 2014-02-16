@@ -22,12 +22,14 @@ ShootCatapult::ShootCatapult() {
 // Called just before this Command runs the first time
 void ShootCatapult::Initialize() 
 {
-	intake->ExtendArms(false);
 	intake->SetIdle(true);
+	intake->ExtendArms(true);
 	//Makes sure there is a delay for the intake to fall down
 	timer.Reset();
 	timer.Start();
 	done=false;
+	timer.Reset();
+	beginWaiting=false;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -36,9 +38,12 @@ void ShootCatapult::Execute() {
 	bool shootReady =intake->getReadyToShoot();
 	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
 	//Checks if delay time has been met
-	if(timer.Get() >= WaitTime){
+	if(shootReady && !beginWaiting){
+		timer.Reset();
+		timer.Start();
+		beginWaiting=true;
 		shooter->setPinch(true);
-	}if(timer.Get()>WaitTime+1.5){
+	}if(timer.Get()>WaitTime){
 		shooter->setPinch(false);
 		done=true;
 		timer.Stop();

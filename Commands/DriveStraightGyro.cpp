@@ -46,7 +46,9 @@ void DriveStraightGyro::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool DriveStraightGyro::IsFinished() {
+bool DriveStraightGyro::IsFinished(){
+	SmartDashboard::PutNumber("timer", timer.Get());
+	SmartDashboard::PutNumber("goal", goalTime);
 	if(timer.Get()>goalTime)return true;
 	else return false;
 }
