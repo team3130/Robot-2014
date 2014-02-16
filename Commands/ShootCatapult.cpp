@@ -55,9 +55,9 @@ void ShootCatapult::Execute() {
 			shooter->setWinchDirect(0);
 		}
 	}else if(state==2){
-		shooter->setWinchDirect(0.3);
+		if(!oi->triggerShoot->Get())shooter->setWinchDirect(0.5);
 	}
-	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.2){
+	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.4){
 		done=true;
 	}
 	SmartDashboard::PutNumber("Timer Time", timer.Get());

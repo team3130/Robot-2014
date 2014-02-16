@@ -27,7 +27,12 @@ void JoystickShoot::Execute() {
 	}else shooter->setWinchDirect(0);
 	
 	if(oi->gamepad->GetRawButton(B_SHOOT)){
-		shooter->setPinch(true);
+		if(intake->getReadyToShoot()){
+			shooter->setPinch(true);
+		}else{
+			shooter->setPinch(false);
+			intake->SetIdle(true);
+		}
 	}else shooter->setPinch(false);
 	
 	bool shootReady =intake->getReadyToShoot();
