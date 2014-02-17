@@ -17,10 +17,12 @@ JoystickStopperWinch::JoystickStopperWinch() : CommandBase("Manual ") {
 void JoystickStopperWinch::Initialize() {
 	Robot::preferences->GetBoolean("Arm Encoder Functional", false);
 	Robot::preferences->GetBoolean("Stopper Winch Encoder Functional", true);
+	stopper->Calibrate(0);		//todo REMOVE THS LINE. PUT IN AUTONOMOUS.
 }
 // Called repeatedly when this Command is scheduled to run
 void JoystickStopperWinch::Execute() {
-	if(!Robot::preferences->GetBoolean("Stopper Winch Encoder Functional")){
+	//if(!Robot::preferences->GetBoolean("Stopper Winch Encoder Functional")){
+	if(false){
 		static bool buttondown=false;
 		static Timer timer;
 		static double mytime=0;
@@ -58,7 +60,8 @@ void JoystickStopperWinch::Execute() {
 		SmartDashboard::PutNumber("Stopper held down",mytime);
 		stopper->ProjectSensors();
 	}
-	else if(Robot::preferences->GetBoolean("Stopper Winch Encoder Functional")){
+	//else if(Robot::preferences->GetBoolean("Stopper Winch Encoder Functional")){
+	else{
 		stopper->setSmart(true);
 		if(oi->gamepad->GetRawButton(B_LOADLOWSHOT)){
 			stopper->setGoalInches(0);

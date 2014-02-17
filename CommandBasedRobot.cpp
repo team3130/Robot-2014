@@ -20,10 +20,23 @@ private:
 		autonomousCommand = new AutonomousGroup();
 		lw = LiveWindow::GetInstance();
 		Robot::preferences = Preferences::GetInstance();
-		Robot::unitTest = new UnitTest();
 	}
-	
+	void getPreferencesData(){
+		Robot::unitTest = new UnitTest();
+		if(!Robot::preferences->ContainsKey("Arm Encoder Functional")){
+			Robot::preferences->PutBoolean("Arm Encoder Functional", false);
+		}
+		if(!Robot::preferences->ContainsKey("StopperEncoderPPI")){
+			Robot::preferences->PutDouble("StopperEncoderPPI", 114.53);
+		}
+		if(!Robot::preferences->ContainsKey("Stopper Winch Encoder Functional")){
+			Robot::preferences->PutBoolean("Stopper Winch Encoder Functional", true);
+		}
+		Robot::preferences->GetBoolean("Arm Encoder Functional", false);
+		Robot::preferences->GetBoolean("Stopper Winch Encoder Functional", true);
+	}
 	virtual void AutonomousInit() {
+		getPreferencesData();
 		autonomousCommand->Start();
 	}
 	
@@ -32,6 +45,7 @@ private:
 	}
 	
 	virtual void TeleopInit() {
+		getPreferencesData();
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to 
 		// continue until interrupted by another command, remove
