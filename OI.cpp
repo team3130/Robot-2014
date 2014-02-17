@@ -22,10 +22,10 @@ OI::OI() {
 	rightPrecision = new JoystickButton(rightJoystick, 1);
 	straightMode   = new JoystickButton(rightJoystick, 2);
 	shifterButton  = new JoystickButton(rightJoystick, B_HIGHGEAR);
-	triggerShoot = new JoystickButton(gamepad,B_SHOOT);
+	//triggerShoot = new JoystickButton(gamepad,B_SHOOT);
 
-	triggerShoot->WhenPressed(new ShootCatapult());
-	straightMode->WhenPressed(new JoystickStraight());
-	shifterButton->WhenPressed(new DriveHighGear());
-	shifterButton->WhenReleased(new DriveLowGear());
+	triggerShoot->WhenPressed(new ShootCatapult("Shoot manual"));
+	straightMode->WhenPressed(new JoystickStraight("Straight manual"));
+	shifterButton->WhenPressed(new DriveHighGear("Shift up manual"));
+	shifterButton->WhenReleased(new DriveLowGear("Shift down manual"));
 }

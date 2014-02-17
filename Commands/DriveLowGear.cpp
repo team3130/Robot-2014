@@ -6,7 +6,7 @@
 /*-------------------------------------------------------------------------*/
 #include "DriveLowGear.h"
 
-DriveLowGear::DriveLowGear() {
+DriveLowGear::DriveLowGear(const char* name) : CommandBase(name) {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
 	// We don't want to monopolize chassis just to shif gears so no requirements

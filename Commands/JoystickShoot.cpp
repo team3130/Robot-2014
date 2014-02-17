@@ -7,31 +7,36 @@
 
 #include "JoystickShoot.h"
 
-JoystickShoot::JoystickShoot() {
+JoystickShoot::JoystickShoot(const char* name) : CommandBase(name) {
 	Requires(shooter);
 }
 
 // Called just before this Command runs the first time
 void JoystickShoot::Initialize() {
 	shooter->armEncoder->Reset();
-	shooter->stopperEncoder->Reset();
 	shooter->armEncoder->Start();
-	shooter->stopperEncoder->Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickShoot::Execute() {
 	shooter->setPinch(false);
 	SmartDashboard::PutNumber("JoystickShoot Arm Encoder",shooter->armEncoder->GetDistance());
-	SmartDashboard::PutNumber("JoystickShoot Stopper Encoder",shooter->stopperEncoder->GetDistance());
 	double d= oi->gamepad->GetRawAxis(B_POWERWINCH);
-	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.2){
-		shooter->setWinchDirect(oi->gamepad->GetRawAxis(B_POWERWINCH)/2.0);
+	if(fabs(d)>0.2){
+		shooter->setWinchDirect(d);
 	}else shooter->setWinchDirect(0);
-
-	if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
-		shooter->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/2.0);
-	}else shooter->setStopperDirect(0);
+	
+	if(oi->gamepad->GetRawButton(B_SHOOT)){
+		if(intake->getReadyToShoot()){
+			shooter->setPinch(true);
+		}else{
+			shooter->setPinch(false);
+			intake->SetIdle(true);
+		}
+	}else shooter->setPinch(false);
+	
+	bool shootReady =intake->getReadyToShoot();
+	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
 /*
 	if(oi->gamepad->GetRawButton(B_SHOOT)){
 		shooter->setPinch(true);

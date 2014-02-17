@@ -26,12 +26,13 @@
 #define C_ENCODER_WINCH_CHANNEL_2  10
 #define C_ENCODER_STOPPER_A 5
 #define C_ENCODER_STOPPER_B 6
-#define C_ENCODER_CATAPULT_A 7
-#define C_ENCODER_CATAPULT_B 8
+#define C_ENCODER_CATAPULT_A 10
+#define C_ENCODER_CATAPULT_B 11
 #define C_ENCODER_LEFT_A  3
 #define C_ENCODER_LEFT_B  4
 #define C_ENCODER_RIGHT_A 1
 #define C_ENCODER_RIGHT_B 2
+#define C_ARM_SWITCH 12
 
 #define C_WINCH_TAUT 13
 
@@ -63,6 +64,7 @@
 #define B_IDLEARMS 10
 #define A_BEATERBAR 3
 #define B_BEATERBARFWD 2
+#define B_BEATERBARREV 4
 #define B_POWERWINCH 2
 #define B_STOPPERWINCH 4
 #define B_SHOOT 6
@@ -75,4 +77,12 @@
 
 //#define C_SHIFTER_MODULE 1
 
+// Geometry
+#define N_WHEEL_DIAMETER 4.125
+#define N_ENCODER_PPR 256
+#define N_CHAIN_RATIO (28.0/22.0)
+#define N_WHEEL_ENCODER_RATIO ((36.0/12.0)/N_CHAIN_RATIO)
+#define N_FRAME_L 28.5
+#define N_FRAME_H 13.75
+#define N_FRAME_ARMLENGTH 23.0
 #endif

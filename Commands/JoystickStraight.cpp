@@ -7,7 +7,7 @@
 #include "JoystickStraight.h"
 #include "math.h"
 
-JoystickStraight::JoystickStraight(){
+JoystickStraight::JoystickStraight(const char* name) : CommandBase(name) {
 	Requires(chassis);
 }
 // Called just before this Command runs the first time

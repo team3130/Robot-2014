@@ -7,7 +7,7 @@
 #include "JoystickTank.h"
 #include "math.h"
 
-JoystickTank::JoystickTank(){
+JoystickTank::JoystickTank(const char* name) : CommandBase(name) {
 	Requires(chassis);
 	precisionMultiplier = 0.6666666666f;
 	precisionLevel = 0;

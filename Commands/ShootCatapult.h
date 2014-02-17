@@ -13,15 +13,16 @@
 
 class ShootCatapult: public CommandBase {
 private:
-	//bool Finished;
+	bool done;
+	int state;
 	//Timer to let the robot wait
 	Timer timer;
 	//Time the robot should wait after deactivating Solenoids
 	//Undetermined value #UNDETERMINED
+	bool beginWaiting;
 	double WaitTime;
-	bool done;
 public:
-	ShootCatapult();
+	ShootCatapult(const char* name);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

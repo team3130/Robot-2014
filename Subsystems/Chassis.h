@@ -6,8 +6,8 @@
 /*-------------------------------------------------------------------------*/
 #ifndef CHASSIS_H
 #define CHASSIS_H
+#include "../Robot.h"
 #include "Commands/Subsystem.h"
-#include "WPILib.h"
 #include "VelocityController.h"
 #include "string.h"
 

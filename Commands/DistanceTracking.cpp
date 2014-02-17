@@ -453,7 +453,7 @@ bool DistanceTracking::IsAimedTargetHot() {
 					double dRightDistance = rcMarkerRects[MARKER_TWO].ptUL.x - dImageCenterX;
 	
 					// if the camera is aimed more towards the right marker
-					if ( dRightDistance < dLeftDistance  )
+					if ( fabs(dRightDistance) < fabs(dLeftDistance) )
 						return true;
 					else 
 						return false;
@@ -466,7 +466,7 @@ bool DistanceTracking::IsAimedTargetHot() {
 					double dRightDistance = rcMarkerRects[MARKER_THREE].ptUL.x - dImageCenterX;
 	
 					// if the camera is aimed more towards the left marker
-					if ( dLeftDistance < dRightDistance )
+					if ( fabs(dLeftDistance) < fabs(dRightDistance) )
 						return true;
 					else 
 						return false;

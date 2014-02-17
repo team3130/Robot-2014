@@ -4,8 +4,8 @@
 /* teams under the same license as the WPILib code itself.                 */
 /* Authors: Ashwin Chetty                                                  */
 /*-------------------------------------------------------------------------*/
-#ifndef DRIVE_STRAIGHT_H
-#define DRIVE_STRAIGHT_H
+#ifndef DRIVE_STRAIGHT_GYRO_H
+#define DRIVE_STRAIGHT_GYRO_H
 
 #include "../CommandBase.h"
 #include "WPILib.h"
@@ -17,19 +17,16 @@
  * to move straight--either forward or backward--by a specific
  * distance.
  */
-class DriveStraight: public PIDCommand{
+class DriveStraightGyro: public PIDCommand{
 private:
 	static const double driftK = 1.0/180.0;
 	Timer timer;
-	double goal;
-	double threshold;
-	double confirmTime;
-	double keepAngle;
-	bool isConfirming;
+	double goalTime;
+	double moveSpeed;
 	Chassis* chassis;	//from commandbase. we aren't a subclass of it b/c of deadly diamond of death
 public:
-	DriveStraight(const char *name);
-	void SetGoal(double dist, double thresh=0, double timeToWait=0);
+	DriveStraightGyro(const char *name);
+	void SetGoal(double time, double speed);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

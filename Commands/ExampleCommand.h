@@ -18,7 +18,7 @@
  */
 class ExampleCommand: public CommandBase {
 public:
-	ExampleCommand();
+	ExampleCommand(const char* name);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

@@ -15,7 +15,7 @@
  */
 class DriveLowGear: public CommandBase {
 public:
-	DriveLowGear();
+	DriveLowGear(const char* name);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

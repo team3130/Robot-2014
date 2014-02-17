@@ -2,21 +2,18 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: Ashwin Chetty                                                  */
+/* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
-#ifndef AUTOCATCH_COMMAND_H
-#define AUTOCATCH_COMMAND_H
+
+#ifndef JOYSTICK_STOPPERWINCH_H
+#define JOYSTICK_STOPPERWINCH_H
 
 #include "../CommandBase.h"
+#include "WPILib.h"
 
-/**
- *
- *
- * @author ExampleAuthor
- */
-class AutoCatch: public CommandBase {
+class JoystickStopperWinch: public CommandBase {
 public:
-	AutoCatch();
+	JoystickStopperWinch();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

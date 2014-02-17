@@ -2,10 +2,12 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: Ashwin Chetty                                                  */
+/* Autho
+ * rs: Ashwin Chetty, Mikhail Kyraha                                  */
 /*-------------------------------------------------------------------------*/
-#ifndef DRIVE_STRAIGHT_H
-#define DRIVE_STRAIGHT_H
+
+#ifndef STOPPERWINCHCONTROL_H
+#define STOPPERWINCHCONTROL_H
 
 #include "../CommandBase.h"
 #include "WPILib.h"
@@ -13,23 +15,20 @@
 
 /**
  * @author Ashwin
- * This class uses the encoders (and maybe accelerometer or vision)
- * to move straight--either forward or backward--by a specific
- * distance.
+ * This class uses the gyro (and maybe accelerometer or vision)
+ * to turn the bot -- either right or left -- by a specific angle.
  */
-class DriveStraight: public PIDCommand{
+class StopperWinchControl: public PIDCommand{
 private:
-	static const double driftK = 1.0/180.0;
 	Timer timer;
 	double goal;
 	double threshold;
 	double confirmTime;
-	double keepAngle;
 	bool isConfirming;
-	Chassis* chassis;	//from commandbase. we aren't a subclass of it b/c of deadly diamond of death
+	bool resetGyroOnInit;
 public:
-	DriveStraight(const char *name);
-	void SetGoal(double dist, double thresh=0, double timeToWait=0);
+	StopperWinchControl(const char *name);
+	virtual void SetGoal(double dist, double thresh, double timeToWait, bool resetGyro=true);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

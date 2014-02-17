@@ -5,37 +5,34 @@
 /* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
 
-#include "SpinIntake.h"
+#include "IdleIntake.h"
 
-SpinIntake::SpinIntake(const char* name) : CommandBase(name) {
+IdleIntake::IdleIntake() : CommandBase("Idle Intake") {
 	Requires(intake);
+	//SmartDashboard::PutData(this);
 }
 
 // Called just before this Command runs the first time
-void SpinIntake::Initialize() {
-	intake->intakeEncoder->Reset();
-	intake->intakeEncoder->Start();
-	on = false;
+void IdleIntake::Initialize() {
+	intake->SetIdle(true);
 }
-
 // Called repeatedly when this Command is scheduled to run
-void SpinIntake::Execute() {
-	on = oi->intakeTrigger->Get();
-	intake->TakeBall(on);
+void IdleIntake::Execute() {
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool SpinIntake::IsFinished() {
-	return false;
+bool IdleIntake::IsFinished() {
+	return true;
 }
 
 // Called once after isFinished returns true
-void SpinIntake::End() {
+void IdleIntake::End() {
 	
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void SpinIntake::Interrupted() {
+void IdleIntake::Interrupted() {
 	
 }

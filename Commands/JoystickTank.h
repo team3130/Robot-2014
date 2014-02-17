@@ -19,7 +19,7 @@ private:
 	float precisionMultiplier;	//how much precision each level gives us.
 	int precisionLevel;			//level of precision we want. 0 is default
 public:
-	JoystickTank();
+	JoystickTank(const char* name);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

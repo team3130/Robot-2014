@@ -7,7 +7,7 @@
 
 #include "ExampleCommand.h"
 
-ExampleCommand::ExampleCommand() {
+ExampleCommand::ExampleCommand(const char* name) : CommandBase(name) {
 	// Use Requires() here to declare subsystem dependencies
 	//Requires(chassis);
 }
@@ -18,20 +18,6 @@ void ExampleCommand::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void ExampleCommand::Execute() {
-	char count='a';
-	char bn[] = "JButton X  ";
-	for(int i=0;i<14;i++){
-		bn[9]=count;
-		SmartDashboard::PutNumber(std::string(bn), oi->gamepad->GetRawButton(i));
-		count++;
-	}
-	count='a';
-	char an[]= "JAxis X  ";
-	for(int i=0;i<10;i++){
-		an[6]=count;
-		SmartDashboard::PutNumber(std::string(an), oi->gamepad->GetRawAxis(i));
-		count++;
-	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
