@@ -17,6 +17,9 @@ AutonomousGroup::AutonomousGroup() {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+
+	// LED relay
+	pLEDRelay = new DigitalOutput(5);
 	
 	// allocate and store pointers to commands
 	idle = new IdleIntake();
@@ -52,10 +55,16 @@ AutonomousGroup::~AutonomousGroup(){
 		delete shoot;
 	if ( driveStraight2 )
 		delete driveStraight2;
+	if ( pLEDRelay )
+		delete pLEDRelay;
 }
 
 void AutonomousGroup::Initialize(){
 	
+	// turn on the led
+	if ( pLEDRelay )
+		pLEDRelay->Set(1);
+
 	double dDistanceToMove = CommandBase::preferences->GetDouble("AutonomousInitialMoveDistance",0.0);
 	double dSpeed = CommandBase::preferences->GetDouble("AutonomousDriveSpeed",0.5);
 
@@ -75,4 +84,11 @@ void AutonomousGroup::Initialize(){
 		dSeconds = 0.01;
 	}
 	driveStraight2->SetGoal( dSeconds, dSpeed );
+}
+
+// Called once after isFinished returns true
+void AutonomousGroup::End() {
+	// turn off the led
+	if ( pLEDRelay )
+		pLEDRelay->Set(0);
 }
