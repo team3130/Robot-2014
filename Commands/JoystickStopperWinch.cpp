@@ -11,6 +11,8 @@ JoystickStopperWinch::JoystickStopperWinch() : CommandBase("Manual ") {
 	Requires(stopper);
 	stopper->stopperEncoder->Reset();
 	stopper->stopperEncoder->Start();
+	SmartDashboard::PutNumber("StopperWinch Low Position",-20);
+	SmartDashboard::PutNumber("StopperWinch High Position",3);
 }
 
 // Called just before this Command runs the first time
@@ -58,17 +60,17 @@ void JoystickStopperWinch::Execute() {
 			}
 		}
 		SmartDashboard::PutNumber("Stopper held down",mytime);
-		stopper->ProjectSensors();
 	}
 	//else if(Robot::preferences->GetBoolean("Stopper Winch Encoder Functional")){
 	else{
 		stopper->setSmart(true);
 		if(oi->gamepad->GetRawButton(B_LOADLOWSHOT)){
-			stopper->setGoalInches(0);
+			stopper->setGoalInches(SmartDashboard::GetNumber("StopperWinch Low Position"));
 		}if(oi->gamepad->GetRawButton(B_LOADHIGHSHOT)){
-			stopper->setGoalInches(3);
+			stopper->setGoalInches(SmartDashboard::GetNumber("StopperWinch High Position"));
 		}
 	}
+	stopper->ProjectSensors();
 }
 
 // Make this return true when this Command no longer needs to run execute()

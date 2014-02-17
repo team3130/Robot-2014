@@ -16,7 +16,7 @@ StopperWinch::StopperWinch() : PIDSubsystem("StopperWinch",0.5,0,0) {
 	stopper = new Talon(C_STOPPERMOTOR);
 	limitSwitch =new DigitalInput(C_ARM_SWITCH);
 	calibratedWithArm=false;
-	SetAbsoluteTolerance(0.4);
+	SetAbsoluteTolerance(0.1);
 	PIDSubsystem::Disable();
 }
 StopperWinch::~StopperWinch(){

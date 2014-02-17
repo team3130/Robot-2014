@@ -57,7 +57,6 @@ void ShootCatapult::Execute() {
 	}
 	else if(state==-1 && shootReady){
 		shooter->setWinchDirect(0);
-		done=true;
 	}
 	else if(state==0 && shootReady){	//release pinch.
 		if(shootReady){
@@ -78,16 +77,14 @@ void ShootCatapult::Execute() {
 			shooter->setWinchDirect(0);
 		}
 	}else if(state==2 && shootReady){
+		int outputs=0;
 		if(!stopper->armSwitchState()){
-			shooter->setWinchDirect(-.5);
+			shooter->setWinchDirect(.8);
 		}
-		else{
-			shooter->setWinchDirect(.5);
-		}
-		if(stopper->armSwitchState() && shooter->hasSlack()){
+		if(stopper->armSwitchState()){
+			shooter->setWinchDirect(0);
 			state=3;
 			done=true;
-			stopper->Calibrate(shooter->armEncoder->GetDistance());
 		}
 	}else{
 		shooter->setWinchDirect(0);
@@ -95,6 +92,7 @@ void ShootCatapult::Execute() {
 	int v = stopper->armSwitchState() == 1;
 	SmartDashboard::PutNumber("Timer Time", timer.Get());
 	SmartDashboard::PutNumber("ShootCatapult State", state);
+	stopper->ProjectSensors();
 }
 
 // Make this return true when this Command no longer needs to run execute()
