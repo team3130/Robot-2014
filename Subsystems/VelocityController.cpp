@@ -13,35 +13,32 @@
  * @param sat_channel The PWM channel that the satellite (seccond) Talon is attached to.
  * @param aChannel Encoder's a channel digital input channel.
  * @param bChannel Encoder's b channel digital input channel.
- * @param reversedEncoder Indicates negative readings while positive power applied to the motor.
  * @param encodingType either k1X, k2X, or k4X. See Encoder class 
  *
  * @author M.Kyraha
  */
-VelocityController::VelocityController(uint32_t channel, uint32_t sat_channel, uint32_t aChannel, uint32_t bChannel,
-		bool reversedEncoder, Encoder::EncodingType encodingType)
-	: Talon(channel), Encoder(aChannel, bChannel, reversedEncoder, encodingType) {
+VelocityController::VelocityController(uint32_t channel, uint32_t sat_channel,
+		uint32_t aChannel, uint32_t bChannel, Encoder::EncodingType encodingType)
+	: Talon(channel), Encoder(aChannel, bChannel, false, encodingType) {
 	m_satellite = new Talon(sat_channel);
 	m_kP = 1;
 	m_power = 0;
 	m_smart = true;
-	m_reversedEncoder=reversedEncoder;
-	m_smartInvertOutput = false;
+	m_invertOutput = false;
 	Encoder::Start();
 	SmartDashboard::PutNumber("VelocityController P",1000);
-	SmartDashboard::PutNumber("VelocityController W",2);
 }
 VelocityController::~VelocityController(){
 	delete m_satellite;
 }
-void VelocityController::SetSmartInvertedMotor(bool inverted){
-	m_smartInvertOutput = inverted;
+void VelocityController::SetInvertedMotor(bool inverted){
+	m_invertOutput = inverted;
 }
 void VelocityController::Set(float velocity, uint8_t syncGroup) {
 	static int skipWrite = 0;
 	m_kP = SmartDashboard::GetNumber("VelocityController P")/1000.0;
 	if(m_smart && velocity != 0) {
-		if(m_smartInvertOutput)velocity*=-1;
+		if(m_invertOutput)velocity*=-1;
 		double rate = GetRate();
 		double deltaAbs = fabs(velocity - rate);
 		double correctAmount= m_kP * pow(deltaAbs, fabs(rate)+1);
@@ -77,7 +74,7 @@ void VelocityController::Set(float velocity, uint8_t syncGroup) {
 		m_power = velocity;
 	}
 
-	if(m_smartInvertOutput){
+	if(m_invertOutput){
 		Talon::Set(-m_power,syncGroup);
 		m_satellite->Set(-m_power,syncGroup);
 	}
