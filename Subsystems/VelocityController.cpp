@@ -19,7 +19,7 @@
  * @author M.Kyraha
  */
 VelocityController::VelocityController(uint32_t channel, uint32_t sat_channel, uint32_t aChannel, uint32_t bChannel,
-		bool reversedEncoder, bool invertSat, Encoder::EncodingType encodingType)
+		bool reversedEncoder, Encoder::EncodingType encodingType)
 	: Talon(channel), Encoder(aChannel, bChannel, reversedEncoder, encodingType) {
 	m_satellite = new Talon(sat_channel);
 	m_kP = 1;
@@ -27,7 +27,6 @@ VelocityController::VelocityController(uint32_t channel, uint32_t sat_channel, u
 	m_smart = true;
 	m_reversedEncoder=reversedEncoder;
 	m_smartInvertOutput = false;
-	m_satInverted=invertSat;
 	Encoder::Start();
 	SmartDashboard::PutNumber("VelocityController P",1000);
 	SmartDashboard::PutNumber("VelocityController W",2);
@@ -44,13 +43,8 @@ void VelocityController::Set(float velocity, uint8_t syncGroup) {
 	if(m_smart && velocity != 0) {
 		if(m_smartInvertOutput)velocity*=-1;
 		double rate = GetRate();
-		
-		
 		double deltaAbs = fabs(velocity - rate);
-		
-		//deltaAbs = pow(SmartDashboard::GetNumber("VelocityController W"), deltaAbs) - 1;
 		double correctAmount= m_kP * pow(deltaAbs, fabs(rate)+1);
-		//double correctAmount= m_kP * deltaAbs; // * ((velocity>rate)?1.0:-1.0);
 		if(velocity>rate)
 			m_power += correctAmount;
 		else
@@ -82,21 +76,15 @@ void VelocityController::Set(float velocity, uint8_t syncGroup) {
 	else {
 		m_power = velocity;
 	}
-/*
+
 	if(m_smartInvertOutput){
 		Talon::Set(-m_power,syncGroup);
-		if(m_satInverted)m_satellite->Set(-m_power,syncGroup);
-		else m_satellite->Set(m_power,syncGroup);
+		m_satellite->Set(-m_power,syncGroup);
 	}
 	else {
 		Talon::Set(m_power,syncGroup);
-		if(m_satInverted)m_satellite->Set(m_power,syncGroup);
-		else m_satellite->Set(-m_power,syncGroup);
+		m_satellite->Set(m_power,syncGroup);
 	}
-	*/
-	if(m_smartInvertOutput)Talon::Set(-m_power);
-	else Talon::Set(m_power);
-	if(m_satInverted)m_satellite->Set(-m_power);
-	else m_satellite->Set(m_power);
+
 	skipWrite++;
 }
