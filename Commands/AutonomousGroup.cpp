@@ -26,22 +26,23 @@ AutonomousGroup::AutonomousGroup() {
 	driveStraight1 = new DriveStraight("Initial Drive");
 	waitForHot = new WaitForHot("Wait for Hot Goal");
 	shoot = new ShootCatapult("Auto Shoot");
+	//when true, winch is pulled back.
 	driveStraight2 = new DriveStraight("Auto Straight");
 	
 	// idle
 	AddSequential(idle);
 	
 	// drive forward to best shooting position (controlled via dashboard var) 
-	AddSequential(driveStraight1);
+	//AddSequential(driveStraight1);
 	
 	// wait until the goal is hot, could be now, might be @ seconds
-	AddSequential(waitForHot);
+	//AddSequential(waitForHot);
 	
 	// shoot
 	AddSequential(shoot);
 	
 	// drive forward to ensure we cross into the next zone
-	AddSequential(driveStraight2);
+	//AddSequential(driveStraight2);
 }
 
 AutonomousGroup::~AutonomousGroup(){

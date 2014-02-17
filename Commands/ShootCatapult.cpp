@@ -10,6 +10,7 @@ ShootCatapult::ShootCatapult(const char* name) : CommandBase(name) {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
 	WaitTime=1.0;
+	Requires(intake);
 	Requires(shooter);
 	Requires(stopper);
 	shooter->setReady(true);
@@ -22,7 +23,7 @@ ShootCatapult::ShootCatapult(const char* name) : CommandBase(name) {
 // Called just before this Command runs the first time
 void ShootCatapult::Initialize() 
 {
-	state=0;
+	state=-2;
 	intake->SetIdle(true);
 	intake->ExtendArms(true);
 	//Makes sure there is a delay for the intake to fall down
@@ -39,7 +40,23 @@ void ShootCatapult::Execute() {
 	bool shootReady =intake->getReadyToShoot();
 	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
 	//Checks if delay time has been met
-	if(state==0){	//release pinch.
+	if(state==-2){
+		int outputs=0;
+		if(!stopper->armSwitchState()){
+			shooter->setWinchDirect(-.5);
+		}
+		else{
+			shooter->setWinchDirect(.5);
+		}
+		if(stopper->armSwitchState() && shooter->hasSlack()){
+			state=-1;
+		}
+	}
+	else if(state==-1){
+		shooter->setWinchDirect(0);
+		done=true;
+	}
+	else if(state==0){	//release pinch.
 		if(shootReady){
 			intake->SetIdle(true);
 			intake->ExtendArms(true);
@@ -57,15 +74,17 @@ void ShootCatapult::Execute() {
 			state=2;
 			shooter->setWinchDirect(0);
 		}
-	}else{
-		done=true;
-		if(oi->triggerShoot->Get()){
-			shooter->setPinch(true);
-			shooter->setWinchDirect(0.0);
+	}else if(state==2){
+		if(!stopper->armSwitchState()){
+			shooter->setWinchDirect(-.5);
 		}
 		else{
-			shooter->setPinch(false);
-			shooter->setWinchDirect(0.5);
+			shooter->setWinchDirect(.5);
+		}
+		if(stopper->armSwitchState() && shooter->hasSlack()){
+			state=3;
+			done=true;
+			stopper->Calibrate(shooter->armEncoder->GetDistance());
 		}
 	}
 	int v = stopper->armSwitchState() == 1;
@@ -74,6 +93,7 @@ void ShootCatapult::Execute() {
 		done=true;
 	}
 	SmartDashboard::PutNumber("Timer Time", timer.Get());
+	SmartDashboard::PutNumber("ShootCatapult State", state);
 }
 
 // Make this return true when this Command no longer needs to run execute()

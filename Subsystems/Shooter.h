@@ -39,6 +39,7 @@ public:
 	
 	//Get/set methods
 	double getCatapultPosition();
+	bool hasSlack();
 	//double getWinchPosition();
 	bool getPinch1();
 	bool getPinch2();
