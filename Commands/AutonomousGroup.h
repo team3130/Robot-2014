@@ -15,7 +15,7 @@
  */
 class AutonomousGroup: public CommandGroup {
 private:
-	DigitalOutput* pLEDRelay;
+	// DigitalOutput* pLEDRelay; todo
 	IdleIntake* idle;
 	DriveStraightGyro* driveStraight1;
 	WaitForHot* waitForHot;

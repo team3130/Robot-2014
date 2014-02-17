@@ -19,7 +19,7 @@ AutonomousGroup::AutonomousGroup() {
         // arm.
 
 	// LED relay
-	pLEDRelay = new DigitalOutput(5);
+	// todo pLEDRelay = new DigitalOutput(5);
 	
 	// allocate and store pointers to commands
 	idle = new IdleIntake();
@@ -55,15 +55,15 @@ AutonomousGroup::~AutonomousGroup(){
 		delete shoot;
 	if ( driveStraight2 )
 		delete driveStraight2;
-	if ( pLEDRelay )
-		delete pLEDRelay;
+	// if ( pLEDRelay ) todo
+		// delete pLEDRelay; todo
 }
 
 void AutonomousGroup::Initialize(){
 	
 	// turn on the led
-	if ( pLEDRelay )
-		pLEDRelay->Set(1);
+	// if ( pLEDRelay ) todo
+		// pLEDRelay->Set(1); todo
 
 	double dDistanceToMove = CommandBase::preferences->GetDouble("AutonomousInitialMoveDistance",0.0);
 	double dSpeed = CommandBase::preferences->GetDouble("AutonomousDriveSpeed",0.5);
@@ -89,6 +89,6 @@ void AutonomousGroup::Initialize(){
 // Called once after isFinished returns true
 void AutonomousGroup::End() {
 	// turn off the led
-	if ( pLEDRelay )
-		pLEDRelay->Set(0);
+	// if ( pLEDRelay ) todo
+		// pLEDRelay->Set(0); todo
 }
