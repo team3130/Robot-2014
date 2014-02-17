@@ -23,7 +23,7 @@ void JoystickShoot::Execute() {
 	SmartDashboard::PutNumber("JoystickShoot Arm Encoder",shooter->armEncoder->GetDistance());
 	double d= oi->gamepad->GetRawAxis(B_POWERWINCH);
 	if(fabs(d)>0.2){
-		shooter->setWinchDirect(d);
+		shooter->setWinchDirect(d*0.86);
 	}else shooter->setWinchDirect(0);
 	
 	if(oi->gamepad->GetRawButton(B_SHOOT)){

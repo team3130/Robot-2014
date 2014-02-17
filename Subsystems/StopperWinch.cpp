@@ -11,12 +11,12 @@
 #include "math.h"
 
 StopperWinch::StopperWinch() : PIDSubsystem("StopperWinch",0.5,0,0) {
-	stopperEncoder = new Encoder(C_ENCODER_STOPPER_A,C_ENCODER_STOPPER_B,true);
+	stopperEncoder = new Encoder(C_ENCODER_STOPPER_A,C_ENCODER_STOPPER_B,false);
 	armEncoder = new Encoder(C_ENCODER_CATAPULT_A,C_ENCODER_CATAPULT_B,false);
 	stopper = new Talon(C_STOPPERMOTOR);
 	limitSwitch =new DigitalInput(C_ARM_SWITCH);
 	calibratedWithArm=false;
-	SetAbsoluteTolerance(0.4);
+	SetAbsoluteTolerance(0.1);
 	PIDSubsystem::Disable();
 }
 StopperWinch::~StopperWinch(){
@@ -39,8 +39,8 @@ void StopperWinch::ProjectSensors(){
 void StopperWinch::setGoalAngle(double angle){
 	SetSetpoint(DegreesToInches(angle)-DegreesToInches(m_zero));
 }
-void StopperWinch::setGoalInches(double angle){
-	SetSetpoint(angle-m_zero);
+void StopperWinch::setGoalInches(double in){
+	SetSetpoint(in);
 }
 
 bool StopperWinch::armSwitchState(){
