@@ -7,7 +7,7 @@
 
 #include "SpinIntake.h"
 
-SpinIntake::SpinIntake() {
+SpinIntake::SpinIntake(const char* name) : CommandBase(name) {
 	Requires(intake);
 }
 

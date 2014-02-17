@@ -38,7 +38,7 @@ Shooter::~Shooter(){
 
 void Shooter::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
-	SetDefaultCommand(new JoystickShoot());
+	SetDefaultCommand(new JoystickShoot("Default manual shoot"));
 }
 
 void Shooter::adjustCatapult(double difference, double time){

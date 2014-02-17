@@ -6,7 +6,7 @@
 /*-------------------------------------------------------------------------*/
 
 #include "ShootCatapult.h"
-ShootCatapult::ShootCatapult() {
+ShootCatapult::ShootCatapult(const char* name) : CommandBase(name) {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
 	WaitTime=1.0;

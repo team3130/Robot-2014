@@ -1,7 +1,7 @@
 #ifndef WAITFORHOT_H
 #define WAITFORHOT_H
 #include "DistanceTracking.h"
-#include "../CommandBase.h"
+#include "../Robot.h"
 
 /**
  *
@@ -10,7 +10,7 @@
  */
 class WaitForHot: public CommandBase {
 public:
-	WaitForHot();
+	WaitForHot(const char* name);
 	~WaitForHot();
 	virtual void Initialize();
 	virtual void Execute();

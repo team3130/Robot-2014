@@ -1,7 +1,7 @@
 #include "UTestNavigateTo.h"
 
 UTestNavigateTo::UTestNavigateTo() : CommandGroup("UTest Navigate To") {
-	m_command = new NavigateTo();
+	m_command = new NavigateTo("UTest NavigateTo");
 	AddSequential(m_command);
 	SmartDashboard::PutData(this);
 	SmartDashboard::PutNumber("UTest Navigate X", .707);

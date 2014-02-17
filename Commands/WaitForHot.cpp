@@ -1,6 +1,6 @@
 #include "WaitForHot.h"
 
-WaitForHot::WaitForHot() {
+WaitForHot::WaitForHot(const char* name) : CommandBase(name) {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
     distanceTracking = new DistanceTracking();
@@ -14,7 +14,7 @@ WaitForHot::~WaitForHot() {
 // Called just before this Command runs the first time
 void WaitForHot::Initialize() {
 	
-	hotMethod = (int) CommandBase::preferences->GetDouble("AutonomousDetectHotMethod",0.0);
+	hotMethod = (int) Robot::preferences->GetDouble("AutonomousDetectHotMethod",0.0);
 		
 	hotCount = 0;
 	hotIterate = 0;

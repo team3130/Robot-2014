@@ -25,19 +25,13 @@
 class CommandBase: public Command {
 public:
 	CommandBase(const char *name);
-	CommandBase();
 	static void init();
-	// Create a single static instance of all of your subsystems
-	//static ExampleSubsystem *examplesubsystem;
-	static Preferences* preferences;
 	static Compressor* compressor;
 	static Chassis* chassis;
 	static Shooter* shooter;
 	static Intake* intake;
 	static StopperWinch* stopper;
 	static OI *oi;
-	
-	static UnitTest* unitTest;
 };
 
 static inline double ConstrainAngle(double x){

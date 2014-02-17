@@ -6,7 +6,7 @@
 /*-------------------------------------------------------------------------*/
 #include "DriveHighGear.h"
 
-DriveHighGear::DriveHighGear() {
+DriveHighGear::DriveHighGear(const char* name) : CommandBase(name) {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
 	// We don't want to monopolize chassis just to shif gears so no requirements

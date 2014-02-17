@@ -15,7 +15,7 @@ class SpinIntake: public CommandBase {
 private:
 	bool on;
 public:
-	SpinIntake();
+	SpinIntake(const char* name);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

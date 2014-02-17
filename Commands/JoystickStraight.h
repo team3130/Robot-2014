@@ -18,7 +18,7 @@ class JoystickStraight: public CommandBase {
 private:
 	Timer timer;
 public:
-	JoystickStraight();
+	JoystickStraight(const char* name);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

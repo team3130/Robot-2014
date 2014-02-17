@@ -20,7 +20,7 @@ private:
 	double finalRotateAngle;
 	
 public:	
-	NavigateTo();
+	NavigateTo(const char *name);
 	~NavigateTo();
 	void SetGoalCartesian(double cartX, double cartY, double finalRotation);
 	void SetGoalPolar(double rotate, double distance, double finalRotation);

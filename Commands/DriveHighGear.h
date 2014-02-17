@@ -15,7 +15,7 @@
  */
 class DriveHighGear: public CommandBase {
 public:
-	DriveHighGear();
+	DriveHighGear(const char* name);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

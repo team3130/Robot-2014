@@ -29,7 +29,7 @@ private:
 	Chassis* chassis;	//from commandbase. we aren't a subclass of it b/c of deadly diamond of death
 public:
 	DriveStraight(const char *name);
-	void SetGoal(double dist, double thresh, double timeToWait);
+	void SetGoal(double dist, double thresh=0, double timeToWait=0);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

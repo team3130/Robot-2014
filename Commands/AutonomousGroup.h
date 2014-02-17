@@ -1,11 +1,11 @@
 #ifndef AUTONOMOUSGROUP_H
 #define AUTONOMOUSGROUP_H
 
+#include "../Robot.h"
 #include "Commands/CommandGroup.h"
 #include "DriveStraight.h"
 #include "WaitForHot.h"
 #include "ShootCatapult.h"
-#include "DriveStraightGyro.h"
 #include "IdleIntake.h"
 
 /**
@@ -17,10 +17,10 @@ class AutonomousGroup: public CommandGroup {
 private:
 	// DigitalOutput* pLEDRelay; todo
 	IdleIntake* idle;
-	DriveStraightGyro* driveStraight1;
+	DriveStraight* driveStraight1;
 	WaitForHot* waitForHot;
 	ShootCatapult* shoot;
-	DriveStraightGyro* driveStraight2;
+	DriveStraight* driveStraight2;
 public:	
 	AutonomousGroup();
 	~AutonomousGroup();

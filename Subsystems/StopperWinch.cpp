@@ -6,7 +6,7 @@
 /*-------------------------------------------------------------------------*/
 
 #include "StopperWinch.h"
-#include "../Robotmap.h"
+#include "../Robot.h"
 #include "../Commands/JoystickStopperWinch.h"
 #include "math.h"
 
@@ -26,7 +26,6 @@ StopperWinch::~StopperWinch(){
 	delete stopperEncoder;
 }
 void StopperWinch::InitDefaultCommand(){
-	stopperEncoder->SetDistancePerPulse(1.0/CommandBase::preferences->GetDouble("StopperEncoderPPI",114.53));
 	SetDefaultCommand(new JoystickStopperWinch());
 }
 void StopperWinch::setStopperDirect(double speed){
@@ -42,23 +41,12 @@ void StopperWinch::setGoal(double angle){
 	SetSetpoint(DegreesToInches(angle)-DegreesToInches(m_zero));
 }
 
-//Get/set methods
-double StopperWinch::getCatapultPosition(){
-	
-}
-double StopperWinch::getStopPosition(){
-	
-}
 bool StopperWinch::armSwitchState(){
 	return limitSwitch->Get();
 }
-//double getWinchPosition();
-bool StopperWinch::getReady(){
-	
-}
-int StopperWinch::getStopState(){}
 
 void StopperWinch::Calibrate(double angle){
+	stopperEncoder->SetDistancePerPulse(1.0/Robot::preferences->GetDouble("StopperEncoderPPI",114.53));
 	stopperEncoder->Reset();
 	m_zero = angle;
 	SetSetpoint(0);

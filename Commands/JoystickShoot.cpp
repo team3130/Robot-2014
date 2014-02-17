@@ -7,7 +7,7 @@
 
 #include "JoystickShoot.h"
 
-JoystickShoot::JoystickShoot() {
+JoystickShoot::JoystickShoot(const char* name) : CommandBase(name) {
 	Requires(shooter);
 }
 
@@ -22,8 +22,8 @@ void JoystickShoot::Execute() {
 	shooter->setPinch(false);
 	SmartDashboard::PutNumber("JoystickShoot Arm Encoder",shooter->armEncoder->GetDistance());
 	double d= oi->gamepad->GetRawAxis(B_POWERWINCH);
-	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.2){
-		shooter->setWinchDirect(oi->gamepad->GetRawAxis(B_POWERWINCH)/1);
+	if(fabs(d)>0.2){
+		shooter->setWinchDirect(d);
 	}else shooter->setWinchDirect(0);
 	
 	if(oi->gamepad->GetRawButton(B_SHOOT)){

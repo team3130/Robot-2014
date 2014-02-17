@@ -49,11 +49,6 @@ public:
 	void ProjectSensors();
 	//Get/set methods
 	void setGoal(double angle);
-	double getCatapultPosition();
-	double getStopPosition();
-	//double getWinchPosition();
-	bool getReady();
-	int getStopState();
 
 	bool armSwitchState();
 	double DegreesToInches(double angle);

@@ -15,7 +15,7 @@ class MoveCatapult: public CommandBase {
 private:
 	double timeLapse;
 public:
-	MoveCatapult();
+	MoveCatapult(const char* name);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

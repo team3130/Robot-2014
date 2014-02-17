@@ -7,7 +7,7 @@
 
 #include "ExampleCommand.h"
 
-ExampleCommand::ExampleCommand() {
+ExampleCommand::ExampleCommand(const char* name) : CommandBase(name) {
 	// Use Requires() here to declare subsystem dependencies
 	//Requires(chassis);
 }

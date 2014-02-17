@@ -7,7 +7,7 @@
 
 #include "MoveCatapult.h"
 
-MoveCatapult::MoveCatapult() {
+MoveCatapult::MoveCatapult(const char* name) : CommandBase(name) {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
 	Requires(chassis);

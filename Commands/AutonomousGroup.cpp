@@ -19,14 +19,14 @@ AutonomousGroup::AutonomousGroup() {
         // arm.
 
 	// LED relay
-	// todo pLEDRelay = new DigitalOutput(5);
+	// TODO pLEDRelay = new DigitalOutput(5);
 	
 	// allocate and store pointers to commands
 	idle = new IdleIntake();
-	driveStraight1 = new DriveStraightGyro("Initial Drive");
-	waitForHot = new WaitForHot();
-	shoot = new ShootCatapult();
-	driveStraight2 = new DriveStraightGyro("Auto Straight");
+	driveStraight1 = new DriveStraight("Initial Drive");
+	waitForHot = new WaitForHot("Wait for Hot Goal");
+	shoot = new ShootCatapult("Auto Shoot");
+	driveStraight2 = new DriveStraight("Auto Straight");
 	
 	// idle
 	AddSequential(idle);
@@ -65,25 +65,14 @@ void AutonomousGroup::Initialize(){
 	// if ( pLEDRelay ) todo
 		// pLEDRelay->Set(1); todo
 
-	double dDistanceToMove = CommandBase::preferences->GetDouble("AutonomousInitialMoveDistance",0.0);
-	double dSpeed = CommandBase::preferences->GetDouble("AutonomousDriveSpeed",0.5);
-
-	// calculate seconds of movement based on distance to move and speed
-	double dSeconds = dDistanceToMove / (dSpeed * 10); // todo
-
-	// set pre-shot drive strait params
-	driveStraight1->SetGoal( dSeconds, dSpeed );
-
-	// if we didn't move far enough on the pre-shot move, move forward a few feet
-	if ( dDistanceToMove < 4.0 ) {
-		dSpeed = dSpeed;
-		dSeconds = 3.0 / (dSpeed * 10); // todo
-	// else don't move (much)
-	} else {
-		dSpeed = 0.01;
-		dSeconds = 0.01;
-	}
-	driveStraight2->SetGoal( dSeconds, dSpeed );
+	driveStraight1->SetGoal(
+			Robot::preferences->GetDouble("AutonomousInitialMoveDistance",0.0),
+			Robot::preferences->GetDouble("AutonomousInitialMoveTolerance",0.5)
+		);
+	driveStraight2->SetGoal(
+			Robot::preferences->GetDouble("AutonomousFinalMoveDistance",4.0),
+			Robot::preferences->GetDouble("AutonomousFinalMoveTolerence",0.5)
+		);
 }
 
 // Called once after isFinished returns true

@@ -22,7 +22,7 @@ private:
 	bool beginWaiting;
 	double WaitTime;
 public:
-	ShootCatapult();
+	ShootCatapult(const char* name);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

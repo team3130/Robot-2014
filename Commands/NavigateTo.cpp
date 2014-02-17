@@ -8,7 +8,7 @@
 #include "NavigateTo.h"
 #include "math.h"
 
-NavigateTo::NavigateTo() {
+NavigateTo::NavigateTo(const char *name) : CommandGroup(name) {
 	rotateFirst = new Rotate("NavFirstRotate");
 	driveStraight = new DriveStraight("NavStraight");
 	rotateSecond = new Rotate("NavSecondRotate");
@@ -62,5 +62,5 @@ void NavigateTo::SetGoalCartesian(double cartX, double cartY, double finalRotati
 void NavigateTo::SetGoalPolar(double rotate, double distance, double finalRotation){
 	firstRotateAngle = rotate;
 	finalRotateAngle = finalRotation - firstRotateAngle;
-	moveDist = Chassis::feetToEncoderUnits(distance);
+	moveDist = distance;
 }
