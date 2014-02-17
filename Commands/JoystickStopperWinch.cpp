@@ -15,44 +15,57 @@ JoystickStopperWinch::JoystickStopperWinch() : CommandBase("Manual ") {
 
 // Called just before this Command runs the first time
 void JoystickStopperWinch::Initialize() {
+	Robot::preferences->GetBoolean("Arm Encoder Functional", false);
+	Robot::preferences->GetBoolean("Stopper Winch Encoder Functional", true);
 }
 // Called repeatedly when this Command is scheduled to run
 void JoystickStopperWinch::Execute() {
-	static bool buttondown=false;
-	static Timer timer;
-	static double mytime=0;
-	static double direction=1;
-	if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2 
-			&& oi->gamepad->GetRawAxis(B_STOPPERWINCH)*direction>0){
-		if(buttondown==false){
-			timer.Reset();
-			timer.Start();
-		}
-		//stopper->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
-		if(oi->gamepad->GetRawAxis(B_STOPPERWINCH)>0){
-			stopper->setStopperDirect(0.4);
-			direction=1;
-		}else{
-			stopper->setStopperDirect(-0.4);
-			direction=-1;
-		}
-		buttondown=true;
-	}else {
-		if(buttondown==true){
-			mytime+=direction*timer.Get();
-		}
-		stopper->setStopperDirect(0);
-		buttondown=false;
-		if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
+	if(!Robot::preferences->GetBoolean("Stopper Winch Encoder Functional")){
+		static bool buttondown=false;
+		static Timer timer;
+		static double mytime=0;
+		static double direction=1;
+		stopper->setSmart(false);
+		if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2 
+				&& oi->gamepad->GetRawAxis(B_STOPPERWINCH)*direction>0){
+			if(buttondown==false){
+				timer.Reset();
+				timer.Start();
+			}
+			//stopper->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
 			if(oi->gamepad->GetRawAxis(B_STOPPERWINCH)>0){
+				stopper->setStopperDirect(0.4);
 				direction=1;
 			}else{
+				stopper->setStopperDirect(-0.4);
 				direction=-1;
 			}
+			buttondown=true;
+		}else {
+			if(buttondown==true){
+				mytime+=direction*timer.Get();
+			}
+			stopper->setStopperDirect(0);
+			buttondown=false;
+			if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
+				if(oi->gamepad->GetRawAxis(B_STOPPERWINCH)>0){
+					direction=1;
+				}else{
+					direction=-1;
+				}
+			}
+		}
+		SmartDashboard::PutNumber("Stopper held down",mytime);
+		stopper->ProjectSensors();
+	}
+	else if(Robot::preferences->GetBoolean("Stopper Winch Encoder Functional")){
+		stopper->setSmart(true);
+		if(oi->gamepad->GetRawButton(B_LOADLOWSHOT)){
+			stopper->setGoalInches(0);
+		}if(oi->gamepad->GetRawButton(B_LOADHIGHSHOT)){
+			stopper->setGoalInches(3);
 		}
 	}
-	SmartDashboard::PutNumber("Stopper held down",mytime);
-	stopper->ProjectSensors();
 }
 
 // Make this return true when this Command no longer needs to run execute()

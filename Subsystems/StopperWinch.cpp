@@ -36,9 +36,11 @@ void StopperWinch::ProjectSensors(){
 	SmartDashboard::PutNumber("StopperWinch Arm2 Encoder", armEncoder->GetDistance());
 	SmartDashboard::PutBoolean("StopperWinch Arm Switch", (limitSwitch->Get()?true:false));
 }
-void StopperWinch::setGoal(double angle){
-	//do math here.
+void StopperWinch::setGoalAngle(double angle){
 	SetSetpoint(DegreesToInches(angle)-DegreesToInches(m_zero));
+}
+void StopperWinch::setGoalInches(double angle){
+	SetSetpoint(angle-m_zero);
 }
 
 bool StopperWinch::armSwitchState(){
@@ -70,4 +72,8 @@ double StopperWinch::DegreesToInches(double angle){
 }
 double StopperWinch::InchesToDegrees(double inches){
 	return 0;
+}
+void StopperWinch::setSmart(bool smart){
+	if(smart)PIDSubsystem::Enable();
+	else PIDSubsystem::Disable();
 }

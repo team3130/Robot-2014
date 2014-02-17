@@ -48,7 +48,9 @@ public:
 	void setStopperDirect(double speed);
 	void ProjectSensors();
 	//Get/set methods
-	void setGoal(double angle);
+	void setGoalAngle(double angle);
+	void setGoalInches(double inches);
+	void setSmart(bool smart);
 
 	bool armSwitchState();
 	double DegreesToInches(double angle);

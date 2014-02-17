@@ -69,6 +69,8 @@
 #define B_STOPPERWINCH 4
 #define B_SHOOT 6
 #define B_LOCKSHOOTER 9
+#define B_LOADLOWSHOT 1
+#define B_LOADHIGHSHOT 3
 
 // If you are using multiple modules, make sure to define both the port
 // number and the module. For example you with a rangefinder:
