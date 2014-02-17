@@ -18,11 +18,40 @@ void JoystickStopperWinch::Initialize() {
 }
 // Called repeatedly when this Command is scheduled to run
 void JoystickStopperWinch::Execute() {
-	static bool beaterup=false;
-	static bool extendPressed=false;
-	if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
-		stopper->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
-	}else stopper->setStopperDirect(0);
+	static bool buttondown=false;
+	static Timer timer;
+	static double mytime=0;
+	static double direction=1;
+	if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2 
+			&& oi->gamepad->GetRawAxis(B_STOPPERWINCH)*direction>0){
+		if(buttondown==false){
+			timer.Reset();
+			timer.Start();
+		}
+		//stopper->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
+		if(oi->gamepad->GetRawAxis(B_STOPPERWINCH)>0){
+			stopper->setStopperDirect(0.4);
+			direction=1;
+		}else{
+			stopper->setStopperDirect(-0.4);
+			direction=-1;
+		}
+		buttondown=true;
+	}else {
+		if(buttondown==true){
+			mytime+=direction*timer.Get();
+		}
+		stopper->setStopperDirect(0);
+		buttondown=false;
+		if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
+			if(oi->gamepad->GetRawAxis(B_STOPPERWINCH)>0){
+				direction=1;
+			}else{
+				direction=-1;
+			}
+		}
+	}
+	SmartDashboard::PutNumber("Stopper held down",mytime);
 	stopper->ProjectSensors();
 }
 
