@@ -10,7 +10,7 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 
-class StopperWinch: public Subsystem {
+class StopperWinch: public PIDSubsystem {
 private:
 	Talon* stopper;
 	DigitalInput* limitSwitch;
@@ -23,6 +23,7 @@ private:
 	bool calibratedWithArm;
 	double stopperPosition;
 	double armShotEncoderPosition;
+	double m_zero;
 public:
 	//Encoder* winchEncoder;
 	Encoder* stopperEncoder;
@@ -41,11 +42,11 @@ public:
 	StopperWinch();
 	~StopperWinch();
 	void InitDefaultCommand();
+	double ReturnPIDInput();
+	void UsePIDOutput(double output);
+	void Calibrate(double angle);
 	void setStopperDirect(double speed);
 	void ProjectSensors();
-	void resetStopEncoder();
-	void checkArmSwitchToCalibrate();
-	void setSyncedArmPosition();	//the arm position at any point immediately after shooting.
 	//Get/set methods
 	void setGoal(double angle);
 	double getCatapultPosition();
@@ -55,6 +56,8 @@ public:
 	int getStopState();
 
 	bool armSwitchState();
+	double DegreesToInches(double angle);
+	double InchesToDegrees(double inches);
 };
 
 #endif

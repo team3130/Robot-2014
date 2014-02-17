@@ -82,5 +82,7 @@
 #define N_ENCODER_PPR 256
 #define N_CHAIN_RATIO (28.0/22.0)
 #define N_WHEEL_ENCODER_RATIO ((36.0/12.0)/N_CHAIN_RATIO)
-
+#define N_FRAME_L 28.5
+#define N_FRAME_H 13.75
+#define N_FRAME_ARMLENGTH 23.0
 #endif

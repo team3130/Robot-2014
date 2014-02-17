@@ -10,13 +10,14 @@
 #include "../Commands/JoystickStopperWinch.h"
 #include "math.h"
 
-StopperWinch::StopperWinch() : Subsystem("StopperWinch") {
+StopperWinch::StopperWinch() : PIDSubsystem("StopperWinch",0.5,0,0) {
 	stopperEncoder = new Encoder(C_ENCODER_STOPPER_A,C_ENCODER_STOPPER_B,true);
-	stopperEncoder->SetDistancePerPulse(114.53);
 	armEncoder = new Encoder(C_ENCODER_CATAPULT_A,C_ENCODER_CATAPULT_B,false);
 	stopper = new Talon(C_STOPPERMOTOR);
 	limitSwitch =new DigitalInput(C_ARM_SWITCH);
 	calibratedWithArm=false;
+	SetAbsoluteTolerance(0.4);
+	PIDSubsystem::Disable();
 }
 StopperWinch::~StopperWinch(){
 	//delete winchEncoder;
@@ -25,6 +26,7 @@ StopperWinch::~StopperWinch(){
 	delete stopperEncoder;
 }
 void StopperWinch::InitDefaultCommand(){
+	stopperEncoder->SetDistancePerPulse(1.0/CommandBase::preferences->GetDouble("StopperEncoderPPI",114.53));
 	SetDefaultCommand(new JoystickStopperWinch());
 }
 void StopperWinch::setStopperDirect(double speed){
@@ -35,14 +37,9 @@ void StopperWinch::ProjectSensors(){
 	SmartDashboard::PutNumber("StopperWinch Arm2 Encoder", armEncoder->GetDistance());
 	SmartDashboard::PutBoolean("StopperWinch Arm Switch", (limitSwitch->Get()?true:false));
 }
-void StopperWinch::checkArmSwitchToCalibrate(){
-	
-}
-void StopperWinch::setSyncedArmPosition(){
-	
-}
 void StopperWinch::setGoal(double angle){
-	
+	//do math here.
+	SetSetpoint(DegreesToInches(angle)-DegreesToInches(m_zero));
 }
 
 //Get/set methods
@@ -60,3 +57,29 @@ bool StopperWinch::getReady(){
 	
 }
 int StopperWinch::getStopState(){}
+
+void StopperWinch::Calibrate(double angle){
+	stopperEncoder->Reset();
+	m_zero = angle;
+	SetSetpoint(0);
+	Enable();
+}
+
+double StopperWinch::ReturnPIDInput(){
+	return stopperEncoder->GetDistance();
+}
+void StopperWinch::UsePIDOutput(double output){
+	stopper->Set(output);
+}
+
+double StopperWinch::DegreesToInches(double angle){
+	return sqrt(
+			N_FRAME_L*N_FRAME_L + N_FRAME_ARMLENGTH*N_FRAME_ARMLENGTH -
+			2.0*N_FRAME_L*N_FRAME_ARMLENGTH*cos(
+				asin(N_FRAME_H/N_FRAME_L) + angle*3.141592653589/180.0
+			)
+		);
+}
+double StopperWinch::InchesToDegrees(double inches){
+	return 0;
+}
