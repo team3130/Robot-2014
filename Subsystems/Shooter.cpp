@@ -75,7 +75,7 @@ void Shooter::LockPincher(bool lock){
 	pinch2->Set(!lock);
 }
 bool Shooter::hasSlack(){
-	return !(limitSwitch->Get()?true:false);
+	return (limitSwitch->Get()?true:false);
 }
 void Shooter::ProjectSensors() {
 	//SmartDashboard::PutNumber("Shooter Arm Angle", armEncoder->GetRaw());

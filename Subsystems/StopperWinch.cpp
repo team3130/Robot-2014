@@ -42,7 +42,7 @@ void StopperWinch::setGoal(double angle){
 }
 
 bool StopperWinch::armSwitchState(){
-	return limitSwitch->Get();
+	return (limitSwitch->Get()?true:false);
 }
 
 void StopperWinch::Calibrate(double angle){
