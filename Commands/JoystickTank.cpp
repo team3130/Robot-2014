@@ -25,8 +25,6 @@ void JoystickTank::Execute() {
 	//deadzones
 	float leftStick = oi->leftJoystick->GetY();
 	float rightStick = oi->rightJoystick->GetY();
-	SmartDashboard::PutNumber("DInput1", chassis->input1->Get());
-	SmartDashboard::PutNumber("DInput2", chassis->input1->Get());
 	if (fabs(leftStick)<.07f){
 		leftStick = 0;
 	}

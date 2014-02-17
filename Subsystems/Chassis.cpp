@@ -12,18 +12,17 @@
 #include "string.h"
 
 Chassis::Chassis() : Subsystem("Chassis"){
-	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B, true);
-	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B, true);
-	rightController->SetSmartInvertedMotor(true);
-	input1 = new DigitalInput(7);
-	input2 = new DigitalInput(8);
-	//leftController->SetInverted(true);
+	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
+	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
 	shifter = new Solenoid(C_SHIFTER);
 	gyro  = new Gyro(C_GYRO);
 	drive = new RobotDrive(leftController, rightController);
-	//drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
-	//drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
+	// Never use RobotDrive's SetInvertedMotor, use VelocityConltroller's one instead
 	drive->SetSafetyEnabled(false);
+	leftController->SetInvertedMotor(true);
+	rightController->SetInvertedMotor(true);
+	leftController->Encoder::SetReverseDirection(true);
+	rightController->Encoder::SetReverseDirection(true);
 }
 
 Chassis::~Chassis()
@@ -32,6 +31,7 @@ Chassis::~Chassis()
 	delete rightController;
 	delete drive;
 	delete gyro;
+	delete shifter;
 }
 
 void Chassis::InitDefaultCommand() {

@@ -17,15 +17,15 @@ private:
 	double m_power;
 	Talon* m_satellite;
 	bool m_smart;
-	bool m_reversedEncoder;
-	bool m_smartInvertOutput;
+	bool m_invertOutput;
 public:
-	VelocityController(uint32_t channel, uint32_t sat_channel, uint32_t aChannel, uint32_t bChannel,
-			bool reversedEncoder, Encoder::EncodingType encodingType = Encoder::k4X);
+	VelocityController(uint32_t channel, uint32_t sat_channel,
+			uint32_t aChannel, uint32_t bChannel,
+			Encoder::EncodingType encodingType = Encoder::k4X);
 	~VelocityController();
 	virtual void Set(float speed, uint8_t syncGroup=0);
 	void UseEncoder(bool use=true) {m_smart = use;}
-	void SetSmartInvertedMotor(bool inverted);
+	void SetInvertedMotor(bool inverted);
 };
 
 #endif
