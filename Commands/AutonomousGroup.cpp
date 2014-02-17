@@ -17,6 +17,9 @@ AutonomousGroup::AutonomousGroup() {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+
+	// LED relay
+	// todo pLEDRelay = new DigitalOutput(5);
 	
 	// allocate and store pointers to commands
 	idle = new IdleIntake();
@@ -52,27 +55,40 @@ AutonomousGroup::~AutonomousGroup(){
 		delete shoot;
 	if ( driveStraight2 )
 		delete driveStraight2;
+	// if ( pLEDRelay ) todo
+		// delete pLEDRelay; todo
 }
 
 void AutonomousGroup::Initialize(){
 	
+	// turn on the led
+	// if ( pLEDRelay ) todo
+		// pLEDRelay->Set(1); todo
+
 	double dDistanceToMove = CommandBase::preferences->GetDouble("AutonomousInitialMoveDistance",0.0);
-	double dSpeed = CommandBase::preferences->GetDouble("AutonomousDriveSpeed",2.0);
+	double dSpeed = CommandBase::preferences->GetDouble("AutonomousDriveSpeed",0.5);
 
 	// calculate seconds of movement based on distance to move and speed
-	double dSeconds = dDistanceToMove / dSpeed;
+	double dSeconds = dDistanceToMove / (dSpeed * 10); // todo
 
 	// set pre-shot drive strait params
 	driveStraight1->SetGoal( dSeconds, dSpeed );
 
 	// if we didn't move far enough on the pre-shot move, move forward a few feet
 	if ( dDistanceToMove < 4.0 ) {
-		dSpeed = 2.0;
-		dSeconds = 2.0;
+		dSpeed = dSpeed;
+		dSeconds = 3.0 / (dSpeed * 10); // todo
 	// else don't move (much)
 	} else {
-		dSpeed = 0.1;
-		dSeconds = 0.1;
+		dSpeed = 0.01;
+		dSeconds = 0.01;
 	}
-	driveStraight2->SetGoal(dSeconds,dSpeed);
+	driveStraight2->SetGoal( dSeconds, dSpeed );
+}
+
+// Called once after isFinished returns true
+void AutonomousGroup::End() {
+	// turn off the led
+	// if ( pLEDRelay ) todo
+		// pLEDRelay->Set(0); todo
 }
