@@ -45,12 +45,13 @@ void ShootCatapult::Execute() {
 	if(state==-2 && shootReady){
 		int outputs=0;
 		if(!stopper->armSwitchState()){
-			shooter->setWinchDirect(-.5);
+			shooter->setWinchDirect(.8);
 		}
 		else{
-			shooter->setWinchDirect(.5);
+			shooter->setWinchDirect(-.5);
 		}
 		if(stopper->armSwitchState() && shooter->hasSlack()){
+			shooter->setWinchDirect(0);
 			state=-1;
 		}
 	}
@@ -92,10 +93,6 @@ void ShootCatapult::Execute() {
 		shooter->setWinchDirect(0);
 	}
 	int v = stopper->armSwitchState() == 1;
-	if(stopper->armSwitchState() == 1)done=true;
-	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.2){
-		done=true;
-	}
 	SmartDashboard::PutNumber("Timer Time", timer.Get());
 	SmartDashboard::PutNumber("ShootCatapult State", state);
 }
