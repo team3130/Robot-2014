@@ -21,6 +21,8 @@ private:
 	int StopState;
 	Timer timer;
 	bool calibratedWithArm;
+	double stopperPosition;
+	double armShotEncoderPosition;
 public:
 	//Encoder* winchEncoder;
 	Encoder* stopperEncoder;
@@ -42,6 +44,8 @@ public:
 	void setStopperDirect(double speed);
 	void ProjectSensors();
 	void resetStopEncoder();
+	void checkArmSwitchToCalibrate();
+	void setSyncedArmPosition();	//the arm position at any point immediately after shooting.
 	//Get/set methods
 	void setGoal(double angle);
 	double getCatapultPosition();

@@ -58,14 +58,18 @@ void ShootCatapult::Execute() {
 			shooter->setWinchDirect(0);
 		}
 	}else{
-		if(oi->gamepad->GetRawButton(B_SHOOT))shooter->setPinch(true);
-		else shooter->setPinch(false);
-		shooter->setWinchDirect(0.0);
-
 		done=true;
-		//if(!oi->triggerShoot->Get())shooter->setWinchDirect(0.5);
-		//else shooter->setWinchDirect(0.5);
+		if(oi->triggerShoot->Get()){
+			shooter->setPinch(true);
+			shooter->setWinchDirect(0.0);
+		}
+		else{
+			shooter->setPinch(false);
+			shooter->setWinchDirect(0.5);
+		}
 	}
+	int v = stopper->armSwitchState() == 1;
+	if(stopper->armSwitchState() == 1)done=true;
 	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.2){
 		done=true;
 	}

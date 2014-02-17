@@ -9,7 +9,7 @@
 
 // Used to be constructed with (180,2.5,1,-1,0,0)
 StopperWinchControl::StopperWinchControl(const char *name): PIDCommand(name, 0, 0, 0){
-	PIDCommand::Requires(CommandBase::chassis);
+	//PIDCommand::Requires(CommandBase::chassis);
 	//SmartDashboard::PutData(this);
 	SmartDashboard::PutNumber("StopperWinchControl PID P",-7);
 	SmartDashboard::PutNumber("StopperWinchControl PID I",0);
@@ -55,7 +55,7 @@ void StopperWinchControl::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void StopperWinchControl::Execute() {
-
+	int i=0;
 }
 
 // Make this return true when this Command no longer needs to run execute()
