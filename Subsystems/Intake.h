@@ -18,6 +18,8 @@ private:
 	Solenoid* extend;
 	//solenoid that controls whether extend solenoid gets air
 	Solenoid* idle;
+	bool idleSet;
+	bool extendSet;
 	Timer readyTimer;
 public:
 	//encoder for beater bar

@@ -5,37 +5,37 @@
 /* Authors: Ashwin Chetty, Mikhail Kyraha                                  */
 /*-------------------------------------------------------------------------*/
 
-#include "Rotate.h"
+#include "StopperWinchControl.h"
 
 // Used to be constructed with (180,2.5,1,-1,0,0)
-Rotate::Rotate(const char *name): PIDCommand(name, 0, 0, 0){
-	PIDCommand::Requires(CommandBase::chassis);
+StopperWinchControl::StopperWinchControl(const char *name): PIDCommand(name, 0, 0, 0){
+	//PIDCommand::Requires(CommandBase::chassis);
 	//SmartDashboard::PutData(this);
-	SmartDashboard::PutNumber("Rotate PID P",-7);
-	SmartDashboard::PutNumber("Rotate PID I",0);
-	SmartDashboard::PutNumber("Rotate PID D",0);
-	SmartDashboard::PutNumber("Rotate Goal",0);
-	SmartDashboard::PutNumber("Rotate Threshold",0);
-	SmartDashboard::PutNumber("Rotate Cooldown",0);
+	SmartDashboard::PutNumber("StopperWinchControl PID P",-7);
+	SmartDashboard::PutNumber("StopperWinchControl PID I",0);
+	SmartDashboard::PutNumber("StopperWinchControl PID D",0);
+	SmartDashboard::PutNumber("StopperWinchControl Goal",0);
+	SmartDashboard::PutNumber("StopperWinchControl Threshold",0);
+	SmartDashboard::PutNumber("StopperWinchControl Cooldown",0);
 }
 
-void Rotate::SetGoal(double dist, double thresh, double timeToWait, bool resetGyro) {
+void StopperWinchControl::SetGoal(double dist, double thresh, double timeToWait, bool resetGyro) {
 	goal=ConstrainAngle(dist);
 	threshold=thresh;
 	confirmTime=timeToWait;
 	resetGyroOnInit=true;
-	SmartDashboard::PutNumber("Rotate Goal",goal);
-	SmartDashboard::PutNumber("Rotate Threshold",thresh);
-	SmartDashboard::PutNumber("Rotate Cooldown",timeToWait);
+	SmartDashboard::PutNumber("StopperWinchControl Goal",goal);
+	SmartDashboard::PutNumber("StopperWinchControl Threshold",thresh);
+	SmartDashboard::PutNumber("StopperWinchControl Cooldown",timeToWait);
 	resetGyroOnInit = resetGyro;
 }
 
 // Called just before this Command runs the first time
-void Rotate::Initialize() {
+void StopperWinchControl::Initialize() {
 	GetPIDController()->Disable();
-	double np=SmartDashboard::GetNumber("Rotate PID P")/1000.;
-	double ni=SmartDashboard::GetNumber("Rotate PID I")/1000.;
-	double nd=SmartDashboard::GetNumber("Rotate PID D")/1000.;
+	double np=SmartDashboard::GetNumber("StopperWinchControl PID P")/1000.;
+	double ni=SmartDashboard::GetNumber("StopperWinchControl PID I")/1000.;
+	double nd=SmartDashboard::GetNumber("StopperWinchControl PID D")/1000.;
 	GetPIDController()->SetPID(np,ni,nd);
 	GetPIDController()->SetSetpoint(goal);
 	GetPIDController()->SetAbsoluteTolerance(threshold);
@@ -50,16 +50,16 @@ void Rotate::Initialize() {
 	GetPIDController()->Reset();
 	GetPIDController()->Enable();
 	
-	//SmartDashboard::PutNumber("Minimum Rotate Speed", 0.15);
+	//SmartDashboard::PutNumber("Minimum StopperWinchControl Speed", 0.15);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void Rotate::Execute() {
-
+void StopperWinchControl::Execute() {
+	int i=0;
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool Rotate::IsFinished() {
+bool StopperWinchControl::IsFinished() {
 	if(!GetPIDController()->OnTarget()) return isConfirming = false;
 	if(!isConfirming) {
 		isConfirming = true;
@@ -68,11 +68,10 @@ bool Rotate::IsFinished() {
 	}
 	return timer.Get() >= confirmTime;
 }
-double Rotate::ReturnPIDInput(){
+double StopperWinchControl::ReturnPIDInput(){
 	return CommandBase::chassis->gyro->GetAngle();
 }
-
-void Rotate::UsePIDOutput(double output){
+void StopperWinchControl::UsePIDOutput(double output){
 	static double pmax=1;
 	static double minVoltage = 0.0;
 	if(output<minVoltage && output >0.001)output=minVoltage;
@@ -84,14 +83,14 @@ void Rotate::UsePIDOutput(double output){
 }
 
 // Called once after isFinished returns true
-void Rotate::End() {
+void StopperWinchControl::End() {
 	//TODO should we check for resetGyroOnInit here too?
 	CommandBase::chassis->gyro->Reset();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void Rotate::Interrupted() {
+void StopperWinchControl::Interrupted() {
 	End();
 }
 

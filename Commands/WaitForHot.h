@@ -11,6 +11,7 @@
 class WaitForHot: public CommandBase {
 public:
 	WaitForHot();
+	~WaitForHot();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
@@ -19,6 +20,7 @@ public:
 	DistanceTracking* distanceTracking;
 	int hotCount;
 	int hotIterate;
+	int hotMethod; // 0 = aimed, 1 = distance
 	Timer timer;
 };
 

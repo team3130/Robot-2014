@@ -22,16 +22,20 @@ CommandBase::CommandBase() : Command() {
 Compressor* CommandBase::compressor = NULL;
 Chassis* CommandBase::chassis = NULL;
 Shooter* CommandBase::shooter = NULL;
+StopperWinch* CommandBase::stopper = NULL;
 Intake* CommandBase::intake = NULL;
 OI* CommandBase::oi = NULL;
 UnitTest* CommandBase::unitTest = NULL;
+Preferences* CommandBase::preferences = NULL;
 
 void CommandBase::init() {
     // Create a single static instance of all of your subsystems. The following
 	// line should be repeated for each subsystem in the project.
 	//examplesubsystem = new ExampleSubsystem();
+	preferences = Preferences::GetInstance();
 	compressor = new Compressor(C_PRESSURE_SWITCH, C_COMPRESSOR_RELAY);
 	shooter = new Shooter(C_WINCHMOTOR1, C_SHOOTERSOLENOID1, C_SHOOTERSOLENOID2);
+	stopper = new StopperWinch();
 	intake = new Intake();
 	chassis = new Chassis();
 	oi = new OI();

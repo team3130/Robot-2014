@@ -24,7 +24,7 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	//drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
 	//drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
 	drive->SetSafetyEnabled(false);
-	SmartDashboard::PutNumber("Pulses Per Distance",Chassis::ENCODER_TOP_SPEED);
+	CommandBase::preferences->GetDouble("EncoderTopSpeed",3000);
 }
 
 Chassis::~Chassis()
@@ -41,8 +41,8 @@ void Chassis::InitDefaultCommand() {
 }
 
 void Chassis::InitEncoders() {
-	leftController->SetDistancePerPulse(1.0/ENCODER_TOP_SPEED);
-	rightController->SetDistancePerPulse(1.0/ENCODER_TOP_SPEED);
+	leftController->SetDistancePerPulse(1.0/CommandBase::preferences->GetDouble("EncoderTopSpeed",3000));
+	rightController->SetDistancePerPulse(1.0/CommandBase::preferences->GetDouble("EncoderTopSpeed",3000));
 	leftController->Reset();
 	rightController->Reset();
 	leftController->Start();
@@ -76,16 +76,18 @@ void Chassis::ProjectSensors() {
 	SmartDashboard::PutNumber("Chassis Right Velocity", rightController->GetRate());
 }
 
-double Chassis::encoderUnitsToFeet(double in){
-	static double conversionFactor = (Chassis::ENCODER_TOP_SPEED/360)*WHEEL_RADIUS_INCHES*WHEEL_RADIUS_INCHES*3.141592654/12;
+double Chassis::encoderUnitsToFeet(double units){
 	//1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.
-	return in*conversionFactor;
+	double conversionFactor = 3.141592654 * N_WHEEL_DIAMETER / 12.0;
+	conversionFactor *= CommandBase::preferences->GetDouble("EncoderTopSpeed") / N_ENCODER_PPR;
+	return units*conversionFactor;
 }
 
-double Chassis::feetToEncoderUnits(double in){
-	static double conversionFactor = (Chassis::ENCODER_TOP_SPEED/360)*WHEEL_RADIUS_INCHES*WHEEL_RADIUS_INCHES*3.141592654/12;
-	//1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.
-	return in/conversionFactor;
+double Chassis::feetToEncoderUnits(double feet){
+	// 1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.
+	double conversionFactor = 3.141592654 * N_WHEEL_DIAMETER / 12.0;
+	conversionFactor *= CommandBase::preferences->GetDouble("EncoderTopSpeed") / N_ENCODER_PPR;
+	return feet/conversionFactor;
 }
 
 void Chassis::ShiftGear(bool isHigh) {

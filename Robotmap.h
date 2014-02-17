@@ -32,6 +32,7 @@
 #define C_ENCODER_LEFT_B  4
 #define C_ENCODER_RIGHT_A 1
 #define C_ENCODER_RIGHT_B 2
+#define C_ARM_SWITCH 12
 
 #define C_WINCH_TAUT 13
 
@@ -76,4 +77,12 @@
 
 //#define C_SHIFTER_MODULE 1
 
+// Geometry
+#define N_WHEEL_DIAMETER 4.125
+#define N_ENCODER_PPR 256
+#define N_CHAIN_RATIO (28.0/22.0)
+#define N_WHEEL_ENCODER_RATIO ((36.0/12.0)/N_CHAIN_RATIO)
+#define N_FRAME_L 28.5
+#define N_FRAME_H 13.75
+#define N_FRAME_ARMLENGTH 23.0
 #endif

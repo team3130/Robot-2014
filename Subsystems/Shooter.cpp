@@ -12,13 +12,15 @@
 
 Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : Subsystem("Shooter") {
 	//winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_1, C_ENCODER_WINCH_CHANNEL_2, false);
-	stopperEncoder = new Encoder(C_ENCODER_STOPPER_A,C_ENCODER_STOPPER_B,false);
+	//stopperEncoder = new Encoder(C_ENCODER_STOPPER_A,C_ENCODER_STOPPER_B,true);
+//	Arm Encoder:
+	/**	POSITIVE VALUES SHOULD CORRESPOND WITH INCREASE IN HEIGHT. POSITIVE AXIS POINTS UPWARD.	**/
+	/**	INVERT IF NECESSARY.		**/
 	armEncoder = new Encoder(C_ENCODER_CATAPULT_A,C_ENCODER_CATAPULT_B,false);
 	pinch1 = new Solenoid(shootChannel1);
 	pinch2 = new Solenoid(shootChannel2);
 	limitSwitch=new DigitalInput(C_WINCH_TAUT);
 	winch = new Jaguar(winchMotorChannel);
-	stopper = new Talon(C_STOPPERMOTOR);
 	catapultPosition = 0;
 	toggle = false;
 	pinch1->Set(toggle);
@@ -31,9 +33,7 @@ Shooter::~Shooter(){
 	delete winch;
 	delete pinch1;
 	delete pinch2;
-	delete stopper;
 	delete armEncoder;
-	delete stopperEncoder;
 }
 
 void Shooter::InitDefaultCommand() {
@@ -57,10 +57,6 @@ void Shooter::setWinchDirect(double speed){
 	winch->SetSpeed(speed);
 }
 
-void Shooter::setStopperDirect(double speed){
-	stopper->SetSpeed(speed);
-}
-
 void Shooter::SetShoot(bool in){
 	//In theory, switches toggle of the shoot mechanism and sets the solenoid to that
 	toggle = !toggle;
@@ -80,9 +76,9 @@ void Shooter::LockPincher(bool lock){
 }
 
 void Shooter::ProjectSensors() {
-	SmartDashboard::PutNumber("Shooter Arm Angle", armEncoder->GetRaw());
+	//SmartDashboard::PutNumber("Shooter Arm Angle", armEncoder->GetRaw());
 	//SmartDashboard::PutNumber("Shooter Winch Rope", winchEncoder->GetRaw());
-	SmartDashboard::PutNumber("Shooter Stopper Rope", stopperEncoder->GetRaw());
+	//SmartDashboard::PutNumber("Shooter Stopper Rope", stopperEncoder->GetRaw());
 	SmartDashboard::PutBoolean("Shooter Limit Switch", (limitSwitch->Get()?true:false));
 }
 //Get/set methods
@@ -90,13 +86,6 @@ double Shooter::getCatapultPosition()
 {
 	return armEncoder->GetDistance();
 }
-
-//Gets the stop encoder
-double Shooter::getStopPosition()
-{
-	return stopperEncoder->GetDistance();
-}
-
 //Gets whether Pinch1 is active
 bool Shooter::getPinch1()
 {
@@ -115,32 +104,16 @@ bool Shooter::getReady()
 	return Ready;
 }
 
-//Gets the stop state
-int Shooter::getStopState()
-{
-	return StopState;
-}
 
 //Sets speed of Winch
 void Shooter::setWinchSpeed(double speed)
 {
-	winch->SetSpeed(speed);
-}
-//Sets stop motor speed
-void Shooter::setStopSpeed(double speed)
-{
-	stopper->SetSpeed(speed);
+	setWinchDirect(speed);
 }
 
 //Sets Ready
 void Shooter::setReady(bool value)
 {
 	Ready = value; 
-}
-
-//Sets stop state 
-void Shooter::setStopState(int value)
-{
-	StopState = value;
 }
 
