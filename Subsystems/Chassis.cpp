@@ -24,7 +24,6 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	//drive->SetInvertedMotor(RobotDrive::kRearLeftMotor,true);
 	//drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
 	drive->SetSafetyEnabled(false);
-	Robot::preferences->GetDouble("EncoderTopSpeed",3000);
 }
 
 Chassis::~Chassis()
@@ -38,6 +37,7 @@ Chassis::~Chassis()
 void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new JoystickTank("Default Tank Drive"));
+	Robot::preferences->GetDouble("EncoderTopSpeed",3000);
 }
 
 void Chassis::InitEncoders() {

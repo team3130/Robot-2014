@@ -39,24 +39,27 @@ void ShootCatapult::Execute() {
 	WaitTime=SmartDashboard::GetNumber("Winch Wait");
 	bool shootReady =intake->getReadyToShoot();
 	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
+	intake->SetIdle(true);
+	intake->ExtendArms(true);
 	//Checks if delay time has been met
-	if(state==-2){
+	if(state==-2 && shootReady){
 		int outputs=0;
 		if(!stopper->armSwitchState()){
-			shooter->setWinchDirect(-.5);
+			shooter->setWinchDirect(.8);
 		}
 		else{
-			shooter->setWinchDirect(.5);
+			shooter->setWinchDirect(-.5);
 		}
 		if(stopper->armSwitchState() && shooter->hasSlack()){
+			shooter->setWinchDirect(0);
 			state=-1;
 		}
 	}
-	else if(state==-1){
+	else if(state==-1 && shootReady){
 		shooter->setWinchDirect(0);
 		done=true;
 	}
-	else if(state==0){	//release pinch.
+	else if(state==0 && shootReady){	//release pinch.
 		if(shootReady){
 			intake->SetIdle(true);
 			intake->ExtendArms(true);
@@ -74,7 +77,7 @@ void ShootCatapult::Execute() {
 			state=2;
 			shooter->setWinchDirect(0);
 		}
-	}else if(state==2){
+	}else if(state==2 && shootReady){
 		if(!stopper->armSwitchState()){
 			shooter->setWinchDirect(-.5);
 		}
@@ -86,12 +89,10 @@ void ShootCatapult::Execute() {
 			done=true;
 			stopper->Calibrate(shooter->armEncoder->GetDistance());
 		}
+	}else{
+		shooter->setWinchDirect(0);
 	}
 	int v = stopper->armSwitchState() == 1;
-	if(stopper->armSwitchState() == 1)done=true;
-	if(fabs(oi->gamepad->GetRawAxis(B_POWERWINCH))>0.2){
-		done=true;
-	}
 	SmartDashboard::PutNumber("Timer Time", timer.Get());
 	SmartDashboard::PutNumber("ShootCatapult State", state);
 }
@@ -106,6 +107,7 @@ void ShootCatapult::End() {
 	shooter->setPinch(false);
 	shooter->setReady(false);
 	shooter->setWinchDirect(0);
+	state=-2;
 }
 
 // Called when another command which requires one or more of the same

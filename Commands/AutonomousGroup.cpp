@@ -40,6 +40,7 @@ AutonomousGroup::AutonomousGroup() {
 	
 	// shoot
 	AddSequential(shoot);
+	SmartDashboard::PutData("auto command", this);
 	
 	// drive forward to ensure we cross into the next zone
 	//AddSequential(driveStraight2);
