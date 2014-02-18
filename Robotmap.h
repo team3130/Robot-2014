@@ -58,7 +58,10 @@
 #define C_RIGHTSATELLITE 4
 
 // Buttons and axis
-#define B_HIGHGEAR 3
+#define B_HIGHGEAR1 10
+#define B_HIGHGEAR2 11
+#define B_LOWGEAR1 6
+#define B_LOWGEAR2 7
 #define B_EXTENDARMS 5
 #define B_IDLEARMS 10
 #define A_BEATERBAR 3
