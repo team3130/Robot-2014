@@ -23,7 +23,10 @@ public:
 	JoystickButton* triggerShoot;
 	JoystickButton* intakeTrigger;
 	JoystickButton* extendTrigger;
-	JoystickButton* shifterButton;
+	JoystickButton* shiftUpButton1;
+	JoystickButton* shiftDnButton1;
+	JoystickButton* shiftUpButton2;
+	JoystickButton* shiftDnButton2;
 };
 
 #endif
