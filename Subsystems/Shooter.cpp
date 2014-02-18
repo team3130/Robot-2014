@@ -8,6 +8,7 @@
 #include "Shooter.h"
 #include "../Robotmap.h"
 #include "../Commands/JoystickShoot.h"
+#include "../Commands/LogShooter.h"
 #include "math.h"
 
 Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : Subsystem("Shooter") {
@@ -26,6 +27,7 @@ Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : 
 	pinch1->Set(toggle);
 	pinch2->Set(!toggle);
 	Ready=true;
+	log = Logger::GetInstance();
 }
 
 Shooter::~Shooter(){
@@ -39,6 +41,10 @@ Shooter::~Shooter(){
 void Shooter::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new JoystickShoot("Default manual shoot"));
+}
+
+void Shooter::InitLogCommand() {
+	SetLogCommand(new LogShooter());
 }
 
 void Shooter::adjustCatapult(double difference, double time){
@@ -55,13 +61,16 @@ void Shooter::adjustCatapult(double difference, double time){
 }
 void Shooter::setWinchDirect(double speed){
 	winch->SetSpeed(speed);
+	log->update_number("Shooter.Winch.SetSpeed", speed);
 }
 
 void Shooter::SetShoot(bool in){
 	//In theory, switches toggle of the shoot mechanism and sets the solenoid to that
 	toggle = !toggle;
 	pinch1->Set(toggle);
+	log->update_bool("Shooter.Pinch1.Value", toggle);
 	pinch2->Set(!toggle);
+	log->update_bool("Shooter.Pinch2.Value", !toggle);
 }
 
 //Sets pinch1 and sets pinch2 to the opposite of pinch1

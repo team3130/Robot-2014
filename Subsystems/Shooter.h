@@ -7,10 +7,11 @@
 
 #ifndef SHOOTER_H
 #define SHOOTER_H
-#include "Commands/Subsystem.h"
+#include "../Logger/LogSubsystem.h"
+#include "../Logger/Logger.h"
 #include "WPILib.h"
 
-class Shooter: public Subsystem {
+class Shooter: public LogSubsystem {
 private:
 	Solenoid* pinch1;
 	Solenoid* pinch2;
@@ -23,6 +24,7 @@ private:
 	//The state of the Stop Motor (Lob or Shoot)
 	int StopState; 
 	Timer timer;
+	Logger* log;
 public:
 	//Encoder* winchEncoder;
 	Encoder* armEncoder;
@@ -30,6 +32,7 @@ public:
 	Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2);
 	~Shooter();
 	void InitDefaultCommand();
+	void InitLogCommand();
 	void adjustCatapult(double level, double time);
 	void setWinchDirect(double speed);
 	void SetShoot(bool in);
