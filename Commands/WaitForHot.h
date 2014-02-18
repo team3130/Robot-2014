@@ -22,6 +22,9 @@ public:
 	int hotIterate;
 	int hotMethod; // 0 = aimed, 1 = distance
 	Timer timer;
+	
+	static bool sm_bIsHot;
+	static bool sm_bInitialCheck;
 };
 
 #endif

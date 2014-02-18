@@ -22,8 +22,7 @@
 
 // Digital Input channels
 #define C_PRESSURE_SWITCH 14 
-#define C_ENCODER_WINCH_CHANNEL_1  9
-#define C_ENCODER_WINCH_CHANNEL_2  10
+
 #define C_ENCODER_STOPPER_A 5
 #define C_ENCODER_STOPPER_B 6
 #define C_ENCODER_CATAPULT_A 10

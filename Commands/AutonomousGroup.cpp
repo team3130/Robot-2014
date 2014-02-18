@@ -22,28 +22,28 @@ AutonomousGroup::AutonomousGroup() {
 	// TODO pLEDRelay = new DigitalOutput(5);
 	
 	// allocate and store pointers to commands
-	idle = new IdleIntake();
-	driveStraight1 = new DriveStraight("Initial Drive");
+	//idle = new IdleIntake();
+	driveStraight1 = new DriveStraightGyro("Initial Drive");
 	waitForHot = new WaitForHot("Wait for Hot Goal");
-	shoot = new ShootCatapult("Auto Shoot");
+	//shoot = new ShootCatapult("Auto Shoot");
 	//when true, winch is pulled back.
-	driveStraight2 = new DriveStraight("Auto Straight");
+	driveStraight2 = new DriveStraightGyro("Auto Straight");
 	
 	// idle
-	AddSequential(idle);
+	//AddSequential(idle);
 	
 	// drive forward to best shooting position (controlled via dashboard var) 
 	//AddSequential(driveStraight1);
 	
 	// wait until the goal is hot, could be now, might be @ seconds
-	//AddSequential(waitForHot);
+	AddSequential(waitForHot);
 	
 	// shoot
-	AddSequential(shoot);
+	//AddSequential(shoot);
 	SmartDashboard::PutData("auto command", this);
 	
 	// drive forward to ensure we cross into the next zone
-	//AddSequential(driveStraight2);
+	// AddSequential(driveStraight2);
 }
 
 AutonomousGroup::~AutonomousGroup(){
@@ -66,15 +66,19 @@ void AutonomousGroup::Initialize(){
 	// turn on the led
 	// if ( pLEDRelay ) todo
 		// pLEDRelay->Set(1); todo
-
-	driveStraight1->SetGoal(
+	WaitForHot::sm_bIsHot = false;
+	WaitForHot::sm_bInitialCheck = true;
+	
+	driveStraight1->SetGoal(0,0.0);
+	/*driveStraight1->SetGoal(
 			Robot::preferences->GetDouble("AutonomousInitialMoveDistance",0.0),
 			Robot::preferences->GetDouble("AutonomousInitialMoveTolerance",0.5)
-		);
-	driveStraight2->SetGoal(
+		);*/
+	driveStraight2->SetGoal(2,0.5);
+	/*driveStraight2->SetGoal(
 			Robot::preferences->GetDouble("AutonomousFinalMoveDistance",4.0),
 			Robot::preferences->GetDouble("AutonomousFinalMoveTolerence",0.5)
-		);
+		);*/
 }
 
 // Called once after isFinished returns true

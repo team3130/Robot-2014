@@ -1,5 +1,8 @@
 #include "WaitForHot.h"
 
+bool WaitForHot::sm_bIsHot = false;
+bool WaitForHot::sm_bInitialCheck = false;
+
 WaitForHot::WaitForHot(const char* name) : CommandBase(name) {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
@@ -27,6 +30,10 @@ void WaitForHot::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void WaitForHot::Execute() {
 	
+	if (! sm_bInitialCheck ) {
+		return;
+	}
+	
 	// we'll check for hot the first 10 times called (0-9)
 	if ( hotIterate < 10 ) {
 		
@@ -34,8 +41,12 @@ void WaitForHot::Execute() {
 		if ( hotMethod == 0 ) {
 			// if the aimed target is hot, increment hot count
 			if ( distanceTracking->IsAimedTargetHot() ) {
+				
+				SmartDashboard::PutBoolean("Ishot", true);
+				
 				hotCount ++;
-			}
+			} else
+				SmartDashboard::PutBoolean("Ishot", false);
 			
 		// else use closest method for hot test
 		} else {
@@ -51,17 +62,26 @@ void WaitForHot::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool WaitForHot::IsFinished() {
-	if ( timer.HasPeriodPassed(5.0)) 
-		return true;
-	
-	// after the 10th hot check, check if we're hot  
-	if ( hotIterate == 10 ) {
-		// if greater than five hots, assume hot, return true
-		if ( hotCount > 5 ) {
+
+	// if this is the first run of this command, just checking for hot
+	// and setting a 
+	if ( sm_bInitialCheck ) {
+		// after the 10th hot check, check if we're hot  
+		if ( hotIterate == 10 ) {
+			// if greater than five hots, assume hot, return true
+			if ( hotCount > 5 ) {
+				WaitForHot::sm_bIsHot = true;
+			} else {
+				WaitForHot::sm_bIsHot = false;
+			}
 			return true;
 		}
-		// increment hotIterate so that we don't bother checking again
-		hotIterate++;
+	}
+	else {
+		if ( timer.HasPeriodPassed(5.0)) {
+			WaitForHot::sm_bInitialCheck = false;
+			return true;
+		}
 	}
 	return false;
 }
