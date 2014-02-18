@@ -7,11 +7,12 @@
 #include "../Robotmap.h"
 #include "../Commands/JoystickTank.h"
 #include "../Commands/JoystickStraight.h"
+#include "../Commands/LogChassis.h"
 #include "Chassis.h"
 #include "math.h"
 #include "string.h"
 
-Chassis::Chassis() : Subsystem("Chassis"){
+Chassis::Chassis() : LogSubsystem("Chassis"){
 	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
 	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
 	shifter = new Solenoid(C_SHIFTER);
@@ -38,6 +39,10 @@ void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new JoystickTank("Default Tank Drive"));
 	Robot::preferences->GetDouble("EncoderTopSpeed",3000);
+}
+
+void Chassis::InitLogCommand() {
+	SetLogCommand(new LogChassis());
 }
 
 void Chassis::InitEncoders() {
@@ -94,3 +99,8 @@ double Chassis::feetToEncoderUnits(double feet){
 void Chassis::ShiftGear(bool isHigh) {
 	shifter->Set(isHigh);
 }
+
+bool Chassis::GetShiftPos() {
+	return shifter->Get();
+}
+

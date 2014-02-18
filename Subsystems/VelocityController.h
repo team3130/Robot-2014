@@ -24,6 +24,9 @@ public:
 			Encoder::EncodingType encodingType = Encoder::k4X);
 	~VelocityController();
 	virtual void Set(float speed, uint8_t syncGroup=0);
+	float GetEncoder() {
+		return Encoder::Get();
+	}
 	void UseEncoder(bool use=true) {m_smart = use;}
 	void SetInvertedMotor(bool inverted);
 };
