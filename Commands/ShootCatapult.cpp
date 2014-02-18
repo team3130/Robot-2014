@@ -24,6 +24,7 @@ ShootCatapult::ShootCatapult(const char* name) : CommandBase(name) {
 void ShootCatapult::Initialize() 
 {
 	state=-3;
+	intake->ResetIdleTimer();
 	intake->SetIdle(true);
 	intake->ExtendArms(true);
 	//Makes sure there is a delay for the intake to fall down
