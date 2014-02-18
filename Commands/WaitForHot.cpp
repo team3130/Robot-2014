@@ -43,13 +43,9 @@ void WaitForHot::Execute() {
 		// if using aimed method to test for hot
 		if ( hotMethod == 0 ) {
 			// if the aimed target is hot, increment hot count
-			if ( distanceTracking->IsAimedTargetHot() ) {
-				
-				SmartDashboard::PutBoolean("Ishot", true);
-				
+			if ( distanceTracking->IsAimedTargetHot() ) {				
 				hotCount ++;
-			} else
-				SmartDashboard::PutBoolean("Ishot", false);
+			}
 			
 		// else use closest method for hot test
 		} else {
@@ -77,6 +73,7 @@ bool WaitForHot::IsFinished() {
 			} else {
 				WaitForHot::sm_bIsHot = false;
 			}
+			SmartDashboard::PutBoolean("IsHot", WaitForHot::sm_bIsHot);	
 			return true;
 		}
 	}
