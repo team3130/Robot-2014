@@ -67,7 +67,7 @@ void Logger::update_string(const char* name, const char* value) {
 	fprintf(m_file, "S %s %s\n", name, value);
 }
 
-void Logger::update_boolean(const char* name, bool value) {
+void Logger::update_bool(const char* name, bool value) {
 	char buf[20];
 	snprintf(buf, 20, "%f.4", DriverStation::GetInstance()->GetMatchTime());
 	
