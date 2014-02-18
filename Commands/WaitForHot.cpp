@@ -43,8 +43,8 @@ void WaitForHot::Execute() {
 		return;
 	*/
 	
-	/Check if half a second had passed
-	if (timer.get >= .5){
+	//Check if half a second had passed
+	if (timer.Get() >= .5){
 		// we'll check for hot the first 10 times called (0-9)
 		if ( hotIterate < 10 ) {
 		
