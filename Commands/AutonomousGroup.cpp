@@ -43,13 +43,13 @@ AutonomousGroup::AutonomousGroup() {
 	AddSequential(waitForHot1);
 
 	// drive forward to best shooting position (controlled via dashboard var) 
-	AddSequential(driveStraight1);
+	//AddSequential(driveStraight1);
 	
 	// check stored is-hot value, return immediatly if hot, otherwise wait five seconds
 	AddSequential(waitForHot2);
 	
 	// shoot
-	AddSequential(shoot);
+	//AddSequential(shoot);
 	
 	// drive forward to ensure we cross into the next zone
 	AddSequential(driveStraight2);
