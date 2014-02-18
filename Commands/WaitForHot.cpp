@@ -30,7 +30,7 @@ void WaitForHot::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void WaitForHot::Execute() {
 	
-	if (! sm_bInitialCheck ) {
+	if ( !sm_bInitialCheck ) {
 		return;
 	}
 	
@@ -67,7 +67,7 @@ bool WaitForHot::IsFinished() {
 	// and setting a 
 	if ( sm_bInitialCheck ) {
 		// after the 10th hot check, check if we're hot  
-		if ( hotIterate == 10 ) {
+		if ( hotIterate >= 10 ) {
 			// if greater than five hots, assume hot, return true
 			if ( hotCount > 5 ) {
 				WaitForHot::sm_bIsHot = true;
@@ -78,6 +78,11 @@ bool WaitForHot::IsFinished() {
 		}
 	}
 	else {
+		// if initial check indicated hot, return now
+		if ( sm_bIsHot )
+			return true;
+		
+		// else if it's been five seconds, return now
 		if ( timer.HasPeriodPassed(5.0)) {
 			WaitForHot::sm_bInitialCheck = false;
 			return true;

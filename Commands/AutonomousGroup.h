@@ -19,7 +19,8 @@ private:
 	// DigitalOutput* pLEDRelay; todo
 	IdleIntake* idle;
 	DriveStraightGyro* driveStraight1;
-	WaitForHot* waitForHot;
+	WaitForHot* waitForHot1;
+	WaitForHot* waitForHot2;
 	ShootCatapult* shoot;
 	DriveStraightGyro* driveStraight2;
 public:	
