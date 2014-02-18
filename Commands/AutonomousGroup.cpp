@@ -20,7 +20,13 @@ AutonomousGroup::AutonomousGroup() {
 
 	// LED relay
 	// TODO pLEDRelay = new DigitalOutput(5);
-	
+
+	SmartDashboard::PutNumber("Autonomous - Init Move Dist", 0.0);
+	SmartDashboard::PutNumber("Autonomous - Init Move Tol", 0.5);
+
+	SmartDashboard::PutNumber("Autonomous - Final Move Dist", -2.0);
+	SmartDashboard::PutNumber("Autonomous - Final Move Tol", 0.5);
+
 	// allocate and store pointers to commands
 	idle = new IdleIntake();
 	waitForHot1 = new WaitForHot("Check for Hot Goal");
@@ -74,12 +80,20 @@ void AutonomousGroup::Initialize(){
 	WaitForHot::sm_bIsHot = false;
 	WaitForHot::sm_bInitialCheck = true;
 	
-	driveStraight1->SetGoal(0,0.0);
+	// driveStraight1->SetGoal(0,0.0);
+	driveStraight1->SetGoal(
+			SmartDashboard::GetNumber("Autonomous - Init Move Dist"),
+			SmartDashboard::GetNumber("Autonomous - Init Move Tol")
+		);
 	/*driveStraight1->SetGoal(
 			Robot::preferences->GetDouble("AutonomousInitialMoveDistance",0.0),
 			Robot::preferences->GetDouble("AutonomousInitialMoveTolerance",0.5)
 		);*/
-	driveStraight2->SetGoal(2,0.5);
+	// driveStraight2->SetGoal(2,0.5);
+	driveStraight2->SetGoal(
+			SmartDashboard::GetNumber("Autonomous - Final Move Dist"),
+			SmartDashboard::GetNumber("Autonomous - Final Move Tol")
+		);
 	/*driveStraight2->SetGoal(
 			Robot::preferences->GetDouble("AutonomousFinalMoveDistance",4.0),
 			Robot::preferences->GetDouble("AutonomousFinalMoveTolerence",0.5)
