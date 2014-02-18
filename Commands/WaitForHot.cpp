@@ -38,28 +38,33 @@ void WaitForHot::Execute() {
 	}
 	
 	// wait until half a second has passed before checking for hot or not
+	/*
 	if ( !timer.HasPeriodPassed(0.5))
 		return;
+	*/
 	
-	// we'll check for hot the first 10 times called (0-9)
-	if ( hotIterate < 10 ) {
+	/Check if half a second had passed
+	if (timer.get >= .5){
+		// we'll check for hot the first 10 times called (0-9)
+		if ( hotIterate < 10 ) {
 		
-		// if using aimed method to test for hot
-		if ( hotMethod == 0 ) {
-			// if the aimed target is hot, increment hot count
-			if ( distanceTracking->IsAimedTargetHot() ) {				
+			// if using aimed method to test for hot
+			if ( hotMethod == 0 ) {
+				// if the aimed target is hot, increment hot count
+				if ( distanceTracking->IsAimedTargetHot() ) {				
 				hotCount ++;
-			}
+				}
 			
 		// else use closest method for hot test
-		} else {
-			// if the closer target is hot, increment hot count
-			if ( distanceTracking->IsClosestTargetHot() ) {
+			} else {
+				// if the closer target is hot, increment hot count
+				if ( distanceTracking->IsClosestTargetHot() ) {
 				hotCount ++;
+				}
 			}
+			// increment hot iteration counter
+			hotIterate++;
 		}
-		// increment hot iteration counter
-		hotIterate++;
 	}
 }
 
