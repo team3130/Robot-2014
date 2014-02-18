@@ -74,6 +74,7 @@ bool WaitForHot::IsFinished() {
 				WaitForHot::sm_bIsHot = false;
 			}
 			SmartDashboard::PutBoolean("IsHot", WaitForHot::sm_bIsHot);	
+			WaitForHot::sm_bInitialCheck = false;
 			return true;
 		}
 	}
@@ -84,7 +85,6 @@ bool WaitForHot::IsFinished() {
 		
 		// else if it's been five seconds, return now
 		if ( timer.HasPeriodPassed(5.0)) {
-			WaitForHot::sm_bInitialCheck = false;
 			return true;
 		}
 	}
