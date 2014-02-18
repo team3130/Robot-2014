@@ -4,6 +4,9 @@
 /* teams under the same license as the WPILib code itself.                 */
 /* Authors: Matthew Ickstadt                                               */
 /*-------------------------------------------------------------------------*/
+#ifndef _LOGGER_H
+#define _LOGGER_H
+
 #include <cstdio>
 #include "WPILib.h"
 
@@ -31,3 +34,5 @@ private:
 	FILE* m_file;
 	NetworkTable* m_table;
 };
+
+#endif
