@@ -6,6 +6,8 @@ bool WaitForHot::sm_bInitialCheck = false;
 WaitForHot::WaitForHot(const char* name) : CommandBase(name) {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
+	SmartDashboard::PutNumber("Autonomous - Hot Method", 0.0);
+	
     distanceTracking = new DistanceTracking();
 }
 
@@ -17,7 +19,8 @@ WaitForHot::~WaitForHot() {
 // Called just before this Command runs the first time
 void WaitForHot::Initialize() {
 	
-	hotMethod = (int) Robot::preferences->GetDouble("AutonomousDetectHotMethod",0.0);
+	// hotMethod = (int) Robot::preferences->GetDouble("AutonomousDetectHotMethod",0.0);
+	hotMethod = (int) SmartDashboard::GetNumber("Autonomous - Hot Method");
 		
 	hotCount = 0;
 	hotIterate = 0;
