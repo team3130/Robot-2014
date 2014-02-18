@@ -14,6 +14,8 @@
 
 CommandBase::CommandBase(const char *name) : Command(name) {
 }
+CommandBase::CommandBase() : Command() {
+}
 
 // Initialize a single static instance of all of your subsystems to NULL
 Compressor* CommandBase::compressor = NULL;

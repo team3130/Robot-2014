@@ -14,7 +14,7 @@ void LogShooter::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void LogShooter::Execute() {
 	log->update_number("Shooter.Catapult.Position", shooter->getCatapultPosition());
-	log->update_bool("Shooter.LimitSwitch.Value", shooter->limitSwitch->Get());
+//	log->update_bool("Shooter.LimitSwitch.Value", shooter->limitSwitch->Get());
 }
 
 // Make this return true when this Command no longer needs to run execute()

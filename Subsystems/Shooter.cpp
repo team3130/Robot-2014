@@ -9,9 +9,10 @@
 #include "../Robotmap.h"
 #include "../Commands/JoystickShoot.h"
 #include "../Commands/LogShooter.h"
+#include "../Logger/LogSubsystem.h"
 #include "math.h"
 
-Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : Subsystem("Shooter") {
+Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : LogSubsystem("Shooter") {
 	//winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_1, C_ENCODER_WINCH_CHANNEL_2, false);
 	//stopperEncoder = new Encoder(C_ENCODER_STOPPER_A,C_ENCODER_STOPPER_B,true);
 //	Arm Encoder:
