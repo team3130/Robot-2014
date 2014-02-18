@@ -37,6 +37,10 @@ void WaitForHot::Execute() {
 		return;
 	}
 	
+	// wait until half a second has passed before checking for hot or not
+	if ( !timer.HasPeriodPassed(0.5))
+		return;
+	
 	// we'll check for hot the first 10 times called (0-9)
 	if ( hotIterate < 10 ) {
 		
