@@ -1,4 +1,5 @@
 #include "AutonomousGroup.h"
+#include "WindCatapult.h"
 
 AutonomousGroup::AutonomousGroup() {
         // Add Commands here:
@@ -21,10 +22,10 @@ AutonomousGroup::AutonomousGroup() {
 	// LED relay
 	// TODO pLEDRelay = new DigitalOutput(5);
 
-	SmartDashboard::PutNumber("Autonomous - Init Move Dist", 0.0);
+	SmartDashboard::PutNumber("Autonomous - Init Move Dist", 0);
 	SmartDashboard::PutNumber("Autonomous - Init Move Tol", 0.5);
 
-	SmartDashboard::PutNumber("Autonomous - Final Move Dist", -2.0);
+	SmartDashboard::PutNumber("Autonomous - Final Move Dist", 1);
 	SmartDashboard::PutNumber("Autonomous - Final Move Tol", 0.5);
 
 	// allocate and store pointers to commands
@@ -33,10 +34,12 @@ AutonomousGroup::AutonomousGroup() {
 	driveStraight1 = new DriveStraightGyro("Initial Drive");
 	waitForHot2 = new WaitForHot("Wait for Hot Goal");
 	shoot = new ShootCatapult("Auto Shoot");
+	WindCatapult* wind = new WindCatapult("Wind Back Catapult");
 	//when true, winch is pulled back.
 	driveStraight2 = new DriveStraightGyro("Auto Straight");
 	
 	// idle
+	AddParallel(wind);
 	AddSequential(idle);
 	
 	// check for hot, store result as waitforhot static

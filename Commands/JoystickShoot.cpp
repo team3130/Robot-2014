@@ -17,14 +17,14 @@ JoystickShoot::JoystickShoot(const char* name) : CommandBase(name) {
 
 // Called just before this Command runs the first time
 void JoystickShoot::Initialize() {
-	shooter->armEncoder->Reset();
-	shooter->armEncoder->Start();
+//	shooter->armEncoder->Reset();
+//	shooter->armEncoder->Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickShoot::Execute() {
 	shooter->setPinch(false);
-	SmartDashboard::PutNumber("JoystickShoot Arm Encoder",shooter->armEncoder->GetDistance());
+//	SmartDashboard::PutNumber("JoystickShoot Arm Encoder",shooter->armEncoder->GetDistance());
 	double d= oi->gamepad->GetRawAxis(B_POWERWINCH);
 	if(fabs(d)>0.2){
 		shooter->setWinchDirect(d*0.86);
