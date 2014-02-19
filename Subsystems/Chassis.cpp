@@ -37,7 +37,7 @@ Chassis::~Chassis()
 void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new JoystickTank("Default Tank Drive"));
-	Robot::preferences->GetDouble("EncoderTopSpeed",3000);
+	Robot::preferences->GetDouble("EncoderTopSpeed",7200);
 }
 
 void Chassis::InitEncoders() {

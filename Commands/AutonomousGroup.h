@@ -4,6 +4,7 @@
 #include "../Robot.h"
 #include "Commands/CommandGroup.h"
 #include "DriveStraight.h"
+#include "DriveStraightGyro.h"
 #include "WaitForHot.h"
 #include "ShootCatapult.h"
 #include "IdleIntake.h"
@@ -17,10 +18,11 @@ class AutonomousGroup: public CommandGroup {
 private:
 	// DigitalOutput* pLEDRelay; todo
 	IdleIntake* idle;
-	DriveStraight* driveStraight1;
-	WaitForHot* waitForHot;
+	DriveStraightGyro* driveStraight1;
+	WaitForHot* waitForHot1;
+	WaitForHot* waitForHot2;
 	ShootCatapult* shoot;
-	DriveStraight* driveStraight2;
+	DriveStraightGyro* driveStraight2;
 public:	
 	AutonomousGroup();
 	~AutonomousGroup();

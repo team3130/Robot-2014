@@ -59,6 +59,10 @@ void Intake::SetIdle(bool in){
 	idle->Set(in);
 	idleSet=in;
 }
+void Intake::ResetIdleTimer(){
+	readyTimer.Reset();
+	readyTimer.Stop();
+}
 double Intake::getSpeed(){
 	return intake->Get();
 }

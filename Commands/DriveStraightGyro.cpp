@@ -58,16 +58,18 @@ double DriveStraightGyro::ReturnPIDInput(){
 }
 
 void DriveStraightGyro::UsePIDOutput(double output){
-	chassis->arcadeDrive(moveSpeed,0);
+	if(timer.Get()<=goalTime){
+		chassis->arcadeDrive(moveSpeed,0);
+	}
 }
 
 // Called once after isFinished returns true
 void DriveStraightGyro::End() {
-	
+	chassis->arcadeDrive(0,0);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void DriveStraightGyro::Interrupted() {
-	
+	End();
 }
