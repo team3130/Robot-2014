@@ -16,7 +16,7 @@ Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : 
 //	Arm Encoder:
 	/**	POSITIVE VALUES SHOULD CORRESPOND WITH INCREASE IN HEIGHT. POSITIVE AXIS POINTS UPWARD.	**/
 	/**	INVERT IF NECESSARY.		**/
-	armEncoder = new Encoder(C_ENCODER_CATAPULT_A,C_ENCODER_CATAPULT_B,false);
+	//armEncoder = new Encoder(C_ENCODER_CATAPULT_A,C_ENCODER_CATAPULT_B,false);
 	pinch1 = new Solenoid(shootChannel1);
 	pinch2 = new Solenoid(shootChannel2);
 	limitSwitch=new DigitalInput(C_WINCH_TAUT);
@@ -33,7 +33,7 @@ Shooter::~Shooter(){
 	delete winch;
 	delete pinch1;
 	delete pinch2;
-	delete armEncoder;
+	//delete armEncoder;
 }
 
 void Shooter::InitDefaultCommand() {
@@ -78,16 +78,11 @@ bool Shooter::hasSlack(){
 	return (limitSwitch->Get()?true:false);
 }
 void Shooter::ProjectSensors() {
-	//SmartDashboard::PutNumber("Shooter Arm Angle", armEncoder->GetRaw());
+	//SmartDashboard::PutNumber("Shooter Arm Angle", armEncoder->GetDistance());
 	//SmartDashboard::PutNumber("Shooter Winch Rope", winchEncoder->GetRaw());
 	//SmartDashboard::PutNumber("Shooter Stopper Rope", stopperEncoder->GetRaw());
 	SmartDashboard::PutBoolean("Shooter Limit Switch", (limitSwitch->Get()?true:false));
 	SmartDashboard::PutBoolean("Has Slack", hasSlack());
-}
-//Get/set methods
-double Shooter::getCatapultPosition()
-{
-	return armEncoder->GetDistance();
 }
 //Gets whether Pinch1 is active
 bool Shooter::getPinch1()
