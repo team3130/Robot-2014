@@ -12,6 +12,8 @@
 #include "string.h"
 
 Chassis::Chassis() : Subsystem("Chassis"){
+	isUsingEncoders = false;
+	isUsingGyro = false;
 	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
 	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
 	shifter = new Solenoid(C_SHIFTER);
@@ -37,12 +39,11 @@ Chassis::~Chassis()
 void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new JoystickTank("Default Tank Drive"));
-	Robot::preferences->GetDouble("EncoderTopSpeed",7200);
 }
 
 void Chassis::InitEncoders() {
-	leftController->SetDistancePerPulse(1.0/Robot::preferences->GetDouble("EncoderTopSpeed",3000));
-	rightController->SetDistancePerPulse(1.0/Robot::preferences->GetDouble("EncoderTopSpeed",3000));
+	leftController->SetDistancePerPulse(1.0/ENCODER_TOP_SPEED);
+	rightController->SetDistancePerPulse(1.0/ENCODER_TOP_SPEED);
 	leftController->Reset();
 	rightController->Reset();
 	leftController->Start();
@@ -64,8 +65,13 @@ void Chassis::arcadeDrive(float move, float turn){
 }
 
 void Chassis::SmartRobot(bool smart) {
-	leftController->UseEncoder(smart);
-	rightController->UseEncoder(smart);
+	if(isUsingEncoders){
+		leftController->UseEncoder(smart);
+		rightController->UseEncoder(smart);
+	} else {
+		leftController->UseEncoder(false);
+		rightController->UseEncoder(false);
+	}
 }
 
 void Chassis::ProjectSensors() {
@@ -77,17 +83,23 @@ void Chassis::ProjectSensors() {
 	SmartDashboard::PutNumber("Chassis Right Velocity", rightController->GetRate());
 }
 
+/*
+ * 1 EncoderUnit is defined as the maximum number of ticks counted by one encoder,
+ * for one drive motor, in one second, at maximum robot voltage. 12.0 inches in 1 foot.
+*/
 double Chassis::encoderUnitsToFeet(double units){
-	//1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.
 	double conversionFactor = 3.141592654 * N_WHEEL_DIAMETER / 12.0;
-	conversionFactor *= Robot::preferences->GetDouble("EncoderTopSpeed") / N_ENCODER_PPR;
+	conversionFactor *= ENCODER_TOP_SPEED / N_ENCODER_PPR;
 	return units*conversionFactor;
 }
 
+/*
+ * 1 EncoderUnit is defined as the maximum number of ticks counted by one encoder,
+ * for one drive motor, in one second, at maximum robot voltage. 12.0 inches in 1 foot.
+*/
 double Chassis::feetToEncoderUnits(double feet){
-	// 1 EncoderUnit is defined as the maximum number of ticks counted by one encoder, for one drive motor, in one second, at maximum robot voltage.
 	double conversionFactor = 3.141592654 * N_WHEEL_DIAMETER / 12.0;
-	conversionFactor *= Robot::preferences->GetDouble("EncoderTopSpeed") / N_ENCODER_PPR;
+	conversionFactor *= ENCODER_TOP_SPEED / N_ENCODER_PPR;
 	return feet/conversionFactor;
 }
 
