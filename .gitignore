@@ -6,6 +6,8 @@ ctdt.c
 PPC603gnu/
 Makefile
 
+# Backup files
+*.*~
 
 #############
 ## Windows detritus
