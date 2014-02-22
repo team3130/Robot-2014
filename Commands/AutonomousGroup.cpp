@@ -56,6 +56,7 @@ AutonomousGroup::AutonomousGroup() {
 	
 	// drive forward to ensure we cross into the next zone
 	AddSequential(driveStraight2);
+	AddSequential(new WindCatapult("Wind Back Catapult 2"));
 }
 
 AutonomousGroup::~AutonomousGroup(){
@@ -82,7 +83,7 @@ void AutonomousGroup::Initialize(){
 		// pLEDRelay->Set(1); todo
 	WaitForHot::sm_bIsHot = false;
 	WaitForHot::sm_bInitialCheck = true;
-	
+	CommandBase::stopper->Calibrate(0);
 	// driveStraight1->SetGoal(0,0.0);
 	driveStraight1->SetGoal(
 			SmartDashboard::GetNumber("Autonomous - Init Move Dist"),

@@ -157,14 +157,13 @@ int DistanceTracking::GetMarkerSizes( NumberArray & coords, double * dMarkerHeig
 		// can't handle zer or anything greater than 4
 		if (( iNumRects <= 0 ) || ( iNumRects > 4 ))
 			return 0;
-
-		double dMinX = 100000;
-		double dMaxX = -1;
-		double dMinY = 100000;
-		double dMaxY = -1;
 		
 		// iterate for all four rects
 		for ( int i=0; i<iNumRects; i++ ) {			
+			double dMinX = 100000;
+			double dMaxX = -1;
+			double dMinY = 100000;
+			double dMaxY = -1;
 			for ( int j=0; j<4; j++ ) {
 				dMinX = min( dMinX, coords.get( 8*i + j*2 ));
 				dMaxX = max( dMaxX, coords.get( 8*i + j*2 ));	
