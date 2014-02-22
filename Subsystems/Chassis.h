@@ -18,12 +18,13 @@
  */
 class Chassis: public Subsystem{
 private:
+	static const int ENCODER_TOP_SPEED = 7200;
+	static bool isUsingEncoders;
+	static bool isUsingGyro;
 	VelocityController* leftController;
 	VelocityController* rightController;
 	Solenoid* shifter;
 public:
-	static const int ENCODER_TOP_SPEED=3000;
-	static const double WHEEL_RADIUS_INCHES=2;
 	RobotDrive* drive;
 	Gyro* gyro;
 	Chassis();
@@ -34,8 +35,12 @@ public:
 	void arcadeDrive(float move, float turn);
 	void SmartRobot(bool smart=true);
 	void DumbRobot() {SmartRobot(false);}
+	bool CanUseEncoders() {return isUsingEncoders;}
+	bool CanUseGyro() {return isUsingGyro;}
+	double LowGearTopSpeed() {return encoderUnitsToFeet(ENCODER_TOP_SPEED);}
 	void ProjectSensors();
 	double GetDistance();
+	double GetRate();
 	static double encoderUnitsToFeet(double in);
 	static double feetToEncoderUnits(double in);
 	void ShiftGear(bool isHigh);

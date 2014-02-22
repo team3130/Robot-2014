@@ -16,8 +16,10 @@
  */
 class JoystickTank: public CommandBase {
 private:
-	float precisionMultiplier;	//how much precision each level gives us.
-	int precisionLevel;			//level of precision we want. 0 is default
+	static const float DEAD_ZONE = 0.08;
+	static const float FULL_SPEED = 0.92;
+	static const float RED_ZONE = 10.0; // TODO find this experimentally (ft/sec)
+	float previousDirection;
 public:
 	JoystickTank(const char* name);
 	virtual void Initialize();

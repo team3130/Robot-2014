@@ -9,8 +9,7 @@
 
 JoystickTank::JoystickTank(const char* name) : CommandBase(name) {
 	Requires(chassis);
-	precisionMultiplier = 0.6666666666f;
-	precisionLevel = 0;
+	previousDirection=0;
 }
 
 // Called just before this Command runs the first time
@@ -20,24 +19,49 @@ void JoystickTank::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickTank::Execute() {
-//	if(oi->leftJoystick->GetRawButton(11))chassis->ShiftGear(true);
-//	else chassis->ShiftGear(false);
-	//deadzones
 	float leftStick = oi->leftJoystick->GetY();
 	float rightStick = oi->rightJoystick->GetY();
-	if (fabs(leftStick)<.08f && fabs(rightStick)<.08f){
-		rightStick = 0;
-		leftStick = 0;
+
+	//deadzones
+	if (fabs(leftStick)<DEAD_ZONE && fabs(rightStick)<DEAD_ZONE){
 		chassis->ShiftGear(false);
+		chassis->tankDrive(0,0);
+		return;
 	}
 	
 	//precision mode
-	int leftPrecision = oi->leftPrecision->Get()?1:0;		//1 if button pressed, 0 otherwise.
-	int rightPrecision = oi->rightPrecision->Get()?1:0;		//1 if button pressed, 0 otherwise.
-	precisionLevel = leftPrecision+rightPrecision;
-	float multiplier = pow(precisionMultiplier, precisionLevel);
+	float multiplier = 1.0;	//how much precision each level gives us.
+	if(oi->leftPrecision->Get()) multiplier *= 0.666;
+	if(oi->rightPrecision->Get()) multiplier *= 0.666;
+	if(multiplier<1.0){
+		chassis->ShiftGear(false);
+		chassis->tankDrive(leftStick*multiplier, rightStick*multiplier);
+		return;
+	}
 
-	chassis->tankDrive(leftStick*multiplier, rightStick*multiplier);
+	// Automatic transmission
+	if(	fabs(leftStick)>FULL_SPEED &&
+		fabs(rightStick)>FULL_SPEED &&
+		leftStick*rightStick>0)
+	{
+		if(chassis->CanUseEncoders()){
+			if(chassis->GetRate() >= RED_ZONE) {
+				chassis->ShiftGear(true);
+			}
+		} else {
+			// Dumb drive, upshift immediately
+			chassis->ShiftGear(true);
+		}
+	} else if(
+		(leftStick<DEAD_ZONE && rightStick>-DEAD_ZONE) ||
+		(leftStick>-DEAD_ZONE && rightStick<DEAD_ZONE) ||
+		previousDirection*(leftStick+rightStick) < 0
+	)
+	{
+		chassis->ShiftGear(false);
+	}
+	previousDirection = leftStick + rightStick;
+	chassis->tankDrive(leftStick, rightStick);
 }
 
 // Make this return true when this Command no longer needs to run execute()
