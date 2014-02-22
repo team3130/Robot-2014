@@ -54,6 +54,10 @@ double Chassis::GetDistance() {
 	return encoderUnitsToFeet((leftController->GetDistance()+rightController->GetDistance())/2.0);
 }
 
+double Chassis::GetRate() {
+	return encoderUnitsToFeet((leftController->GetRate()+rightController->GetRate())/2.0);
+}
+
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
 	drive->TankDrive(leftSpeed, rightSpeed, false);
 	ProjectSensors();

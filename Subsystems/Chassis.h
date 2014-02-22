@@ -40,6 +40,7 @@ public:
 	double LowGearTopSpeed() {return encoderUnitsToFeet(ENCODER_TOP_SPEED);}
 	void ProjectSensors();
 	double GetDistance();
+	double GetRate();
 	static double encoderUnitsToFeet(double in);
 	static double feetToEncoderUnits(double in);
 	void ShiftGear(bool isHigh);
