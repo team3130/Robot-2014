@@ -7,11 +7,10 @@
 
 #ifndef INTAKE_H
 #define INTAKE_H
-#include "../Logger/Logger.h"
-#include "../Logger/LogSubsystem.h"
+#include "Commands/Subsystem.h"
 #include "WPILib.h"
 
-class Intake: public LogSubsystem {
+class Intake: public Subsystem {
 private:
 	//motor that controls beater bar, the actual intake mechanism
 	Talon* intake;
@@ -22,7 +21,6 @@ private:
 	bool idleSet;
 	bool extendSet;
 	Timer readyTimer;
-	Logger* log;
 public:
 	//encoder for beater bar
 	Encoder* intakeEncoder;

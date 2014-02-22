@@ -10,13 +10,12 @@
 #include "../Commands/SpinIntake.h"
 #include "../Commands/JoystickIntake.h"
 
-Intake::Intake() : LogSubsystem("Intake") {
+Intake::Intake() : Subsystem("Intake") {
 	intake = new Talon(C_INTAKEMOTOR1);
 	extend = new Solenoid(C_EXTENDSOLENOID1);
 	idle = new Solenoid(C_IDLESOLENOID);
 	idleSet=false;
 	extendSet=false;
-	log = Logger::GetInstance();
 }
 
 Intake::~Intake(){
@@ -32,13 +31,11 @@ void Intake::InitDefaultCommand() {
 
 void Intake::BeaterBar(double speed){
 	intake->SetSpeed(speed);
-	log->update_number("Intake.Beaterbar.Speed", speed);
 }
 
 void Intake::TakeBall(bool isOn){
 	double power = isOn ? 1 : 0;
 	intake->SetSpeed(power);
-	log->update_bool("Intake.Beaterbar.Speed", power);
 }
 void Intake::ExtendArms(bool extended){
 	//if the arms are set to extended or idle, then begin the timer.
@@ -52,7 +49,6 @@ void Intake::ExtendArms(bool extended){
 	}
 	extend->Set(extended);
 	extendSet=extended;
-	log->update_bool("Intake.Arms.Extended", extended);
 }
 void Intake::SetIdle(bool in){
 	if(in==true || extendSet)readyTimer.Start();
@@ -62,7 +58,6 @@ void Intake::SetIdle(bool in){
 	}
 	idle->Set(in);
 	idleSet=in;
-	log->update_bool("Intake.Arms.Idled", in);
 }
 void Intake::ResetIdleTimer(){
 	readyTimer.Reset();
