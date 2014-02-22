@@ -27,7 +27,7 @@ public:
 	RobotDrive* drive;
 	Gyro* gyro;
 	Chassis();
-	virtual ~Chassis();
+	~Chassis();
 	void InitDefaultCommand();
 	void InitEncoders();
 	void tankDrive(float leftSpeed, float rightSpeed);
