@@ -47,6 +47,8 @@ public:
 	bool getIdle();
 	//gets whether ready to shoot
 	bool getReadyToShoot();
+	//call at beginning of auto.
+	void ResetIdleTimer();
 };
 
 #endif

@@ -64,6 +64,10 @@ void Intake::SetIdle(bool in){
 	idleSet=in;
 	log->update_bool("Intake.Arms.Idled", in);
 }
+void Intake::ResetIdleTimer(){
+	readyTimer.Reset();
+	readyTimer.Stop();
+}
 double Intake::getSpeed(){
 	return intake->Get();
 }

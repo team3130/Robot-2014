@@ -20,39 +20,50 @@ AutonomousGroup::AutonomousGroup() {
 
 	// LED relay
 	// TODO pLEDRelay = new DigitalOutput(5);
-	
+
+	SmartDashboard::PutNumber("Autonomous - Init Move Dist", 0.0);
+	SmartDashboard::PutNumber("Autonomous - Init Move Tol", 0.5);
+
+	SmartDashboard::PutNumber("Autonomous - Final Move Dist", -2.0);
+	SmartDashboard::PutNumber("Autonomous - Final Move Tol", 0.5);
+
 	// allocate and store pointers to commands
 	idle = new IdleIntake();
-	driveStraight1 = new DriveStraight("Initial Drive");
-	waitForHot = new WaitForHot("Wait for Hot Goal");
+	waitForHot1 = new WaitForHot("Check for Hot Goal");
+	driveStraight1 = new DriveStraightGyro("Initial Drive");
+	waitForHot2 = new WaitForHot("Wait for Hot Goal");
 	shoot = new ShootCatapult("Auto Shoot");
 	//when true, winch is pulled back.
-	driveStraight2 = new DriveStraight("Auto Straight");
+	driveStraight2 = new DriveStraightGyro("Auto Straight");
 	
 	// idle
 	AddSequential(idle);
 	
+	// check for hot, store result as waitforhot static
+	AddSequential(waitForHot1);
+
 	// drive forward to best shooting position (controlled via dashboard var) 
-	//AddSequential(driveStraight1);
+	AddSequential(driveStraight1);
 	
-	// wait until the goal is hot, could be now, might be @ seconds
-	//AddSequential(waitForHot);
+	// check stored is-hot value, return immediatly if hot, otherwise wait five seconds
+	AddSequential(waitForHot2);
 	
 	// shoot
 	AddSequential(shoot);
-	SmartDashboard::PutData("auto command", this);
 	
 	// drive forward to ensure we cross into the next zone
-	//AddSequential(driveStraight2);
+	AddSequential(driveStraight2);
 }
 
 AutonomousGroup::~AutonomousGroup(){
 	if ( idle )
 		delete idle;
+	if ( waitForHot1 )
+		delete waitForHot1;
 	if ( driveStraight1 )
 		delete driveStraight1;
-	if ( waitForHot )
-		delete waitForHot;
+	if ( waitForHot2 )
+		delete waitForHot2;
 	if ( shoot )
 		delete shoot;
 	if ( driveStraight2 )
@@ -66,15 +77,27 @@ void AutonomousGroup::Initialize(){
 	// turn on the led
 	// if ( pLEDRelay ) todo
 		// pLEDRelay->Set(1); todo
-
+	WaitForHot::sm_bIsHot = false;
+	WaitForHot::sm_bInitialCheck = true;
+	
+	// driveStraight1->SetGoal(0,0.0);
 	driveStraight1->SetGoal(
+			SmartDashboard::GetNumber("Autonomous - Init Move Dist"),
+			SmartDashboard::GetNumber("Autonomous - Init Move Tol")
+		);
+	/*driveStraight1->SetGoal(
 			Robot::preferences->GetDouble("AutonomousInitialMoveDistance",0.0),
 			Robot::preferences->GetDouble("AutonomousInitialMoveTolerance",0.5)
-		);
+		);*/
+	// driveStraight2->SetGoal(2,0.5);
 	driveStraight2->SetGoal(
+			SmartDashboard::GetNumber("Autonomous - Final Move Dist"),
+			SmartDashboard::GetNumber("Autonomous - Final Move Tol")
+		);
+	/*driveStraight2->SetGoal(
 			Robot::preferences->GetDouble("AutonomousFinalMoveDistance",4.0),
 			Robot::preferences->GetDouble("AutonomousFinalMoveTolerence",0.5)
-		);
+		);*/
 }
 
 // Called once after isFinished returns true

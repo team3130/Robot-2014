@@ -13,6 +13,7 @@
 
 class JoystickShoot: public CommandBase {
 public:
+	DigitalInput** allInputs;
 	JoystickShoot(const char* name);
 	virtual void Initialize();
 	virtual void Execute();

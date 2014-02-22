@@ -25,11 +25,10 @@ void JoystickTank::Execute() {
 	//deadzones
 	float leftStick = oi->leftJoystick->GetY();
 	float rightStick = oi->rightJoystick->GetY();
-	if (fabs(leftStick)<.07f){
-		leftStick = 0;
-	}
-	if (fabs(rightStick)<.07f){
+	if (fabs(leftStick)<.08f && fabs(rightStick)<.08f){
 		rightStick = 0;
+		leftStick = 0;
+		chassis->ShiftGear(false);
 	}
 	
 	//precision mode

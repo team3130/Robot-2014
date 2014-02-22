@@ -9,6 +9,10 @@
 
 JoystickShoot::JoystickShoot(const char* name) : CommandBase(name) {
 	Requires(shooter);
+	allInputs = new DigitalInput*[14];
+	for(int i=0;i<14;i++){
+		allInputs[i]=new DigitalInput(i+1);
+	}
 }
 
 // Called just before this Command runs the first time
@@ -43,6 +47,12 @@ void JoystickShoot::Execute() {
 	}else shooter->setPinch(false);
 	*/
 	shooter->ProjectSensors();
+	
+	char* name = "D. Input    ";
+	for(int i=0;i<14;i++){
+		name[9]='A'+i;
+		SmartDashboard::PutNumber(name, allInputs[i]->Get());
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
