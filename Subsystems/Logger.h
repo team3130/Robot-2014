@@ -8,14 +8,16 @@
 #define _LOGGER_H
 
 #include <cstdio>
+#include <vector>
 #include "WPILib.h"
+#include "../Logger/Sensor.h"
+#include "../Commands/Log.h"
 
-#define LOG_PORT 1150
-#define LOG_SERVER "10.31.30.9"
 #define LOG_FILE "match.log"
 #define LOG_FILE_OLD "old_match.log"
 
-class Logger {
+class Logger : public Subsystem {
+	friend class Log;
 public:
 	static Logger* GetInstance();
 	
@@ -23,16 +25,21 @@ public:
 	void update_string(const char* name, const char* value);
 	void update_bool(const char* name, bool value);
 	void ValueChanged(ITable* source, const std::string& key, EntryValue value, bool isNew); // Implements ITableListener
-	
+	void add_sensor(Sensor*);
+
 private:
 	
 	Logger();
-	Logger(const Logger&);
-	Logger& operator=(const Logger&);
+	Logger(const Logger&) {}
+	Logger& operator=(const Logger&) {}
+	virtual ~Logger();
+
+	void InitDefaultCommand();
 	
 	static Logger* m_logger;
 	FILE* m_file;
 	NetworkTable* m_table;
+	std::vector<Sensor*> m_sensors;
 };
 
 #endif

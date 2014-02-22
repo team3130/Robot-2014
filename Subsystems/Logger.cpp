@@ -91,6 +91,9 @@ void Logger::ValueChanged(ITable* source, const std::string& key, EntryValue val
 	m_table->GetSubTable(name)->GetSubTable(key)->PutNumber(std::string(buf), value.f);
 }
 
+void Logger::InitDefaultCommand() {
+	SetDefaultCommand(new Log("logger"));
+}
 
 
 
