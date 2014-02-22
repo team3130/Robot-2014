@@ -59,8 +59,8 @@ void JoystickTank::Execute() {
 	)
 	{
 		chassis->ShiftGear(false);
-		previousDirection = leftStick + rightStick;
 	}
+	previousDirection = leftStick + rightStick;
 	chassis->tankDrive(leftStick, rightStick);
 }
 
