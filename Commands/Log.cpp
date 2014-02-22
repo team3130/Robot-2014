@@ -11,10 +11,11 @@ Log::Log(const char* name) {
 	Requires(logger);
 }
 void Log::Initialize() {
-
+	arr = logger->sensors;
 }
 void Log::Execute() {
-	for (logger->m_sensors::iterator it = logger->m_sensors.begin(); it != logger->m_sensors.end(); ++it) {
+	std::vector<Sensor*>::iterator it;
+	for (it = arr->begin(); it != arr->end(); ++it) {
 		logger->update_number((*it)->m_name, (*it)->Get());
 	}
 }

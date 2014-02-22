@@ -5,6 +5,7 @@
 /* Authors: Matthew Ickstadt                                               */
 /*-------------------------------------------------------------------------*/
 #include "Logger.h"
+#include "../Commands/Log.h"
 #include "Driverstation.h"
 #include "stat.h"
 #include <iostream>
@@ -17,9 +18,9 @@ int file_exists (char *filename)
 }
 
 
-Logger* Logger::m_logger = NULL;
-
 Logger::Logger() :
+		Subsystem("Logger"),
+		sensors(new std::vector<Sensor*>),
 		m_file(NULL),
 		m_table(NULL)
 		{
@@ -40,11 +41,8 @@ Logger::Logger() :
 	m_table = NetworkTable::GetTable("log");
 }
 
-Logger* Logger::GetInstance() {
-	if (m_logger == NULL) {
-		m_logger = new Logger();
-	}
-	return m_logger;
+void Logger::add_sensor(Sensor* s) {
+	sensors->push_back(s);
 }
 
 void Logger::update_number(const char* name, double value) {

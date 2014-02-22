@@ -7,39 +7,27 @@
 #ifndef _SENSOR_H
 #define _SENSOR_H
 
+
 // templates are useless becuase we don't have shared_ptr<>
 class Sensor
 {
-	enum Type {
-		Double;
-		Int;
-		Float;
-	};
-	const char* m_name;
 private:
-	void *m_funcPtr
-	Type m_type;
+	typedef double (*dfuncptr)();
+	typedef float (*ffuncptr)();
+	typedef int (*ifuncptr)();
+	const void *m_funcPtr;
+	const int m_t;
 public:
-	Sensor(double (*func)(), const char* name) : m_funcPtr(func), m_type(Double), m_name(name) {}
-	Sensor(int (*func)(), const char* name) : m_funcPtr(func), m_type(Int), m_name(name) {}
-	Sensor(float (*func)(), const char* name) : m_funcPtr(func), m_type(Float), m_name(name) {}
-	~Sensor() {
-		m_funcPtrDouble = NULL;
-		m_funcPtrFloat = NULL;
-		m_funcPtrInt = NULL;
-	virtual double Get() const = 0 {
-		switch (m_type) {
-		case Double:
-			return double((double (*)m_funcPtr())());
-			break;
-		case Int:
-			return double((int (*)m_funcPtr())());
-			break;
-		case Float:
-			return double((float (*)m_funcPtr())());
-			break;
-		}
-	}
+	static const int kDouble = 0;
+	static const int kFloat = 1;
+	static const int kInt = 2;
+	const char* m_name;
+	
+	Sensor(dfuncptr func, const char* name);
+	Sensor(ifuncptr func, const char* name);
+	Sensor(ffuncptr func, const char* name);
+	virtual ~Sensor();
+	virtual double Get();
 };
 
 #endif

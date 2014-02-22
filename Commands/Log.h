@@ -8,10 +8,10 @@
 #define _LOG_H
 
 #include "../CommandBase.h"
-#include "../WPILib.h"
-#include "../Subsystems/Logger.h"
 
-class Log : public Command {
+class Log : public CommandBase {
+private:
+	std::vector<Sensor*> *arr;
 public:
 	Log(const char* name);
 	virtual void Initialize();

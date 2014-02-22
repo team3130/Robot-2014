@@ -13,6 +13,7 @@
 #include "Subsystems/StopperWinch.h"
 #include "Subsystems/Shooter.h"
 #include "Subsystems/Intake.h"
+#include "Subsystems/Logger.h"
 #include "UnitTest/UnitTest.h"
 #include "OI.h"
 #include "Robotmap.h"
@@ -33,6 +34,7 @@ public:
 	static Intake* intake;
 	static StopperWinch* stopper;
 	static OI *oi;
+	static Logger *logger;
 };
 
 static inline double ConstrainAngle(double x){
