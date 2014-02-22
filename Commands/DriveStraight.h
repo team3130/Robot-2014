@@ -24,6 +24,7 @@ private:
 	double goal;
 	double threshold;
 	double confirmTime;
+	double dumbDriveTime;
 	double keepAngle;
 	bool isConfirming;
 	Chassis* chassis;	//from commandbase. we aren't a subclass of it b/c of deadly diamond of death

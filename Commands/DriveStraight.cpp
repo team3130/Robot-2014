@@ -21,6 +21,7 @@ void DriveStraight::SetGoal(double dist, double thresh, double timeToWait) {
 	goal=dist;
 	threshold=thresh;
 	confirmTime=timeToWait;
+	dumbDriveTime = dist / chassis->LowGearTopSpeed();
 	SmartDashboard::PutNumber(GetName()+"Straight Goal",goal);
 	SmartDashboard::PutNumber(GetName()+"Straight Threshold",thresh);
 	SmartDashboard::PutNumber(GetName()+"Straight Cooldown",timeToWait);
@@ -39,6 +40,8 @@ void DriveStraight::Initialize() {
 	keepAngle = chassis->gyro->GetAngle();
 	chassis->InitEncoders();
 	chassis->SmartRobot();
+	timer.Reset();
+	timer.Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -47,27 +50,42 @@ void DriveStraight::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveStraight::IsFinished() {
-	if(GetPIDController()->OnTarget()){
-		if(!isConfirming) {
-			isConfirming = true;
+	if(chassis->CanUseEncoders()){
+		if(GetPIDController()->OnTarget()){
+			if(!isConfirming) {
+				isConfirming = true;
+				timer.Reset();
+				timer.Start();
+			}
+			return timer.Get() >= confirmTime;
+		}else{
+			isConfirming = false;
+			timer.Stop();
 			timer.Reset();
-			timer.Start();
 		}
-		return timer.Get() >= confirmTime;
-	}else{
-		isConfirming = false;
-		timer.Stop();
-		timer.Reset();
+	} else {
+		return timer.Get()>=dumbDriveTime;
 	}
 	return false;
 }
 
 double DriveStraight::ReturnPIDInput(){
-	return chassis->GetDistance();
+	if(chassis->CanUseEncoders()){
+		return chassis->GetDistance();
+	} else {
+		if(timer.Get()>=dumbDriveTime){
+			return goal;
+		} else {
+			return 0;
+		}
+	}
 }
 
 void DriveStraight::UsePIDOutput(double output){
-	double drift = driftK*(chassis->gyro->GetAngle() - keepAngle)*fabs(output);
+	double drift = 0;
+	if(chassis->CanUseGyro()){
+		drift = driftK*(chassis->gyro->GetAngle() - keepAngle)*fabs(output);
+	}
 	chassis->arcadeDrive(output,drift);
 }
 
