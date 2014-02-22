@@ -4,8 +4,8 @@
 /* teams under the same license as the WPILib code itself.                 */
 /* Authors: Ashwin Chetty                                                  */
 /*-------------------------------------------------------------------------*/
-#ifndef EXAMPLE_COMMAND_H
-#define EXAMPLE_COMMAND_H
+#ifndef JOYSTICKTANK_H
+#define JOYSTICKTANK_H
 
 #include "../CommandBase.h"
 
