@@ -12,9 +12,10 @@
 #include "math.h"
 #include "string.h"
 
-Chassis::Chassis() : Subsystem("Chassis"){
-	isUsingEncoders = false;
-	isUsingGyro = false;
+bool Chassis::isUsingEncoders = false;
+bool Chassis::isUsingGyro = false;
+
+Chassis::Chassis() : Subsystem("Chassis") {
 	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
 	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
 	shifter = new Solenoid(C_SHIFTER);

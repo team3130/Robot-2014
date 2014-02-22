@@ -41,6 +41,8 @@ Logger::Logger() :
 	m_table = NetworkTable::GetTable("log");
 }
 
+Logger::~Logger() {}
+
 void Logger::add_sensor(Sensor* s) {
 	sensors->push_back(s);
 }

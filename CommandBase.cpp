@@ -9,6 +9,7 @@
 #include "Subsystems/Chassis.h"
 #include "Subsystems/Shooter.h"
 #include "Subsystems/Intake.h"
+#include "Subsystems/Logger.h"
 #include "Robotmap.h"
 #include "UnitTest/UnitTest.h"
 

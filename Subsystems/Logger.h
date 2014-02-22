@@ -23,7 +23,7 @@ public:
 	void ValueChanged(ITable* source, const std::string& key, EntryValue value, bool isNew); // Implements ITableListener
 	void add_sensor(Sensor*);
 	Logger();
-	virtual ~Logger();
+	~Logger();
 
 	void InitDefaultCommand();
 	

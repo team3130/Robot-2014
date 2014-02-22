@@ -35,7 +35,7 @@ public:
 	}
 	
 	static inline double getMotor() {
-		return ((T*)(GetSensorClassPtr))->SpeedController::Get();
+		return ((T*)(GetSensorClassPtr))->Talon::Get();
 	}
 	
 	static inline double getDistance() {
