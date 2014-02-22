@@ -19,7 +19,7 @@ StopperWinch::StopperWinch() : PIDSubsystem("StopperWinch",0.5,0,0) {
 	calibratedWithArm=false;
 	SetAbsoluteTolerance(0.1);
 	PIDSubsystem::Disable();
-	CommandBase::logger->add_sensor(new Sensor("Shooter.StopperWinch.Encoder.Position", stopperEncoder, (Sensor::dfuncptr)&GetSensor<Encoder>::getDistance));
+	Robot::logger->add_sensor(new Sensor("Shooter.StopperWinch.Encoder.Position", stopperEncoder, (Sensor::dfuncptr)&GetSensor<Encoder>::getDistance));
 }
 StopperWinch::~StopperWinch(){
 	//delete winchEncoder;

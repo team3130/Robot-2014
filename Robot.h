@@ -12,11 +12,14 @@
 #include "Commands/Command.h"
 #include "UnitTest/UnitTest.h"
 #include "CommandBase.h"
+#include "Subsystems/Logger.h"
+
 
 class Robot {
 public:
 	static Preferences* preferences;
 	static UnitTest*    unitTest;
+	static Logger* logger;
 };
 
 #endif

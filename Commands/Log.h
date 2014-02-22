@@ -7,9 +7,10 @@
 #ifndef _LOG_H
 #define _LOG_H
 
-#include "../CommandBase.h"
+#include "../Robot.h"
 
-class Log : public CommandBase {
+
+class Log : public Command {
 private:
 	std::vector<Sensor*> *arr;
 public:

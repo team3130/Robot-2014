@@ -8,15 +8,15 @@
 #include "Log.h"
 
 Log::Log(const char* name) {
-	Requires(logger);
+	Requires(Robot::logger);
 }
 void Log::Initialize() {
-	arr = logger->sensors;
+	arr = Robot::logger->sensors;
 }
 void Log::Execute() {
 	std::vector<Sensor*>::iterator it;
 	for (it = arr->begin(); it != arr->end(); ++it) {
-		logger->update_number((*it)->m_name, (*it)->Get());
+		Robot::logger->update_number((*it)->m_name, (*it)->Get());
 	}
 }
 bool Log::IsFinished() {

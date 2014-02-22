@@ -9,7 +9,6 @@
 #include "Subsystems/Chassis.h"
 #include "Subsystems/Shooter.h"
 #include "Subsystems/Intake.h"
-#include "Subsystems/Logger.h"
 #include "Robotmap.h"
 #include "UnitTest/UnitTest.h"
 
@@ -25,7 +24,7 @@ Shooter* CommandBase::shooter = NULL;
 StopperWinch* CommandBase::stopper = NULL;
 Intake* CommandBase::intake = NULL;
 OI* CommandBase::oi = NULL;
-Logger* CommandBase::logger = NULL;
+
 
 void CommandBase::init() {
     // Create a single static instance of all of your subsystems. The following
@@ -38,5 +37,4 @@ void CommandBase::init() {
 	chassis = new Chassis();
 	oi = new OI();
 	compressor->Start();
-	logger = new Logger();
 }

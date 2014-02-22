@@ -9,6 +9,7 @@
 
 Preferences* Robot::preferences = NULL;
 UnitTest*    Robot::unitTest = NULL;
+Logger* Robot::logger = NULL;
 
 class CommandBasedRobot : public IterativeRobot {
 private:
@@ -16,10 +17,12 @@ private:
 	LiveWindow *lw;
 
 	virtual void RobotInit() {
+		Robot::logger = new Logger();
 		CommandBase::init();
 		autonomousCommand = new AutonomousGroup();
 		lw = LiveWindow::GetInstance();
 		Robot::preferences = Preferences::GetInstance();
+		Robot::logger->update_number("TESTY", 3.14);
 	}
 	void getPreferencesData(){
 		Robot::unitTest = new UnitTest();

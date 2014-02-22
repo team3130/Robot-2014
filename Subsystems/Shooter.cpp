@@ -10,6 +10,7 @@
 #include "../Commands/JoystickShoot.h"
 #include "math.h"
 #include "../CommandBase.h"
+#include "../Robot.h"
 
 Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : Subsystem("Shooter") {
 	//winchEncoder = new Encoder(C_ENCODER_WINCH_CHANNEL_1, C_ENCODER_WINCH_CHANNEL_2, false);
@@ -27,7 +28,7 @@ Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : 
 	pinch1->Set(toggle);
 	pinch2->Set(!toggle);
 	Ready=true;
-	CommandBase::logger->add_sensor(new Sensor("Shooter.Arm.Encoder.Value", armEncoder, (Sensor::dfuncptr)&GetSensor<Encoder>::getDistance));
+	Robot::logger->add_sensor(new Sensor("Shooter.Arm.Encoder.Value", armEncoder, (Sensor::dfuncptr)&GetSensor<Encoder>::getDistance));
 
 }
 

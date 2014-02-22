@@ -36,8 +36,8 @@ Logger::Logger() :
 	
 	m_file = fopen(LOG_FILE, "w");
 	
-	NetworkTable::SetTeam(3130);
-	NetworkTable::SetServerMode();
+//	NetworkTable::SetTeam(3130);
+//	NetworkTable::SetServerMode();
 	m_table = NetworkTable::GetTable("log");
 }
 
