@@ -4,8 +4,8 @@ UTestDriveStraight::UTestDriveStraight() : CommandGroup("UTest Drive Straight") 
 	m_command = new DriveStraight("UTestDriveStraight");
 	AddSequential(m_command);
 	SmartDashboard::PutData(this);
-	SmartDashboard::PutNumber("UTest Straight Distance",0.5);
-	SmartDashboard::PutNumber("UTest Straight Tolerance",0.05);
+	SmartDashboard::PutNumber("UTest Straight Distance",12.0);
+	SmartDashboard::PutNumber("UTest Straight Tolerance",1.0);
 	SmartDashboard::PutNumber("UTest Straight Cooldown",1.5);
 }
 

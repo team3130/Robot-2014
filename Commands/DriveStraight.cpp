@@ -21,7 +21,7 @@ void DriveStraight::SetGoal(double dist, double thresh, double timeToWait) {
 	goal=dist;
 	threshold=thresh;
 	confirmTime=timeToWait;
-	dumbDriveTime = dist / chassis->LowGearTopSpeed();
+	dumbDriveTime = dist / LOW_GEAR_TOP_SPEED;
 	SmartDashboard::PutNumber(GetName()+"Straight Goal",goal);
 	SmartDashboard::PutNumber(GetName()+"Straight Threshold",thresh);
 	SmartDashboard::PutNumber(GetName()+"Straight Cooldown",timeToWait);

@@ -14,8 +14,8 @@
 Chassis::Chassis() : Subsystem("Chassis"){
 	isUsingEncoders = false;
 	isUsingGyro = false;
-	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
-	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
+	leftController = new VelocityController("Left",C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
+	rightController = new VelocityController("Right",C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
 	shifter = new Solenoid(C_SHIFTER);
 	gyro  = new Gyro(C_GYRO);
 	drive = new RobotDrive(leftController, rightController);
@@ -25,6 +25,8 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	rightController->SetInvertedMotor(true);
 	leftController->Encoder::SetReverseDirection(true);
 	rightController->Encoder::SetReverseDirection(true);
+	leftController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / N_ENCODER_LEFT_PPR);
+	rightController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / N_ENCODER_RIGHT_PPR);
 }
 
 Chassis::~Chassis()
@@ -42,8 +44,6 @@ void Chassis::InitDefaultCommand() {
 }
 
 void Chassis::InitEncoders() {
-	leftController->SetDistancePerPulse(1.0/ENCODER_TOP_SPEED);
-	rightController->SetDistancePerPulse(1.0/ENCODER_TOP_SPEED);
 	leftController->Reset();
 	rightController->Reset();
 	leftController->Start();
@@ -51,11 +51,11 @@ void Chassis::InitEncoders() {
 }
 
 double Chassis::GetDistance() {
-	return encoderUnitsToFeet((leftController->GetDistance()+rightController->GetDistance())/2.0);
+	return (leftController->GetDistance()+rightController->GetDistance())/2.0;
 }
 
 double Chassis::GetRate() {
-	return encoderUnitsToFeet((leftController->GetRate()+rightController->GetRate())/2.0);
+	return (leftController->GetRate()+rightController->GetRate())/2.0;
 }
 
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
@@ -90,22 +90,13 @@ void Chassis::ProjectSensors() {
 /*
  * 1 EncoderUnit is defined as the maximum number of ticks counted by one encoder,
  * for one drive motor, in one second, at maximum robot voltage. 12.0 inches in 1 foot.
-*/
+
 double Chassis::encoderUnitsToFeet(double units){
 	double conversionFactor = 3.141592654 * N_WHEEL_DIAMETER / 12.0;
 	conversionFactor *= ENCODER_TOP_SPEED / N_ENCODER_PPR;
 	return units*conversionFactor;
 }
-
-/*
- * 1 EncoderUnit is defined as the maximum number of ticks counted by one encoder,
- * for one drive motor, in one second, at maximum robot voltage. 12.0 inches in 1 foot.
 */
-double Chassis::feetToEncoderUnits(double feet){
-	double conversionFactor = 3.141592654 * N_WHEEL_DIAMETER / 12.0;
-	conversionFactor *= ENCODER_TOP_SPEED / N_ENCODER_PPR;
-	return feet/conversionFactor;
-}
 
 void Chassis::ShiftGear(bool isHigh) {
 	shifter->Set(isHigh);
