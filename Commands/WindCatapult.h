@@ -2,31 +2,27 @@
 /* Copyright (c) 2014 FRC-3130 "ERROR 3130". All Rights Reserved.          */
 /* Open Source Software - may be modified, shared, used and reused by FRC  */
 /* teams under the same license as the WPILib code itself.                 */
-/* Authors: Ashwin Chetty                                                  */
+/* Authors: James Li, Kevin Bi                                             */
 /*-------------------------------------------------------------------------*/
-#ifndef JOYSTICKTANK_H
-#define JOYSTICKTANK_H
-<<<<<<< HEAD
 
-#define DEAD_ZONE 0.08
-=======
->>>>>>> origin/master
+#ifndef WIND_CATAPULT_H
+#define WIND_CATAPULT_H
 
 #include "../CommandBase.h"
+#include "WPILib.h"
 
-/**
- *
- *
- * @author ExampleAuthor
- */
-class JoystickTank: public CommandBase {
+class WindCatapult: public CommandBase {
 private:
-//	static const float DEAD_ZONE = 0.08;
-	static const float FULL_SPEED = 0.92;
-	static const float RED_ZONE = 90.0; // TODO find this experimentally (in/sec)
-	float previousDirection;
+	bool done;
+	int state;
+	//Timer to let the robot wait
+	Timer timer;
+	//Time the robot should wait after deactivating Solenoids
+	//Undetermined value #UNDETERMINED
+	bool beginWaiting;
+	double WaitTime;
 public:
-	JoystickTank(const char* name);
+	WindCatapult(const char* name);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
