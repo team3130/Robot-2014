@@ -18,8 +18,8 @@
  */
 class Chassis: public Subsystem{
 private:
-	static bool isUsingEncoders;
-	static bool isUsingGyro;
+	bool isUsingEncoders;
+	bool isUsingGyro;
 	VelocityController* leftController;
 	VelocityController* rightController;
 	Solenoid* shifter;
