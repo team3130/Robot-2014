@@ -18,6 +18,7 @@
  */
 template<typename C, typename F>
 class Sensor {
+	// Pointer to Member function of C which returns an F
 	typedef F (C::*funcptr_t)();
 private:
 	C *m_classPtr;
@@ -31,7 +32,7 @@ public:
 	}
 
 	inline F get() {
-		return (*m_classPtr.*m_funcPtr)();
+		return (F)(*m_classPtr.*m_funcPtr)();
 	}
 };
 
