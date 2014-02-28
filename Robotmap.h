@@ -28,19 +28,15 @@
 // Encoders digital inputs and PPRs (pulses per revolution)
 #define C_ENCODER_STOPPER_A 5
 #define C_ENCODER_STOPPER_B 6
-#define N_ENCODER_STOPPER_PPR 256
 
 #define C_ENCODER_CATAPULT_A 10
 #define C_ENCODER_CATAPULT_B 11
-#define N_ENCODER_CATAPULT_PPR 256
 
 #define C_ENCODER_LEFT_A  3
 #define C_ENCODER_LEFT_B  4
-#define N_ENCODER_LEFT_PPR 256
 
 #define C_ENCODER_RIGHT_A 1
 #define C_ENCODER_RIGHT_B 2
-#define N_ENCODER_RIGHT_PPR 256
 
 // Analog Input channels
 #define C_GYRO 1
@@ -96,8 +92,5 @@
 #define N_FRAME_H 13.75
 #define N_FRAME_ARMLENGTH 23.0
 
-// Theoretical max speed of the bot on low gear in inches per second
-// Has to be unreachable closest amount. Used instead of Encoder Units
-#define LOW_GEAR_TOP_SPEED 150.0
 
 #endif

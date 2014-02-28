@@ -1,6 +1,7 @@
 #ifndef WAITFORHOT_H
 #define WAITFORHOT_H
 #include "DistanceTracking.h"
+#include "../CommandBase.h"
 #include "../Robot.h"
 
 /**

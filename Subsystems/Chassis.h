@@ -18,7 +18,8 @@
  */
 class Chassis: public Subsystem{
 private:
-	bool isUsingEncoders;
+	bool isLeftEncoderOK;
+	bool isRightEncoderOK;
 	bool isUsingGyro;
 	VelocityController* leftController;
 	VelocityController* rightController;
@@ -34,7 +35,7 @@ public:
 	void arcadeDrive(float move, float turn);
 	void SmartRobot(bool smart=true);
 	void DumbRobot() {SmartRobot(false);}
-	bool CanUseEncoders() {return isUsingEncoders;}
+	bool CanUseEncoders() {return isLeftEncoderOK&&isRightEncoderOK;}
 	bool CanUseGyro() {return isUsingGyro;}
 	void ProjectSensors();
 	double GetDistance();

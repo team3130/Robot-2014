@@ -23,6 +23,17 @@ private:
 	}
 	void getPreferencesData(){
 		Robot::unitTest = new UnitTest();
+		if(!Robot::preferences->ContainsKey("Left Encoder PPR")){
+			Robot::preferences->PutInt("Left Encoder PPR", 256);
+		}
+		if(!Robot::preferences->ContainsKey("Right Encoder PPR")){
+			Robot::preferences->PutInt("Right Encoder PPR", 256);
+		}
+		if(!Robot::preferences->ContainsKey("Low Gear Top Speed")){
+			// Theoretical max speed of the bot on low gear in inches per second
+			// Has to be unreachable closest amount.
+			Robot::preferences->PutDouble("Low Gear Top Speed",150);
+		}
 		if(!Robot::preferences->ContainsKey("Arm Encoder Functional")){
 			Robot::preferences->PutBoolean("Arm Encoder Functional", false);
 		}

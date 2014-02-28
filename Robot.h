@@ -11,7 +11,6 @@
 #include "Robotmap.h"
 #include "Commands/Command.h"
 #include "UnitTest/UnitTest.h"
-#include "CommandBase.h"
 
 class Robot {
 public:

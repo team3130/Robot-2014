@@ -12,7 +12,6 @@
 #include "string.h"
 
 Chassis::Chassis() : Subsystem("Chassis"){
-	isUsingEncoders = false;
 	isUsingGyro = false;
 	leftController = new VelocityController("Left",C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
 	rightController = new VelocityController("Right",C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
@@ -25,8 +24,16 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	rightController->SetInvertedMotor(true);
 	leftController->Encoder::SetReverseDirection(true);
 	rightController->Encoder::SetReverseDirection(true);
-	leftController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / N_ENCODER_LEFT_PPR);
-	rightController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / N_ENCODER_RIGHT_PPR);
+	if(Robot::preferences->GetInt("Left Encoder PPR",0)>0){
+		leftController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::preferences->GetInt("Left Encoder PPR"));
+		isLeftEncoderOK = true;
+	}
+	else isLeftEncoderOK = false;
+	if(Robot::preferences->GetInt("Right Encoder PPR",0)>0) {
+		rightController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::preferences->GetInt("Right Encoder PPR"));
+		isRightEncoderOK = true;
+	}
+	else isRightEncoderOK = false;
 }
 
 Chassis::~Chassis()
@@ -51,11 +58,33 @@ void Chassis::InitEncoders() {
 }
 
 double Chassis::GetDistance() {
-	return (leftController->GetDistance()+rightController->GetDistance())/2.0;
+	double totalDistance = 0;
+	int nEncoders = 0;
+	if(isLeftEncoderOK) {
+		totalDistance += leftController->GetDistance();
+		nEncoders++;
+	}
+	if(isRightEncoderOK) {
+		totalDistance += rightController->GetDistance();
+		nEncoders++;
+	}
+	if(nEncoders>0) return totalDistance/nEncoders;
+	else return 0;
 }
 
 double Chassis::GetRate() {
-	return (leftController->GetRate()+rightController->GetRate())/2.0;
+	double totalRate = 0;
+	int nEncoders = 0;
+	if(isLeftEncoderOK) {
+		totalRate += leftController->GetDistance();
+		nEncoders++;
+	}
+	if(isRightEncoderOK) {
+		totalRate += rightController->GetDistance();
+		nEncoders++;
+	}
+	if(nEncoders>0) return totalRate/nEncoders;
+	else return 0;
 }
 
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
@@ -69,7 +98,7 @@ void Chassis::arcadeDrive(float move, float turn){
 }
 
 void Chassis::SmartRobot(bool smart) {
-	if(isUsingEncoders){
+	if(CanUseEncoders()){
 		leftController->UseEncoder(smart);
 		rightController->UseEncoder(smart);
 	} else {
