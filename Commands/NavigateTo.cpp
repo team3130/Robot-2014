@@ -33,31 +33,31 @@ void NavigateTo::Initialize()
 	double totalTurn = fabs(ConstrainAngle(firstRotateAngle))+fabs(ConstrainAngle(finalRotateAngle));
 	if(totalTurn<fabs(totalTurn-360)) {
 		rotateFirst->SetGoal(firstRotateAngle,threshold,cooldown);
-		driveStraight->SetGoal(moveDist,1.0,0.25);
+		driveStraight->SetGoal(moveDist,.05,1.5);
 		rotateSecond->SetGoal(finalRotateAngle,2,1, false);
 	}
 	else {
 		// Rotate will renormalize the angles
 		rotateFirst->SetGoal(firstRotateAngle-180,threshold,cooldown);
-		driveStraight->SetGoal(-moveDist,1.0,0.25);
+		driveStraight->SetGoal(-moveDist,.05,1.5);
 		rotateSecond->SetGoal(finalRotateAngle-180,2,1, false);
 		
 	}
 }
 /*
- * @param cartX offset from North axis, in inches. Positive is to the right
- * @param cartY offset toward the North, in inches.
+ * @param cartX offset from North, in feet. Positive is to the right
+ * @param cartY offset toward the North, in feet.
  * @finalRotation the new North relative to initial North.
  */
 void NavigateTo::SetGoalCartesian(double cartX, double cartY, double finalRotation){
 	// It's X over Y because the angle is from the North
-	firstRotateAngle = 360*atan2(cartX, cartY)/(2*M_PI);	
+	firstRotateAngle = 360*atan2(cartX, cartY)/(2*3.1415926536);	
 	moveDist = sqrt(cartX*cartX + cartY*cartY);
 	SetGoalPolar(firstRotateAngle, moveDist, finalRotation);
 }
 /*
  * @rotate rotation angle
- * @distance distance in inches
+ * @distance distance in FEET
  */
 void NavigateTo::SetGoalPolar(double rotate, double distance, double finalRotation){
 	firstRotateAngle = rotate;

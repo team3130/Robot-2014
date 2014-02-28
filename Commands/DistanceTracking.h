@@ -29,7 +29,6 @@ private:
 	void		SortCoords( SCoordSort * coords, int size );
 	double		LawOfCosines(const double & dA, const double & dB, const double & dC);
 	int 		GetMarkerData( NumberArray & coords, SPointRect * rcMarkerRects, double * dMarkerHeights=NULL, double * dMarkerWidths=NULL );
-	int 		GetMarkerSizes( NumberArray & coords, double * dMarkerHeights, double * dMarkerWidths, double * dMarkerCenterX );
 
 public:
 				DistanceTracking();

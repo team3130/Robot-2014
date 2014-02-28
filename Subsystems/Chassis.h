@@ -18,6 +18,7 @@
  */
 class Chassis: public Subsystem{
 private:
+	static const int ENCODER_TOP_SPEED = 7200;
 	static bool isUsingEncoders;
 	static bool isUsingGyro;
 	VelocityController* leftController;
@@ -36,6 +37,7 @@ public:
 	void DumbRobot() {SmartRobot(false);}
 	bool CanUseEncoders() {return isUsingEncoders;}
 	bool CanUseGyro() {return isUsingGyro;}
+	double LowGearTopSpeed() {return encoderUnitsToFeet(ENCODER_TOP_SPEED);}
 	void ProjectSensors();
 	double GetDistance();
 	double GetRate();

@@ -23,6 +23,7 @@ ShootCatapult::ShootCatapult(const char* name) : CommandBase(name) {
 // Called just before this Command runs the first time
 void ShootCatapult::Initialize() 
 {
+	state=-3;
 	intake->ResetIdleTimer();
 	intake->SetIdle(true);
 	intake->ExtendArms(true);
@@ -32,7 +33,7 @@ void ShootCatapult::Initialize()
 	timer.Stop();
 	timer.Reset();
 	beginWaiting=false;
-	state=-1;
+	state=0;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -43,13 +44,26 @@ void ShootCatapult::Execute() {
 	intake->SetIdle(true);
 	intake->ExtendArms(true);
 	//Checks if delay time has been met
-	if(state==-1){
-		if(!shooter->hasSlack()){
-			shooter->setWinchDirect(-0.5);
-		}else state=0;
-	}	
-	else if(state==0){	//release pinch.
+	if(state==-3 && shootReady){
+		if(!stopper->armSwitchState()){
+			shooter->setWinchDirect(.8);
+		}
+		else{
+			state=-2;
+		}
+	}
+	else if(state==-2){
+		shooter->setWinchDirect(-.5);
+		if(shooter->hasSlack()){
+			shooter->setWinchDirect(0);
+			state=-1;
+		}
+	}
+	else if(state==-1 && shootReady){
 		shooter->setWinchDirect(0);
+		state=0;
+	}
+	else if(state==0 && shootReady){	//release pinch.
 		if(shootReady){
 			intake->SetIdle(true);
 			intake->ExtendArms(true);
@@ -61,17 +75,26 @@ void ShootCatapult::Execute() {
 			shooter->setWinchDirect(0);
 		}
 	}else if(state==1){	//wait for .5 seconds
-		if(timer.Get()>1.0){
+		if(timer.Get()>0.5){
 			intake->SetIdle(true);
 			intake->ExtendArms(true);
 			state=2;
 			shooter->setWinchDirect(0);
 		}
+	}else if(state==2 && shootReady){
+		int outputs=0;
+		if(!stopper->armSwitchState()){
+			shooter->setWinchDirect(.8);
+		}
+		if(stopper->armSwitchState()){
+			shooter->setWinchDirect(0);
+			state=3;
+			done=true;
+		}
 	}else{
-		shooter->setPinch(false);
 		shooter->setWinchDirect(0);
-		done=true;
 	}
+	int v = stopper->armSwitchState() == 1;
 	SmartDashboard::PutNumber("Timer Time", timer.Get());
 	SmartDashboard::PutNumber("ShootCatapult State", state);
 	stopper->ProjectSensors();
@@ -87,7 +110,7 @@ void ShootCatapult::End() {
 	shooter->setPinch(false);
 	shooter->setReady(false);
 	shooter->setWinchDirect(0);
-	state=0;
+	state=-2;
 }
 
 // Called when another command which requires one or more of the same

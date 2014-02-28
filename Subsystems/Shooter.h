@@ -25,7 +25,7 @@ private:
 	Timer timer;
 public:
 	//Encoder* winchEncoder;
-	//Encoder* armEncoder;
+	Encoder* armEncoder;
 	Shooter();
 	Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2);
 	~Shooter();
@@ -38,6 +38,7 @@ public:
 	void ProjectSensors();
 	
 	//Get/set methods
+	double getCatapultPosition();
 	bool hasSlack();
 	//double getWinchPosition();
 	bool getPinch1();

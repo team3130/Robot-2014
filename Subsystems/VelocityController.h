@@ -18,9 +18,8 @@ private:
 	Talon* m_satellite;
 	bool m_smart;
 	bool m_invertOutput;
-	const char *m_name;
 public:
-	VelocityController(const char *name, uint32_t channel, uint32_t sat_channel,
+	VelocityController(uint32_t channel, uint32_t sat_channel,
 			uint32_t aChannel, uint32_t bChannel,
 			Encoder::EncodingType encodingType = Encoder::k4X);
 	~VelocityController();

@@ -11,8 +11,8 @@ JoystickStopperWinch::JoystickStopperWinch() : CommandBase("Manual ") {
 	Requires(stopper);
 	stopper->stopperEncoder->Reset();
 	stopper->stopperEncoder->Start();
-	SmartDashboard::PutNumber("StopperWinch Low Position",-15);
-	SmartDashboard::PutNumber("StopperWinch High Position",0);
+	SmartDashboard::PutNumber("StopperWinch Low Position",-20);
+	SmartDashboard::PutNumber("StopperWinch High Position",3);
 }
 
 // Called just before this Command runs the first time

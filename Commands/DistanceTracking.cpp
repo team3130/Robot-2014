@@ -148,40 +148,6 @@ int DistanceTracking::GetMarkerData( NumberArray & coords, SPointRect * rcMarker
 	return 0;
 }
 
-int DistanceTracking::GetMarkerSizes( NumberArray & coords, double * dMarkerHeights, double * dMarkerWidths, double * dMarkerCenterX ) {
-
-	try 
-	{
-		int iNumRects = coords.size() / 8;
-	
-		// can't handle zer or anything greater than 4
-		if (( iNumRects <= 0 ) || ( iNumRects > 4 ))
-			return 0;
-		
-		// iterate for all four rects
-		for ( int i=0; i<iNumRects; i++ ) {			
-			double dMinX = 100000;
-			double dMaxX = -1;
-			double dMinY = 100000;
-			double dMaxY = -1;
-			for ( int j=0; j<4; j++ ) {
-				dMinX = min( dMinX, coords.get( 8*i + j*2 ));
-				dMaxX = max( dMaxX, coords.get( 8*i + j*2 ));	
-				dMinY = min( dMinY, coords.get( 8*i + j*2 + 1));
-				dMaxY = max( dMaxY, coords.get( 8*i + j*2 + 1));
-			}
-			dMarkerWidths[i] = dMaxX - dMinX;
-			dMarkerHeights[i] = dMaxY - dMinY;
-			dMarkerCenterX[i] = (dMinX + dMaxX) / 2.0;
-		}
-		return iNumRects;
-	}
-	catch(...)
-	{
-	}
-	return 0;
-}
-
 // get the distance to the wall on the line being aimed at
 double DistanceTracking::GetDistanceToTarget() {
 
@@ -433,7 +399,7 @@ bool DistanceTracking::IsAimedTargetHot() {
 				
 			double			dMarkerHeights[4];
 			double			dMarkerWidths[4];
-			double 			dMarkerCenterX[4];
+			SPointRect		rcMarkerRects[4];
 			NumberArray		coords;
 			
 			pNetworkTable->RetrieveValue("MEQ_COORDINATES", coords); // *targetNum);
@@ -442,18 +408,18 @@ bool DistanceTracking::IsAimedTargetHot() {
 			double dImageCenterX = dImageWidth / 2.0;
 	
 			// call routine to get marker heights (always returns three rect heights)
-			int iNumRects = GetMarkerSizes( coords, dMarkerHeights, dMarkerWidths, dMarkerCenterX );
+			int iNumRects = GetMarkerData( coords, rcMarkerRects, dMarkerHeights, dMarkerWidths );
 	
 			// no rectangles on screen, facing other direction or something blocking, return false
 			if (( iNumRects <= 0 ) || ( iNumRects > 3 ))
 				return false;
-
+	
 			// a single rect.  we'll assume that this means that a single vertical rectangle is in the
 			// image, return false
 			if ( iNumRects == 1 ) {
 				return false;
 			}
-
+	
 			// two rects.  Could be...
 			//
 			// - a vertical and a horizontal rectangle
@@ -466,7 +432,7 @@ bool DistanceTracking::IsAimedTargetHot() {
 	
 				// one rect is wider and shorter than the other - must be a mix of H & V rects
 				if ((( dMarkerHeights[MARKER_ONE] < dMarkerHeights[MARKER_TWO] ) &&
-					 ( dMarkerWidths[MARKER_ONE]  > dMarkerWidths[MARKER_TWO] )) ||				
+					 ( dMarkerWidths[MARKER_ONE]  > dMarkerWidths[MARKER_TWO] )) ||					
 					(( dMarkerHeights[MARKER_TWO] < dMarkerHeights[MARKER_ONE] ) &&
 					 ( dMarkerWidths[MARKER_TWO]  > dMarkerWidths[MARKER_ONE] )))
 				{
@@ -475,16 +441,16 @@ bool DistanceTracking::IsAimedTargetHot() {
 					return false;
 				}
 			}
-
+	
 			// three rects..  Must be that we have two verticals and a horizontal, just need to figure
 			// out which side the horizontal is on
 			if ( iNumRects == 3 ) {
 				// if THREE height is less than ONE, THREE (right) is the hot marker, ONE and TWO are the vertical markers
 				if ( dMarkerHeights[MARKER_THREE] < dMarkerHeights[MARKER_ONE] ) {
-						
+	
 					// get distances from the image center to the inside edge of each vertical marker
-					double dLeftDistance = dImageCenterX - dMarkerCenterX[MARKER_ONE];
-					double dRightDistance = dMarkerCenterX[MARKER_TWO]- dImageCenterX;
+					double dLeftDistance = dImageCenterX - rcMarkerRects[MARKER_ONE].ptUR.x;
+					double dRightDistance = rcMarkerRects[MARKER_TWO].ptUL.x - dImageCenterX;
 	
 					// if the camera is aimed more towards the right marker
 					if ( fabs(dRightDistance) < fabs(dLeftDistance) )
@@ -496,8 +462,8 @@ bool DistanceTracking::IsAimedTargetHot() {
 				} else {
 	
 					// get distances from the image center to the inside edge of each vertical marker
-					double dLeftDistance = dImageCenterX - dMarkerCenterX[MARKER_TWO];
-					double dRightDistance = dMarkerCenterX[MARKER_THREE] - dImageCenterX;
+					double dLeftDistance = dImageCenterX - rcMarkerRects[MARKER_TWO].ptUR.x;
+					double dRightDistance = rcMarkerRects[MARKER_THREE].ptUL.x - dImageCenterX;
 	
 					// if the camera is aimed more towards the left marker
 					if ( fabs(dLeftDistance) < fabs(dRightDistance) )
