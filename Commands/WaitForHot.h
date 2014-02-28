@@ -8,7 +8,7 @@
  *
  * @author Mike
  */
-class WaitForHot: public CommandBase {
+class WaitForHot : public CommandBase {
 public:
 	WaitForHot(const char* name);
 	~WaitForHot();

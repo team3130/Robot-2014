@@ -31,8 +31,8 @@ public:
 		m_name(name), m_classPtr(classPtr), m_funcPtr(funcPtr) {
 	}
 
-	inline F get() {
-		return (F)(*m_classPtr.*m_funcPtr)();
+	inline double get() {
+		return (double)(*m_classPtr.*m_funcPtr)();
 	}
 };
 

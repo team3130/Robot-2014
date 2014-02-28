@@ -8,6 +8,8 @@
 #define _LOG_H
 
 #include "../Robot.h"
+#include "../Logger/Sensor.h"
+#include <vector>
 
 class Log : public Command {
 	std::vector<Sensor_Types::encoder_sensor*> *m_encoders;

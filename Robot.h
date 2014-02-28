@@ -8,12 +8,10 @@
 #define MAINROBOT_H
 
 #include "WPILib.h"
-#include "Robotmap.h"
-#include "Commands/Command.h"
-#include "UnitTest/UnitTest.h"
 #include "CommandBase.h"
-#include "Subsystems/Logger.h"
 
+class UnitTest;
+class Logger;
 
 class Robot {
 public:
