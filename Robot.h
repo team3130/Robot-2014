@@ -16,6 +16,7 @@ class Robot {
 public:
 	static Preferences* preferences;
 	static UnitTest*    unitTest;
+	static void init();
 };
 
 #endif
