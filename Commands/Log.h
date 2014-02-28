@@ -9,18 +9,19 @@
 
 #include "../Robot.h"
 
-
 class Log : public Command {
-private:
-	std::vector<Sensor*> *arr;
+	std::vector<Sensor_Types::encoder_sensor*> *m_encoders;
+	std::vector<Sensor_Types::di_sensor*> *m_dis;
+	std::vector<Sensor_Types::gyro_sensor*> *m_gyros;
 public:
-	Log(const char* name);
+	Log(std::vector<Sensor_Types::encoder_sensor*> *encoders,
+			std::vector<Sensor_Types::di_sensor*> *dis,
+			std::vector<Sensor_Types::gyro_sensor*> *gyros);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
 };
-
 
 #endif

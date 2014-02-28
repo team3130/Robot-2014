@@ -7,32 +7,38 @@
 #ifndef _SENSOR_H
 #define _SENSOR_H
 
-#include "GetSensor.h"
-#include "../Subsystems/VelocityController.h"
-
-// templates are useless becuase we don't have shared_ptr<>
-class Sensor
-{
+/**
+ * C: The class type (non-pointer)
+ * F: The function return type
+ * 
+ * Example:
+ *   Sensor<Encoder, double>
+ * Encapsulates an Encoder object for any funciton that
+ * returns a double.
+ */
+template<typename C, typename F>
+class Sensor {
+	typedef F (C::*funcptr_t)();
 private:
-	const void *m_funcPtr;
-	void *m_classPtr;
-	const int m_t;
+	C *m_classPtr;
+	funcptr_t m_funcPtr;
 public:
-	typedef double (*dfuncptr)();
-	typedef float (*ffuncptr)();
-	typedef int (*ifuncptr)();
-	typedef bool (*bfuncptr)();
-	static const int kDouble = 0;
-	static const int kFloat = 1;
-	static const int kInt = 2;
-	static const int kBool = 3;
+
 	const char* m_name;
-	
-	Sensor(const char* name, void* classptr, dfuncptr func);
-	Sensor(const char* name, ifuncptr func);
-	Sensor(const char* name, ffuncptr func);
-	virtual ~Sensor();
-	virtual double Get();
+
+	Sensor(const char* name, C* classPtr, funcptr_t funcPtr) :
+		m_name(name), m_classPtr(classPtr), m_funcPtr(funcPtr) {
+	}
+
+	inline F get() {
+		return (*m_classPtr.*m_funcPtr)();
+	}
 };
+
+namespace Sensor_Types {
+	typedef Sensor<Encoder, double> encoder_sensor;
+	typedef Sensor<DigitalInput, double> di_sensor;
+	typedef Sensor<Gyro, double> gyro_sensor;
+}
 
 #endif

@@ -20,7 +20,9 @@ int file_exists (char *filename)
 
 Logger::Logger() :
 		Subsystem("Logger"),
-		sensors(new std::vector<Sensor*>),
+		m_encoders(new std::vector<Sensor_Types::encoder_sensor*>),
+		m_dis(new std::vector<Sensor_Types::di_sensor*>),
+		m_gyros(new std::vector<Sensor_Types::gyro_sensor*>),
 		m_file(NULL),
 		m_table(NULL)
 		{
@@ -43,8 +45,14 @@ Logger::Logger() :
 
 Logger::~Logger() {}
 
-void Logger::add_sensor(Sensor* s) {
-	sensors->push_back(s);
+void Logger::add_sensor(Sensor_Types::encoder_sensor* s) {
+	m_encoders->push_back(s);
+}
+void Logger::add_sensor(Sensor_Types::di_sensor* s) {
+	m_dis->push_back(s);
+}
+void Logger::add_sensor(Sensor_Types::gyro_sensor* s) {
+	m_gyros->push_back(s);
 }
 
 void Logger::update_number(const char* name, double value) {
@@ -92,7 +100,7 @@ void Logger::ValueChanged(ITable* source, const std::string& key, EntryValue val
 }
 
 void Logger::InitDefaultCommand() {
-	SetDefaultCommand(new Log("logger"));
+	SetDefaultCommand(new Log(m_encoders, m_dis, m_gyros));
 }
 
 

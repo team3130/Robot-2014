@@ -17,19 +17,25 @@
 
 class Logger : public Subsystem {
 public:	
+	
 	void update_number(const char* name, double value);
 	void update_string(const char* name, const char* value);
 	void update_bool(const char* name, bool value);
 	void ValueChanged(ITable* source, const std::string& key, EntryValue value, bool isNew); // Implements ITableListener
-	void add_sensor(Sensor*);
+	void add_sensor(Sensor_Types::encoder_sensor*);
+	void add_sensor(Sensor_Types::di_sensor*);
+	void add_sensor(Sensor_Types::gyro_sensor*);
+	
 	Logger();
 	~Logger();
 
 	void InitDefaultCommand();
 	
-	std::vector<Sensor*> *sensors;
-	
 private:
+	std::vector<Sensor_Types::encoder_sensor*> *m_encoders;
+	std::vector<Sensor_Types::di_sensor*> *m_dis;
+	std::vector<Sensor_Types::gyro_sensor*> *m_gyros;
+	
 	FILE* m_file;
 	NetworkTable* m_table;
 };
