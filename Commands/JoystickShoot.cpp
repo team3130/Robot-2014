@@ -9,10 +9,6 @@
 
 JoystickShoot::JoystickShoot(const char* name) : CommandBase(name) {
 	Requires(shooter);
-	allInputs = new DigitalInput*[14];
-	for(int i=0;i<14;i++){
-		allInputs[i]=new DigitalInput(i+1);
-	}
 }
 
 // Called just before this Command runs the first time
@@ -23,8 +19,6 @@ void JoystickShoot::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickShoot::Execute() {
-	shooter->setPinch(false);
-//	SmartDashboard::PutNumber("JoystickShoot Arm Encoder",shooter->armEncoder->GetDistance());
 	double d= oi->gamepad->GetRawAxis(B_POWERWINCH);
 	if(fabs(d)>0.2){
 		shooter->setWinchDirect(d*0.86);
@@ -41,18 +35,8 @@ void JoystickShoot::Execute() {
 	
 	bool shootReady =intake->getReadyToShoot();
 	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
-/*
-	if(oi->gamepad->GetRawButton(B_SHOOT)){
-		shooter->setPinch(true);
-	}else shooter->setPinch(false);
-	*/
+
 	shooter->ProjectSensors();
-	
-	char* name = "D. Input    ";
-	for(int i=0;i<14;i++){
-		name[9]='A'+i;
-		SmartDashboard::PutNumber(name, allInputs[i]->Get());
-	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
