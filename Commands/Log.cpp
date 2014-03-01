@@ -10,15 +10,17 @@
 
 Log::Log(std::vector<Sensor<Encoder>* > *encoders,
 	std::vector<Sensor<DigitalInput>*> *dis,
-	std::vector<Sensor<Gyro>*> *gyros)
+	std::vector<Sensor<Gyro>*> *gyros, SEM_ID mutex)
 	: m_encoders(encoders), m_dis(dis), m_gyros(gyros) {
 		Requires(Robot::logger);
+		Sensor_Mutex = mutex;
 	}
 	
 void Log::Initialize() {
 }
 
 void Log::Execute() {
+	semTake(Sensor_Mutex);
 	std::vector<Sensor<Encoder>* >::iterator e_it;
 	for (e_it = m_encoders->begin(); e_it != m_encoders->end(); ++e_it) {
 		Robot::logger->update_number((*e_it)->m_name, (*e_it)->get());
@@ -31,6 +33,7 @@ void Log::Execute() {
 	for (g_it = m_gyros->begin(); g_it != m_gyros->end(); ++g_it) {
 		Robot::logger->update_number((*g_it)->m_name, (*g_it)->get());
 	}
+	semGive(Sensor_Mutex);
 }
 bool Log::IsFinished() {
 	return false;

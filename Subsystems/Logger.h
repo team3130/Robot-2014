@@ -11,6 +11,8 @@
 #include <vector>
 #include "WPILib.h"
 #include "../Logger/Sensor.h"
+#include "semLib.h"
+#include "semMLib.h"
 
 #define LOG_FILE "match.log"
 #define LOG_FILE_OLD "old_match.log"
@@ -25,11 +27,17 @@ public:
 	void add_sensor(Sensor<Encoder>*);
 	void add_sensor(Sensor<DigitalInput>*);
 	void add_sensor(Sensor<Gyro>*);
+
+	void remove_sensor(Sensor<Encoder>*);
+	void remove_sensor(Sensor<DigitalInput>*);
+	void remove_sensor(Sensor<Gyro>*);
 	
 	Logger();
 	~Logger();
 
 	void InitDefaultCommand();
+
+	SEM_ID Sensor_Mutex;
 	
 private:
 	std::vector<Sensor<Encoder>* > *m_encoders;

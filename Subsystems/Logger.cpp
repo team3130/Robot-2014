@@ -9,6 +9,7 @@
 #include "Driverstation.h"
 #include "stat.h"
 #include <iostream>
+#include <algorithm>
 #include "tables/TableKeyNotDefinedException.h"
 
 int file_exists (char *filename)
@@ -41,6 +42,8 @@ Logger::Logger() :
 //	NetworkTable::SetTeam(3130);
 //	NetworkTable::SetServerMode();
 	m_table = NetworkTable::GetTable("log");
+
+	Sensor_Mutex = SemMCreate();
 }
 
 Logger::~Logger() {
@@ -52,13 +55,35 @@ Logger::~Logger() {
 }
 
 void Logger::add_sensor(Sensor<Encoder>* s) {
+	semTake(Sensor_Mutex);
 	m_encoders->push_back(s);
+	semGive(Sensor_Mutex);
 }
 void Logger::add_sensor(Sensor<DigitalInput>* s) {
+	semTake(Sensor_Mutex);
 	m_dis->push_back(s);
+	semGive(Sensor_Mutex);
 }
 void Logger::add_sensor(Sensor<Gyro>* s) {
+	semTake(Sensor_Mutex);
 	m_gyros->push_back(s);
+	semGive(Sensor_Mutex);
+}
+
+void Logger::remove_sensor(Sensor<Encoder>* s) {
+	semTake(Sensor_Mutex);
+	std::find(m_encoders->begin(), m_encoders->end(), s)->erase();
+	semGive(Sensor_Mutex);
+}
+void Logger::remove_sensor(Sensor<DigitalInput>* s) {
+	semTake(Sensor_Mutex);
+	std::find(m_dis->begin(), m_dis->end(), s)->erase();
+	semGive(Sensor_Mutex);
+}
+void Logger::remove_sensor(Sensor<Gyro>* s) {
+	semTake(Sensor_Mutex);
+	std::find(m_gyros->begin(), m_gyros->end(), s)->erase();
+	semGive(Sensor_Mutex);
 }
 
 void Logger::update_number(const char* name, double value) {
