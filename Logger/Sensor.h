@@ -9,30 +9,38 @@
 
 /**
  * C: The class type (non-pointer)
- * F: The function return type
- * 
+
  * Example:
- *   Sensor<Encoder, double>
+ *   Sensor<Encoder>
  * Encapsulates an Encoder object for any funciton that
- * returns a double.
+ * returns a double or float.
  */
-template<typename C, typename F>
+template<typename C>
 class Sensor {
-	// Pointer to Member function of C which returns an F
-	typedef F (C::*funcptr_t)();
 private:
 	C *m_classPtr;
-	funcptr_t m_funcPtr;
+	void* m_funcPtr;
+
+	typedef double (C::*d_funcptr_t)();
+	typedef float (C::*f_funcptr_t)();
 public:
+	const int DOUBLE = 0;
+	const int FLOAT = 1;
 
 	const char* m_name;
+	const int m_type;
 
-	Sensor(const char* name, C* classPtr, funcptr_t funcPtr) :
-		m_name(name), m_classPtr(classPtr), m_funcPtr(funcPtr) {
+	Sensor(const char* name, C* classPtr, int type, void* funcPtr) :
+		m_name(name), m_classPtr(classPtr), m_type(type), m_funcPtr(funcPtr) {
 	}
 
 	inline double get() {
-		return (double)(*m_classPtr.*m_funcPtr)();
+		switch m_type {
+		case DOUBLE:
+			return (double)(*m_classPtr.*(d_funcptr_t)m_funcPtr)();
+		case FLOAT:
+			return (double)(*m_classPtr.*(f_funcptr_t)m_funcPtr)();
+		}
 	}
 };
 

@@ -20,9 +20,9 @@ int file_exists (char *filename)
 
 Logger::Logger() :
 		Subsystem("Logger"),
-		m_encoders(new std::vector<Sensor_Types::encoder_sensor*>),
-		m_dis(new std::vector<Sensor_Types::di_sensor*>),
-		m_gyros(new std::vector<Sensor_Types::gyro_sensor*>),
+		m_encoders(new std::vector<Sensor<Encoder>*>),
+		m_dis(new std::vector<Sensor<DigitalInput>*>),
+		m_gyros(new std::vector<Sensor<Gyro>*>),
 		m_file(NULL),
 		m_table(NULL)
 		{
@@ -43,15 +43,21 @@ Logger::Logger() :
 	m_table = NetworkTable::GetTable("log");
 }
 
-Logger::~Logger() {}
+Logger::~Logger() {
+	delete m_encoders;
+	delete m_dis;
+	delete m_gyros;
+	m_file = NULL;
+	m_table = NULL;
+}
 
-void Logger::add_sensor(Sensor_Types::encoder_sensor* s) {
+void Logger::add_sensor(Sensor<Encoder>* s) {
 	m_encoders->push_back(s);
 }
-void Logger::add_sensor(Sensor_Types::di_sensor* s) {
+void Logger::add_sensor(Sensor<DigitalInput>* s) {
 	m_dis->push_back(s);
 }
-void Logger::add_sensor(Sensor_Types::gyro_sensor* s) {
+void Logger::add_sensor(Sensor<Gyro>* s) {
 	m_gyros->push_back(s);
 }
 

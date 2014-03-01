@@ -22,10 +22,9 @@ public:
 	void update_string(const char* name, const char* value);
 	void update_bool(const char* name, bool value);
 	void ValueChanged(ITable* source, const std::string& key, EntryValue value, bool isNew); // Implements ITableListener
-	void add_sensor(Sensor<Encoder, double>*);
-	void add_sensor(Sensor<Encoder, float>*);
-	void add_sensor(Sensor<DigitalInput, double>*);
-	void add_sensor(Sensor<Gyro, float>*);
+	void add_sensor(Sensor<Encoder>*);
+	void add_sensor(Sensor<DigitalInput>*);
+	void add_sensor(Sensor<Gyro>*);
 	
 	Logger();
 	~Logger();
@@ -33,10 +32,9 @@ public:
 	void InitDefaultCommand();
 	
 private:
-	std::vector<Sensor<Encoder, double>* > *m_encoders_d;
-	std::vector<Sensor<Encoder, float>* > *m_encoders_f;
-	std::vector<Sensor<DigitalInput, double>* > *m_dis;
-	std::vector<Sensor<Gyro, double>* > *m_gyros;
+	std::vector<Sensor<Encoder>* > *m_encoders;
+	std::vector<Sensor<DigitalInput>* > *m_dis;
+	std::vector<Sensor<Gyro>* > *m_gyros;
 	
 	FILE* m_file;
 	NetworkTable* m_table;

@@ -28,7 +28,7 @@ Shooter::Shooter(int winchMotorChannel, int shootChannel1, int shootChannel2) : 
 	pinch1->Set(toggle);
 	pinch2->Set(!toggle);
 	Ready=true;
-	Robot::logger->add_sensor(new Sensor("Shooter.Arm.Encoder.Value", armEncoder, (Sensor::dfuncptr)&GetSensor<Encoder>::getDistance));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Shooter.Arm.Encoder.Value", armEncoder, Sensor::DOUBLE, (void*)&GetSensor<Encoder>::getDistance));
 
 }
 
