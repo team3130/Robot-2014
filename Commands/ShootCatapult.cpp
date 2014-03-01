@@ -9,7 +9,6 @@
 ShootCatapult::ShootCatapult(const char* name) : CommandBase(name) {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	WaitTime=1.0;
 	Requires(intake);
 	Requires(shooter);
 	Requires(stopper);
@@ -17,62 +16,39 @@ ShootCatapult::ShootCatapult(const char* name) : CommandBase(name) {
 	SmartDashboard::PutNumber("Winch Wait",1.0);
 	timer.Reset();
 	done=false;
+	canIShoot=false;
 	//SmartDashboard::PutData(this);
 }
 
 // Called just before this Command runs the first time
 void ShootCatapult::Initialize() 
 {
-	intake->ResetIdleTimer();
-	intake->SetIdle(true);
-	intake->ExtendArms(true);
-	//Makes sure there is a delay for the intake to fall down
-	timer.Reset();
 	done=false;
 	timer.Stop();
 	timer.Reset();
-	beginWaiting=false;
-	state=-1;
+	state=0;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ShootCatapult::Execute() {
-	WaitTime=SmartDashboard::GetNumber("Winch Wait");
 	bool shootReady =intake->getReadyToShoot();
 	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
-	intake->SetIdle(true);
-	intake->ExtendArms(true);
-	//Checks if delay time has been met
-	if(state==-1){
-		if(!shooter->hasSlack()){
-			shooter->setWinchDirect(-0.5);
-		}else state=0;
-	}	
-	else if(state==0){	//release pinch.
-		shooter->setWinchDirect(0);
-		if(shootReady){
-			intake->SetIdle(true);
-			intake->ExtendArms(true);
+	if(state==0){	//release pinch.
+		if(shootReady&&canIShoot){
+			shooter->setPinch(true);
 			timer.Reset();
 			timer.Start();
-			beginWaiting=true;
-			shooter->setPinch(true);
 			state=1;
-			shooter->setWinchDirect(0);
 		}
-	}else if(state==1){	//wait for .5 seconds
+	}else if(state==1){	//wait for the catapult completes the shot
 		if(timer.Get()>1.0){
-			intake->SetIdle(true);
-			intake->ExtendArms(true);
 			state=2;
-			shooter->setWinchDirect(0);
 		}
-	}else{
+	}else if(state==2){
 		shooter->setPinch(false);
-		shooter->setWinchDirect(0);
 		done=true;
 	}
-	SmartDashboard::PutNumber("Timer Time", timer.Get());
+	SmartDashboard::PutNumber("Shooter Timer Time", timer.Get());
 	SmartDashboard::PutNumber("ShootCatapult State", state);
 	stopper->ProjectSensors();
 }

@@ -13,14 +13,7 @@
 
 class WindCatapult: public CommandBase {
 private:
-	bool done;
 	int state;
-	//Timer to let the robot wait
-	Timer timer;
-	//Time the robot should wait after deactivating Solenoids
-	//Undetermined value #UNDETERMINED
-	bool beginWaiting;
-	double WaitTime;
 public:
 	WindCatapult(const char* name);
 	virtual void Initialize();
