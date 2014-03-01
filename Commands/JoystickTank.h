@@ -11,6 +11,10 @@
 
 #include "../CommandBase.h"
 
+static const float DEAD_BAND = 0.08;
+static const float FULL_SPEED = 0.92;
+static const float RED_ZONE = 90.0; // TODO find this experimentally (in/sec)
+
 /**
  *
  *
@@ -18,9 +22,12 @@
  */
 class JoystickTank: public CommandBase {
 private:
+<<<<<<< HEAD
 //	static const float DEAD_ZONE = 0.08;
 	static const float FULL_SPEED = 0.92;
 	static const float RED_ZONE = 10.0; // TODO find this experimentally (ft/sec)
+=======
+>>>>>>> origin/master
 	float previousDirection;
 public:
 	JoystickTank(const char* name);

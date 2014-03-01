@@ -14,12 +14,10 @@
 #include "math.h"
 #include "string.h"
 
-bool Chassis::isUsingEncoders = false;
-bool Chassis::isUsingGyro = false;
-
-Chassis::Chassis() : Subsystem("Chassis") {
-	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
-	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
+Chassis::Chassis() : Subsystem("Chassis"){
+	isUsingGyro = false;
+	leftController = new VelocityController("Left",C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
+	rightController = new VelocityController("Right",C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
 	shifter = new Solenoid(C_SHIFTER);
 	gyro  = new Gyro(C_GYRO);
 	drive = new RobotDrive(leftController, rightController);
@@ -29,12 +27,23 @@ Chassis::Chassis() : Subsystem("Chassis") {
 	rightController->SetInvertedMotor(true);
 	leftController->Encoder::SetReverseDirection(true);
 	rightController->Encoder::SetReverseDirection(true);
+	if(Robot::preferences->GetInt("LeftEncoderPPR",0)>0){
+		leftController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::preferences->GetInt("LeftEncoderPPR"));
+		isLeftEncoderOK = true;
+	}
+	else isLeftEncoderOK = false;
+	if(Robot::preferences->GetInt("RightEncoderPPR",0)>0) {
+		rightController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::preferences->GetInt("RightEncoderPPR"));
+		isRightEncoderOK = true;
+	}
+	else isRightEncoderOK = false;
+
 	Robot::logger->add_sensor(new Sensor<Gyro>("Chassis.Gyro.Rate", gyro, Sensor::DOUBLE, &Gyro::GetRate));
 	Robot::logger->add_sensor(new Sensor<Gyro>("Chassis.Gyro.Angle", gyro, Sensor::FLOAT, &Gyro::GetAngle));
 	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.LeftController.Encoder.Rate", leftController::Encoder, Sensor::DOUBLE, &Encoder::GetRate));
 	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.Encoder.Rate", rightController, Sensor::DOUBLE, &GetSensor<VelocityController>::getEncoder));
 	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.LeftController.SetVelocity", leftController, Sensor::DOUBLE, &GetSensor<VelocityController>::getMotor));
-	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.SetVelocity", rightController, Sensor::DOUBLE, &GetSensor<VelocityController>::getMotor));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.SetVelocity", rig
 }
 
 Chassis::~Chassis()
@@ -52,8 +61,6 @@ void Chassis::InitDefaultCommand() {
 }
 
 void Chassis::InitEncoders() {
-	leftController->SetDistancePerPulse(1.0/ENCODER_TOP_SPEED);
-	rightController->SetDistancePerPulse(1.0/ENCODER_TOP_SPEED);
 	leftController->Reset();
 	rightController->Reset();
 	leftController->Start();
@@ -61,11 +68,33 @@ void Chassis::InitEncoders() {
 }
 
 double Chassis::GetDistance() {
-	return encoderUnitsToFeet((leftController->GetDistance()+rightController->GetDistance())/2.0);
+	double totalDistance = 0;
+	int nEncoders = 0;
+	if(isLeftEncoderOK) {
+		totalDistance += leftController->GetDistance();
+		nEncoders++;
+	}
+	if(isRightEncoderOK) {
+		totalDistance += rightController->GetDistance();
+		nEncoders++;
+	}
+	if(nEncoders>0) return totalDistance/nEncoders;
+	else return 0;
 }
 
 double Chassis::GetRate() {
-	return encoderUnitsToFeet((leftController->GetRate()+rightController->GetRate())/2.0);
+	double totalRate = 0;
+	int nEncoders = 0;
+	if(isLeftEncoderOK) {
+		totalRate += leftController->GetDistance();
+		nEncoders++;
+	}
+	if(isRightEncoderOK) {
+		totalRate += rightController->GetDistance();
+		nEncoders++;
+	}
+	if(nEncoders>0) return totalRate/nEncoders;
+	else return 0;
 }
 
 void Chassis::tankDrive(float leftSpeed, float rightSpeed){
@@ -79,7 +108,7 @@ void Chassis::arcadeDrive(float move, float turn){
 }
 
 void Chassis::SmartRobot(bool smart) {
-	if(isUsingEncoders){
+	if(CanUseEncoders()){
 		leftController->UseEncoder(smart);
 		rightController->UseEncoder(smart);
 	} else {
@@ -100,22 +129,12 @@ void Chassis::ProjectSensors() {
 /*
  * 1 EncoderUnit is defined as the maximum number of ticks counted by one encoder,
  * for one drive motor, in one second, at maximum robot voltage. 12.0 inches in 1 foot.
-*/
 double Chassis::encoderUnitsToFeet(double units){
 	double conversionFactor = 3.141592654 * N_WHEEL_DIAMETER / 12.0;
 	conversionFactor *= ENCODER_TOP_SPEED / N_ENCODER_PPR;
 	return units*conversionFactor;
 }
-
-/*
- * 1 EncoderUnit is defined as the maximum number of ticks counted by one encoder,
- * for one drive motor, in one second, at maximum robot voltage. 12.0 inches in 1 foot.
 */
-double Chassis::feetToEncoderUnits(double feet){
-	double conversionFactor = 3.141592654 * N_WHEEL_DIAMETER / 12.0;
-	conversionFactor *= ENCODER_TOP_SPEED / N_ENCODER_PPR;
-	return feet/conversionFactor;
-}
 
 void Chassis::ShiftGear(bool isHigh) {
 	shifter->Set(isHigh);

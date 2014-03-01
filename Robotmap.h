@@ -6,7 +6,7 @@
 /*-------------------------------------------------------------------------*/
 #ifndef ROBOTMAP_H
 #define ROBOTMAP_H
-
+#define M_PI	3.14159265358979323846
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -22,18 +22,21 @@
 
 // Digital Input channels
 #define C_PRESSURE_SWITCH 14 
+#define C_ARM_SWITCH 13
+#define C_WINCH_TAUT 12
 
+// Encoders digital inputs and PPRs (pulses per revolution)
 #define C_ENCODER_STOPPER_A 5
 #define C_ENCODER_STOPPER_B 6
+
 #define C_ENCODER_CATAPULT_A 10
 #define C_ENCODER_CATAPULT_B 11
+
 #define C_ENCODER_LEFT_A  3
 #define C_ENCODER_LEFT_B  4
+
 #define C_ENCODER_RIGHT_A 1
 #define C_ENCODER_RIGHT_B 2
-#define C_ARM_SWITCH 13
-
-#define C_WINCH_TAUT 12
 
 // Analog Input channels
 #define C_GYRO 1
@@ -83,10 +86,11 @@
 
 // Geometry
 #define N_WHEEL_DIAMETER 4.125
-#define N_ENCODER_PPR 256
 #define N_CHAIN_RATIO (28.0/22.0)
 #define N_WHEEL_ENCODER_RATIO ((36.0/12.0)/N_CHAIN_RATIO)
 #define N_FRAME_L 28.5
 #define N_FRAME_H 13.75
 #define N_FRAME_ARMLENGTH 23.0
+
+
 #endif

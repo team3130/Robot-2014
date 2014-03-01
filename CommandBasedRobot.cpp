@@ -6,11 +6,35 @@
 /*-------------------------------------------------------------------------*/
 #include "Robot.h"
 #include "Commands/AutonomousGroup.h"
-#include "Subsystems/Logger.h"
 
 Preferences* Robot::preferences = NULL;
 UnitTest*    Robot::unitTest = NULL;
-Logger* Robot::logger = NULL;
+
+void Robot::init(){
+	Robot::preferences = Preferences::GetInstance();
+	if(!Robot::preferences->ContainsKey("LeftEncoderPPR")){
+		Robot::preferences->PutInt("LeftEncoderPPR", 256);
+	}
+	if(!Robot::preferences->ContainsKey("RightEncoderPPR")){
+		Robot::preferences->PutInt("RightEncoderPPR", 256);
+	}
+	if(!Robot::preferences->ContainsKey("LowGearTopSpeed")){
+		// Theoretical max speed of the bot on low gear in inches per second
+		// Has to be unreachable closest amount.
+		Robot::preferences->PutDouble("LowGearTopSpeed",150);
+	}
+	if(!Robot::preferences->ContainsKey("ArmEncoderFunctional")){
+		Robot::preferences->PutBoolean("ArmEncoderFunctional", false);
+	}
+	if(!Robot::preferences->ContainsKey("StopperEncoderPPI")){
+		Robot::preferences->PutDouble("StopperEncoderPPI", 114.53);
+	}
+	if(!Robot::preferences->ContainsKey("StopperWinchEncoderFunctional")){
+		Robot::preferences->PutBoolean("StopperWinchEncoderFunctional", true);
+	}
+	CommandBase::init();
+	Robot::unitTest = new UnitTest();
+}
 
 class CommandBasedRobot : public IterativeRobot {
 private:
@@ -22,25 +46,10 @@ private:
 		CommandBase::init();
 		autonomousCommand = new AutonomousGroup();
 		lw = LiveWindow::GetInstance();
-		Robot::preferences = Preferences::GetInstance();
 		Robot::logger->update_number("TESTY", 3.14);
 	}
-	void getPreferencesData(){
-		Robot::unitTest = new UnitTest();
-		if(!Robot::preferences->ContainsKey("Arm Encoder Functional")){
-			Robot::preferences->PutBoolean("Arm Encoder Functional", false);
-		}
-		if(!Robot::preferences->ContainsKey("StopperEncoderPPI")){
-			Robot::preferences->PutDouble("StopperEncoderPPI", 114.53);
-		}
-		if(!Robot::preferences->ContainsKey("Stopper Winch Encoder Functional")){
-			Robot::preferences->PutBoolean("Stopper Winch Encoder Functional", true);
-		}
-		Robot::preferences->GetBoolean("Arm Encoder Functional", false);
-		Robot::preferences->GetBoolean("Stopper Winch Encoder Functional", true);
-	}
+
 	virtual void AutonomousInit() {
-		getPreferencesData();
 		autonomousCommand->Start();
 	}
 	
@@ -49,7 +58,6 @@ private:
 	}
 	
 	virtual void TeleopInit() {
-		getPreferencesData();
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to 
 		// continue until interrupted by another command, remove

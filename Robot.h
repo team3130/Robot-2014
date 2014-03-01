@@ -8,7 +8,6 @@
 #define MAINROBOT_H
 
 #include "WPILib.h"
-#include "CommandBase.h"
 
 class UnitTest;
 class Logger;
@@ -17,6 +16,7 @@ class Robot {
 public:
 	static Preferences* preferences;
 	static UnitTest*    unitTest;
+	static void init();
 	static Logger* logger;
 };
 

@@ -9,17 +9,17 @@
 #include "UTestRotate.h"
 #include "UTestDriveStraight.h"
 #include "UTestNavigateTo.h"
+#include "UTestInputs.h"
 
 /*
  * Default constructor
  */
 UnitTest::UnitTest()
 {
-	utestRotate = new UTestRotate();
-	utestDriveStraight = new UTestDriveStraight();
-	utestNavigateTo = new UTestNavigateTo();
-	//new Rotate("Dummy Rotate");
-	//new DriveStraight();
+	m_tests.push_back(new UTestRotate());
+	m_tests.push_back(new UTestDriveStraight());
+	m_tests.push_back(new UTestNavigateTo());
+	m_tests.push_back(new UTestInputs());
 }
 
 /*
@@ -27,7 +27,4 @@ UnitTest::UnitTest()
  */
 UnitTest::~UnitTest()
 {
-	delete utestRotate;
-	delete utestDriveStraight;
-	delete utestNavigateTo;
 }

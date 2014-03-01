@@ -23,7 +23,7 @@ void JoystickTank::Execute() {
 	float rightStick = oi->rightJoystick->GetY();
 
 	//deadzones
-	if (fabs(leftStick)<DEAD_ZONE && fabs(rightStick)<DEAD_ZONE){
+	if (fabs(leftStick)<DEAD_BAND && fabs(rightStick)<DEAD_BAND){
 		chassis->ShiftGear(false);
 		chassis->tankDrive(0,0);
 		return;
@@ -53,8 +53,8 @@ void JoystickTank::Execute() {
 			chassis->ShiftGear(true);
 		}
 	} else if(
-		(leftStick<DEAD_ZONE && rightStick>-DEAD_ZONE) ||
-		(leftStick>-DEAD_ZONE && rightStick<DEAD_ZONE) ||
+		(leftStick<DEAD_BAND && rightStick>-DEAD_BAND) ||
+		(leftStick>-DEAD_BAND && rightStick<DEAD_BAND) ||
 		previousDirection*(leftStick+rightStick) < 0
 	)
 	{

@@ -18,9 +18,9 @@
  */
 class Chassis: public Subsystem{
 private:
-	static const int ENCODER_TOP_SPEED = 7200;
-	static bool isUsingEncoders;
-	static bool isUsingGyro;
+	bool isLeftEncoderOK;
+	bool isRightEncoderOK;
+	bool isUsingGyro;
 	VelocityController* leftController;
 	VelocityController* rightController;
 	Solenoid* shifter;
@@ -28,16 +28,14 @@ public:
 	RobotDrive* drive;
 	Gyro* gyro;
 	Chassis();
-	~Chassis();
 	void InitDefaultCommand();
 	void InitEncoders();
 	void tankDrive(float leftSpeed, float rightSpeed);
 	void arcadeDrive(float move, float turn);
 	void SmartRobot(bool smart=true);
 	void DumbRobot() {SmartRobot(false);}
-	bool CanUseEncoders() {return isUsingEncoders;}
+	bool CanUseEncoders() {return isLeftEncoderOK&&isRightEncoderOK;}
 	bool CanUseGyro() {return isUsingGyro;}
-	double LowGearTopSpeed() {return encoderUnitsToFeet(ENCODER_TOP_SPEED);}
 	void ProjectSensors();
 	double GetDistance();
 	double GetRate();
