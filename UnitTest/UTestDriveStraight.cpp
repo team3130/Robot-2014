@@ -1,7 +1,7 @@
 #include "UTestDriveStraight.h"
 
 UTestDriveStraight::UTestDriveStraight() : CommandGroup("UTest Drive Straight") {
-	m_command = new DriveStraight("UTestDriveStraight");
+	m_command = new DriveStraight("DriveStraight for UTest");
 	AddSequential(m_command);
 	SmartDashboard::PutData(this);
 	SmartDashboard::PutNumber("UTest Straight Distance",12.0);

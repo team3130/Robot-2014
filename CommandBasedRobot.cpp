@@ -12,27 +12,28 @@ UnitTest*    Robot::unitTest = NULL;
 
 void Robot::init(){
 	Robot::preferences = Preferences::GetInstance();
-	Robot::unitTest = new UnitTest();
-	if(!Robot::preferences->ContainsKey("Left Encoder PPR")){
-		Robot::preferences->PutInt("Left Encoder PPR", 256);
+	if(!Robot::preferences->ContainsKey("LeftEncoderPPR")){
+		Robot::preferences->PutInt("LeftEncoderPPR", 256);
 	}
-	if(!Robot::preferences->ContainsKey("Right Encoder PPR")){
-		Robot::preferences->PutInt("Right Encoder PPR", 256);
+	if(!Robot::preferences->ContainsKey("RightEncoderPPR")){
+		Robot::preferences->PutInt("RightEncoderPPR", 256);
 	}
-	if(!Robot::preferences->ContainsKey("Low Gear Top Speed")){
+	if(!Robot::preferences->ContainsKey("LowGearTopSpeed")){
 		// Theoretical max speed of the bot on low gear in inches per second
 		// Has to be unreachable closest amount.
-		Robot::preferences->PutDouble("Low Gear Top Speed",150);
+		Robot::preferences->PutDouble("LowGearTopSpeed",150);
 	}
-	if(!Robot::preferences->ContainsKey("Arm Encoder Functional")){
-		Robot::preferences->PutBoolean("Arm Encoder Functional", false);
+	if(!Robot::preferences->ContainsKey("ArmEncoderFunctional")){
+		Robot::preferences->PutBoolean("ArmEncoderFunctional", false);
 	}
 	if(!Robot::preferences->ContainsKey("StopperEncoderPPI")){
 		Robot::preferences->PutDouble("StopperEncoderPPI", 114.53);
 	}
-	if(!Robot::preferences->ContainsKey("Stopper Winch Encoder Functional")){
-		Robot::preferences->PutBoolean("Stopper Winch Encoder Functional", true);
+	if(!Robot::preferences->ContainsKey("StopperWinchEncoderFunctional")){
+		Robot::preferences->PutBoolean("StopperWinchEncoderFunctional", true);
 	}
+	CommandBase::init();
+	Robot::unitTest = new UnitTest();
 }
 
 class CommandBasedRobot : public IterativeRobot {
@@ -42,7 +43,6 @@ private:
 
 	virtual void RobotInit() {
 		Robot::init();
-		CommandBase::init();
 		autonomousCommand = new AutonomousGroup();
 		lw = LiveWindow::GetInstance();
 	}
