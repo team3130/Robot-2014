@@ -12,13 +12,15 @@
 #include <vector>
 
 class Log : public Command {
-	std::vector<Sensor_Types::encoder_sensor*> *m_encoders;
-	std::vector<Sensor_Types::di_sensor*> *m_dis;
-	std::vector<Sensor_Types::gyro_sensor*> *m_gyros;
+	std::vector<Sensor<Encoder, double>* > *m_encoders_d;
+	std::vector<Sensor<Encoder, float>* > *m_encoders_f;
+	std::vector<Sensor<DigitalInput, double>* > *m_dis;
+	std::vector<Sensor<Gyro, double>* > *m_gyros;
 public:
-	Log(std::vector<Sensor_Types::encoder_sensor*> *encoders,
-			std::vector<Sensor_Types::di_sensor*> *dis,
-			std::vector<Sensor_Types::gyro_sensor*> *gyros);
+	Log(std::vector<Sensor<Encoder, double>* > *encoders_d,
+		std::vector<Sensor<Encoder, float>* > *encoders_f,
+		std::vector<Sensor<DigitalInput, double>* > *dis,
+		std::vector<Sensor<Gyro, double>* > *gyros);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();

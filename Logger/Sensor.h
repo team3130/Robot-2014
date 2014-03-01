@@ -36,10 +36,4 @@ public:
 	}
 };
 
-namespace Sensor_Types {
-	typedef Sensor<Encoder, double> encoder_sensor;
-	typedef Sensor<DigitalInput, double> di_sensor;
-	typedef Sensor<Gyro, double> gyro_sensor;
-}
-
 #endif

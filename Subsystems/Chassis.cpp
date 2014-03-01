@@ -30,7 +30,7 @@ Chassis::Chassis() : Subsystem("Chassis") {
 	leftController->Encoder::SetReverseDirection(true);
 	rightController->Encoder::SetReverseDirection(true);
 	Robot::logger->add_sensor(new Sensor<Gyro, double>("Chassis.Gyro.Rate", gyro, &Gyro::GetRate));
-	Robot::logger->add_sensor(new Sensor<Gyro, double>("Chassis.Gyro.Angle", gyro, (double)&Gyro::GetAngle));
+	Robot::logger->add_sensor(new Sensor<Gyro, float>("Chassis.Gyro.Angle", gyro, &Gyro::GetAngle));
 	Robot::logger->add_sensor(new Sensor<Encoder, double>("Chassis.LeftController.Encoder.Rate", leftController::Encoder, &Encoder::GetRate));
 //	Robot::logger->add_sensor(new Sensor("Chassis.RightController.Encoder.Rate", rightController, (Sensor::dfuncptr)&GetSensor<VelocityController>::getEncoder));
 //	Robot::logger->add_sensor(new Sensor("Chassis.LeftController.SetVelocity", leftController, (Sensor::dfuncptr)&GetSensor<VelocityController>::getMotor));
