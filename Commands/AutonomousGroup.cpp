@@ -1,108 +1,65 @@
 #include "AutonomousGroup.h"
+#include "WindCatapult.h"
 
 AutonomousGroup::AutonomousGroup() {
-        // Add Commands here:
-        // e.g. AddSequential(new Command1());
-        //      AddSequential(new Command2());
-        // these will run in order.
-
-        // To run multiple commands at the same time,
-        // use AddParallel()
-        // e.g. AddParallel(new Command1());
-        //      AddSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
-
-	// LED relay
-	// TODO pLEDRelay = new DigitalOutput(5);
-
-	SmartDashboard::PutNumber("Autonomous - Init Move Dist", 0.0);
+	SmartDashboard::PutNumber("Autonomous - Init Move Dist", 0);
 	SmartDashboard::PutNumber("Autonomous - Init Move Tol", 0.5);
 
-	SmartDashboard::PutNumber("Autonomous - Final Move Dist", -2.0);
+	SmartDashboard::PutNumber("Autonomous - Final Move Dist", -50);
 	SmartDashboard::PutNumber("Autonomous - Final Move Tol", 0.5);
 
 	// allocate and store pointers to commands
-	idle = new IdleIntake();
-	waitForHot1 = new WaitForHot("Check for Hot Goal");
-	driveStraight1 = new DriveStraightGyro("Initial Drive");
-	waitForHot2 = new WaitForHot("Wait for Hot Goal");
-	shoot = new ShootCatapult("Auto Shoot");
-	//when true, winch is pulled back.
-	driveStraight2 = new DriveStraightGyro("Auto Straight");
-	
-	// idle
-	AddSequential(idle);
-	
+	loader = new WindCatapult("Auto: Load Catapult");
+	waitForHot = new WaitForHot("Check for Hot Goal");
+	driveStraight1 = new DriveStraight("Auto: get to fire line ");
+	shoot = new ShootCatapult("Auto: Shoot");
+	driveStraight2 = new DriveStraight("Auto: clear the zone");
+	accum = new AccumulateCatapult("Auto: Accum");
+	// Do the whole reload procedure mainly to fill up the accumulator
 	// check for hot, store result as waitforhot static
-	AddSequential(waitForHot1);
+	AddParallel(waitForHot);
+	AddSequential(accum);
 
-	// drive forward to best shooting position (controlled via dashboard var) 
 	AddSequential(driveStraight1);
-	
-	// check stored is-hot value, return immediatly if hot, otherwise wait five seconds
-	AddSequential(waitForHot2);
-	
-	// shoot
 	AddSequential(shoot);
-	
-	// drive forward to ensure we cross into the next zone
 	AddSequential(driveStraight2);
+	AddSequential(new WindCatapult("Auto: Reload Catapult"));
 }
 
 AutonomousGroup::~AutonomousGroup(){
-	if ( idle )
-		delete idle;
-	if ( waitForHot1 )
-		delete waitForHot1;
-	if ( driveStraight1 )
-		delete driveStraight1;
-	if ( waitForHot2 )
-		delete waitForHot2;
-	if ( shoot )
-		delete shoot;
-	if ( driveStraight2 )
-		delete driveStraight2;
-	// if ( pLEDRelay ) todo
-		// delete pLEDRelay; todo
+	delete waitForHot;
+	delete driveStraight1;
+	delete shoot;
+	delete driveStraight2;
 }
 
 void AutonomousGroup::Initialize(){
-	
-	// turn on the led
-	// if ( pLEDRelay ) todo
-		// pLEDRelay->Set(1); todo
+	CommandBase::intake->ResetIdleTimer();
 	WaitForHot::sm_bIsHot = false;
 	WaitForHot::sm_bInitialCheck = true;
-	
-	// driveStraight1->SetGoal(0,0.0);
+	CommandBase::stopper->Calibrate(SmartDashboard::GetNumber("Stopper High Angle"));
+	CommandBase::intake->SetIdle(true);
+	shoot->GrantPermission(false);
 	driveStraight1->SetGoal(
 			SmartDashboard::GetNumber("Autonomous - Init Move Dist"),
 			SmartDashboard::GetNumber("Autonomous - Init Move Tol")
 		);
-	/*driveStraight1->SetGoal(
-			Robot::preferences->GetDouble("AutonomousInitialMoveDistance",0.0),
-			Robot::preferences->GetDouble("AutonomousInitialMoveTolerance",0.5)
-		);*/
-	// driveStraight2->SetGoal(2,0.5);
 	driveStraight2->SetGoal(
 			SmartDashboard::GetNumber("Autonomous - Final Move Dist"),
 			SmartDashboard::GetNumber("Autonomous - Final Move Tol")
 		);
-	/*driveStraight2->SetGoal(
-			Robot::preferences->GetDouble("AutonomousFinalMoveDistance",4.0),
-			Robot::preferences->GetDouble("AutonomousFinalMoveTolerence",0.5)
-		);*/
+	hotGoalTimer.Reset();
+	hotGoalTimer.Start();
+}
+
+void AutonomousGroup::Execute(){
+	if(accum->IsFinished()){
+		if(waitForHot->sm_bIsHot || hotGoalTimer.Get()>=5.0){
+			shoot->GrantPermission(true);
+		}
+	}
 }
 
 // Called once after isFinished returns true
 void AutonomousGroup::End() {
-	// turn off the led
-	// if ( pLEDRelay ) todo
-		// pLEDRelay->Set(0); todo
 }

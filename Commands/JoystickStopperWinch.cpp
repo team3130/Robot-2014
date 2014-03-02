@@ -9,67 +9,44 @@
 
 JoystickStopperWinch::JoystickStopperWinch() : CommandBase("Manual ") {
 	Requires(stopper);
-	stopper->stopperEncoder->Reset();
-	stopper->stopperEncoder->Start();
-	SmartDashboard::PutNumber("StopperWinch Low Position",-20);
-	SmartDashboard::PutNumber("StopperWinch High Position",3);
 }
 
 // Called just before this Command runs the first time
 void JoystickStopperWinch::Initialize() {
-	Robot::preferences->GetBoolean("Arm Encoder Functional", false);
-	Robot::preferences->GetBoolean("Stopper Winch Encoder Functional", true);
-	stopper->Calibrate(0);		//todo REMOVE THS LINE. PUT IN AUTONOMOUS.
+	stopper->Calibrate(SmartDashboard::GetNumber("Stopper High Angle"));
+	m_position = stopHigh;
+	m_manual = false;
+	stopper->setSmart(true);
 }
 // Called repeatedly when this Command is scheduled to run
 void JoystickStopperWinch::Execute() {
-	//if(!Robot::preferences->GetBoolean("Stopper Winch Encoder Functional")){
-	if(false){
-		static bool buttondown=false;
-		static Timer timer;
-		static double mytime=0;
-		static double direction=1;
-		stopper->setSmart(false);
-		if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2 
-				&& oi->gamepad->GetRawAxis(B_STOPPERWINCH)*direction>0){
-			if(buttondown==false){
-				timer.Reset();
-				timer.Start();
-			}
-			//stopper->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
-			if(oi->gamepad->GetRawAxis(B_STOPPERWINCH)>0){
-				stopper->setStopperDirect(0.4);
-				direction=1;
-			}else{
-				stopper->setStopperDirect(-0.4);
-				direction=-1;
-			}
-			buttondown=true;
-		}else {
-			if(buttondown==true){
-				mytime+=direction*timer.Get();
-			}
+	if(m_position==stopHigh) {
+		if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
+			stopper->setSmart(false);
+			stopper->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
+			m_manual = true;
+		}
+		else if(m_manual) {
 			stopper->setStopperDirect(0);
-			buttondown=false;
-			if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
-				if(oi->gamepad->GetRawAxis(B_STOPPERWINCH)>0){
-					direction=1;
-				}else{
-					direction=-1;
-				}
-			}
+			stopper->Calibrate(SmartDashboard::GetNumber("Stopper High Angle"));
+			stopper->setSmart(true);
+			m_manual = false;
 		}
-		SmartDashboard::PutNumber("Stopper held down",mytime);
 	}
-	//else if(Robot::preferences->GetBoolean("Stopper Winch Encoder Functional")){
-	else{
-		stopper->setSmart(true);
+
+	if(Robot::StopperEncoderPPI!=0){
 		if(oi->gamepad->GetRawButton(B_LOADLOWSHOT)){
-			stopper->setGoalInches(SmartDashboard::GetNumber("StopperWinch Low Position"));
-		}if(oi->gamepad->GetRawButton(B_LOADHIGHSHOT)){
-			stopper->setGoalInches(SmartDashboard::GetNumber("StopperWinch High Position"));
+			m_manual = false;
+			m_position = stopLow;
+			stopper->setGoalAngle(SmartDashboard::GetNumber("Stopper Low Angle"));
+		}
+		if(oi->gamepad->GetRawButton(B_LOADHIGHSHOT)){
+			m_manual = false;
+			m_position = stopHigh;
+			stopper->setGoalAngle(SmartDashboard::GetNumber("Stopper High Angle"));
 		}
 	}
+
 	stopper->ProjectSensors();
 }
 

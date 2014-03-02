@@ -73,5 +73,5 @@ bool Intake::getIdle(){
 	return idle->Get();
 }
 bool Intake::getReadyToShoot(){
-	return readyTimer.Get()>1;	//idle for at least one second.
+	return readyTimer.Get()>1.6;	//idle for at least one second.
 }

@@ -34,7 +34,7 @@ public:
 	void arcadeDrive(float move, float turn);
 	void SmartRobot(bool smart=true);
 	void DumbRobot() {SmartRobot(false);}
-	bool CanUseEncoders() {return isLeftEncoderOK&&isRightEncoderOK;}
+	bool CanUseEncoders() {return (isLeftEncoderOK&&isRightEncoderOK);}
 	bool CanUseGyro() {return isUsingGyro;}
 	void ProjectSensors();
 	double GetDistance();

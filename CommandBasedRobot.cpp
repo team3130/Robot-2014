@@ -8,34 +8,7 @@
 #include "Commands/AutonomousGroup.h"
 #include "Subsystems/Logger.h"
 
-Preferences* Robot::preferences = NULL;
 UnitTest*    Robot::unitTest = NULL;
-
-void Robot::init(){
-	Robot::preferences = Preferences::GetInstance();
-	if(!Robot::preferences->ContainsKey("LeftEncoderPPR")){
-		Robot::preferences->PutInt("LeftEncoderPPR", 256);
-	}
-	if(!Robot::preferences->ContainsKey("RightEncoderPPR")){
-		Robot::preferences->PutInt("RightEncoderPPR", 256);
-	}
-	if(!Robot::preferences->ContainsKey("LowGearTopSpeed")){
-		// Theoretical max speed of the bot on low gear in inches per second
-		// Has to be unreachable closest amount.
-		Robot::preferences->PutDouble("LowGearTopSpeed",150);
-	}
-	if(!Robot::preferences->ContainsKey("ArmEncoderFunctional")){
-		Robot::preferences->PutBoolean("ArmEncoderFunctional", false);
-	}
-	if(!Robot::preferences->ContainsKey("StopperEncoderPPI")){
-		Robot::preferences->PutDouble("StopperEncoderPPI", 114.53);
-	}
-	if(!Robot::preferences->ContainsKey("StopperWinchEncoderFunctional")){
-		Robot::preferences->PutBoolean("StopperWinchEncoderFunctional", true);
-	}
-	CommandBase::init();
-	Robot::unitTest = new UnitTest();
-}
 
 class CommandBasedRobot : public IterativeRobot {
 private:
@@ -45,6 +18,7 @@ private:
 	virtual void RobotInit() {
 		Robot::logger = new Logger();
 		CommandBase::init();
+		Robot::unitTest = new UnitTest();
 		autonomousCommand = new AutonomousGroup();
 		lw = LiveWindow::GetInstance();
 		Robot::logger->update_number("TESTY", 3.14);
