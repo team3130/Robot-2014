@@ -13,12 +13,16 @@
 
 class JoystickStopperWinch: public CommandBase {
 public:
+	typedef enum {stopLow, stopHigh} PositionType;
 	JoystickStopperWinch();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+private:
+	bool m_manual;
+	PositionType m_position;
 };
 
 #endif

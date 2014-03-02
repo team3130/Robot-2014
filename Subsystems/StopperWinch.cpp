@@ -18,6 +18,8 @@ StopperWinch::StopperWinch() : PIDSubsystem("StopperWinch",0.5,0,0) {
 	calibratedWithArm=false;
 	SetAbsoluteTolerance(0.1);
 	PIDSubsystem::Disable();
+	SmartDashboard::PutNumber("Stopper Low Angle",26.0);
+	SmartDashboard::PutNumber("Stopper High Angle",50.5);
 }
 StopperWinch::~StopperWinch(){
 	//delete winchEncoder;
@@ -48,11 +50,14 @@ bool StopperWinch::armSwitchState(){
 }
 
 void StopperWinch::Calibrate(double angle){
-	stopperEncoder->SetDistancePerPulse(1.0/Robot::preferences->GetDouble("StopperEncoderPPI",114.53));
-	stopperEncoder->Reset();
 	m_zero = angle;
 	SetSetpoint(0);
-	Enable();
+	if(Robot::StopperEncoderPPI!=0){
+		stopperEncoder->SetDistancePerPulse(1.0/Robot::StopperEncoderPPI);
+		stopperEncoder->Reset();
+		stopperEncoder->Start();
+		Enable();
+	}
 }
 
 double StopperWinch::ReturnPIDInput(){
@@ -66,14 +71,16 @@ double StopperWinch::DegreesToInches(double angle){
 	return sqrt(
 			N_FRAME_L*N_FRAME_L + N_FRAME_ARMLENGTH*N_FRAME_ARMLENGTH -
 			2.0*N_FRAME_L*N_FRAME_ARMLENGTH*cos(
-				asin(N_FRAME_H/N_FRAME_L) + angle*3.141592653589/180.0
+				asin(N_FRAME_H/N_FRAME_L) + angle*M_PI/180.0
 			)
 		);
 }
+
 double StopperWinch::InchesToDegrees(double inches){
 	return 0;
 }
+
 void StopperWinch::setSmart(bool smart){
-	if(smart)PIDSubsystem::Enable();
+	if(smart&&(Robot::StopperEncoderPPI!=0))PIDSubsystem::Enable();
 	else PIDSubsystem::Disable();
 }

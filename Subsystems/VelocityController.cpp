@@ -25,7 +25,6 @@ VelocityController::VelocityController(const char *name, uint32_t channel, uint3
 	m_power = 0;
 	m_smart = true;
 	m_invertOutput = false;
-	m_topSpeed = Robot::preferences->GetDouble("Low Gear Top Speed",150);
 	Encoder::Start();
 	SmartDashboard::PutNumber("VelocityController P",1000);
 }
@@ -38,7 +37,7 @@ void VelocityController::SetInvertedMotor(bool inverted){
 void VelocityController::Set(float velocity, uint8_t syncGroup) {
 	m_kP = SmartDashboard::GetNumber("VelocityController P")/1000.0;
 	if(m_smart && velocity != 0) {
-		double rate = GetRate() / m_topSpeed;
+		double rate = GetRate() / Robot::LowGearTopSpeed;
 		double delta = fabs(velocity - rate);
 		double increment = m_kP * pow(delta, fabs(rate)+1);
 

@@ -37,7 +37,7 @@ void AutonomousGroup::Initialize(){
 	CommandBase::intake->ResetIdleTimer();
 	WaitForHot::sm_bIsHot = false;
 	WaitForHot::sm_bInitialCheck = true;
-	CommandBase::stopper->Calibrate(0);
+	CommandBase::stopper->Calibrate(SmartDashboard::GetNumber("Stopper High Angle"));
 	CommandBase::intake->SetIdle(true);
 	shoot->GrantPermission(false);
 	driveStraight1->SetGoal(

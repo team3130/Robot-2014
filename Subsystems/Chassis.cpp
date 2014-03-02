@@ -24,13 +24,13 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	rightController->SetInvertedMotor(true);
 	leftController->Encoder::SetReverseDirection(true);
 	rightController->Encoder::SetReverseDirection(true);
-	if(Robot::preferences->GetInt("LeftEncoderPPR",0)>0){
-		leftController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::preferences->GetInt("LeftEncoderPPR"));
+	if(Robot::LeftEncoderPPR>0){
+		leftController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::LeftEncoderPPR);
 		isLeftEncoderOK = true;
 	}
 	else isLeftEncoderOK = false;
-	if(Robot::preferences->GetInt("RightEncoderPPR",0)>0) {
-		rightController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::preferences->GetInt("RightEncoderPPR"));
+	if(Robot::RightEncoderPPR>0) {
+		rightController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::RightEncoderPPR);
 		isRightEncoderOK = true;
 	}
 	else isRightEncoderOK = false;

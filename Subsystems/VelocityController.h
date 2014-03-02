@@ -14,7 +14,6 @@ class VelocityController: public Talon, public Encoder {
 private:
 	double m_kP;
 	double m_power;
-	double m_topSpeed;
 	Talon* m_satellite;
 	bool m_smart;
 	bool m_invertOutput;

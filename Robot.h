@@ -14,9 +14,13 @@
 
 class Robot {
 public:
-	static Preferences* preferences;
 	static UnitTest*    unitTest;
-	static void init();
+	static const unsigned int LeftEncoderPPR=0;
+	static const unsigned int RightEncoderPPR=0;
+	// Theoretical max speed of the bot on low gear in inches per second
+	// Has to be unreachable closest amount.
+	static const double LowGearTopSpeed=150;
+	static const double StopperEncoderPPI=114.53;
 };
 
 #endif
