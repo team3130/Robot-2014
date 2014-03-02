@@ -6,6 +6,7 @@
 /*-------------------------------------------------------------------------*/
 #include "Robot.h"
 #include "Commands/AutonomousGroup.h"
+#include "Subsystems/Logger.h"
 
 Preferences* Robot::preferences = NULL;
 UnitTest*    Robot::unitTest = NULL;

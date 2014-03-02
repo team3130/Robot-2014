@@ -7,6 +7,9 @@
 #ifndef _SENSOR_H
 #define _SENSOR_H
 
+static const int DOUBLE = 0;
+static const int FLOAT = 1;
+
 /**
  * C: The class type (non-pointer)
 
@@ -17,30 +20,36 @@
  */
 template<typename C>
 class Sensor {
-private:
-	C *m_classPtr;
-	void* m_funcPtr;
-
-	typedef double (C::*d_funcptr_t)();
-	typedef float (C::*f_funcptr_t)();
 public:
-	const int DOUBLE = 0;
-	const int FLOAT = 1;
+	
+	typedef double (C::*d_funcPtr_t)();
+	typedef float (C::*f_funcPtr_t)();
 
 	const char* m_name;
-	const int m_type;
+	const int m_sensorType;
+	
+private:
+	C &m_classPtr;
+	d_funcPtr_t d_funcPtr;
+	f_funcPtr_t f_funcPtr;
 
-	Sensor(const char* name, C* classPtr, int type, void* funcPtr) :
-		m_name(name), m_classPtr(classPtr), m_type(type), m_funcPtr(funcPtr) {
+public:
+	
+	Sensor(const char* name, C &classPtr, const int &type, d_funcPtr_t funcPtr) :
+		m_name(name), m_sensorType(type), m_classPtr(classPtr), d_funcPtr(funcPtr), f_funcPtr(NULL) {
+	}
+	Sensor(const char* name, C &classPtr, const int &type, f_funcPtr_t funcPtr) :
+		m_name(name), m_sensorType(type), m_classPtr(classPtr), d_funcPtr(NULL), f_funcPtr(funcPtr) {
 	}
 
 	inline double get() {
-		switch m_type {
+		switch (m_sensorType) {
 		case DOUBLE:
-			return (double)(*m_classPtr.*(d_funcptr_t)m_funcPtr)();
+			return (double)(m_classPtr.*d_funcPtr)();
 		case FLOAT:
-			return (double)(*m_classPtr.*(f_funcptr_t)m_funcPtr)();
+			return (double)(m_classPtr.*f_funcPtr)();
 		}
+		return 0.0;
 	}
 };
 

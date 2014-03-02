@@ -20,16 +20,16 @@ void Log::Initialize() {
 }
 
 void Log::Execute() {
-	semTake(Sensor_Mutex);
+	semTake(Sensor_Mutex, WAIT_FOREVER);
 	std::vector<Sensor<Encoder>* >::iterator e_it;
 	for (e_it = m_encoders->begin(); e_it != m_encoders->end(); ++e_it) {
 		Robot::logger->update_number((*e_it)->m_name, (*e_it)->get());
 	}
-	std::vector<Sensor<DigitalInput,>* >::iterator d_it;
+	std::vector<Sensor<DigitalInput>* >::iterator d_it;
 	for (d_it = m_dis->begin(); d_it != m_dis->end(); ++d_it) {
 		Robot::logger->update_number((*d_it)->m_name, (*d_it)->get());
 	}
-	std::vector<Sensor<Gyro,>* >::iterator g_it;
+	std::vector<Sensor<Gyro>* >::iterator g_it;
 	for (g_it = m_gyros->begin(); g_it != m_gyros->end(); ++g_it) {
 		Robot::logger->update_number((*g_it)->m_name, (*g_it)->get());
 	}

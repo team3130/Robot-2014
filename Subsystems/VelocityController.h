@@ -7,14 +7,14 @@
 /*-------------------------------------------------------------------------*/
 #ifndef VELOCITY_CONTROLLER_H
 #define VELOCITY_CONTROLLER_H
+//#include "Commands/Subsystem.h"
 #include "WPILib.h"
-#include "../Robot.h"
+//#include "string.h"
 
 class VelocityController: public Talon, public Encoder {
 private:
 	double m_kP;
 	double m_power;
-	double m_topSpeed;
 	Talon* m_satellite;
 	bool m_smart;
 	bool m_invertOutput;

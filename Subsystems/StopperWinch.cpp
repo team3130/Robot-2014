@@ -10,6 +10,7 @@
 #include "../Commands/JoystickStopperWinch.h"
 #include "../CommandBase.h"
 #include "math.h"
+#include "Logger.h"
 
 StopperWinch::StopperWinch() : PIDSubsystem("StopperWinch",0.5,0,0) {
 	stopperEncoder = new Encoder(C_ENCODER_STOPPER_A,C_ENCODER_STOPPER_B,false);
@@ -19,7 +20,7 @@ StopperWinch::StopperWinch() : PIDSubsystem("StopperWinch",0.5,0,0) {
 	calibratedWithArm=false;
 	SetAbsoluteTolerance(0.1);
 	PIDSubsystem::Disable();
-	Robot::logger->add_sensor(new Sensor("Shooter.StopperWinch.Encoder.Position", stopperEncoder, (Sensor::dfuncptr)&GetSensor<Encoder>::getDistance));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Shooter.StopperWinch.Encoder.Position", *stopperEncoder, DOUBLE, &Encoder::GetDistance));
 }
 StopperWinch::~StopperWinch(){
 	//delete winchEncoder;

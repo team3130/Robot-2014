@@ -16,8 +16,8 @@
 
 Chassis::Chassis() : Subsystem("Chassis"){
 	isUsingGyro = false;
-	leftController = new VelocityController("Left",C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
-	rightController = new VelocityController("Right",C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
+	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
+	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
 	shifter = new Solenoid(C_SHIFTER);
 	gyro  = new Gyro(C_GYRO);
 	drive = new RobotDrive(leftController, rightController);
@@ -38,14 +38,13 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	}
 	else isRightEncoderOK = false;
 
-	Robot::logger->add_sensor(new Sensor<Gyro>("Chassis.Gyro.Rate", gyro, Sensor::DOUBLE, &Gyro::GetRate));
-	Robot::logger->add_sensor(new Sensor<Gyro>("Chassis.Gyro.Angle", gyro, Sensor::FLOAT, &Gyro::GetAngle));
-	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.LeftController.Encoder.Rate", leftController::Encoder, Sensor::DOUBLE, &Encoder::GetRate));
-	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.Encoder.Rate", rightController, Sensor::DOUBLE, &GetSensor<VelocityController>::getEncoder));
-	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.LeftController.SetVelocity", leftController, Sensor::DOUBLE, &GetSensor<VelocityController>::getMotor));
-	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.SetVelocity", rig
+	Robot::logger->add_sensor(new Sensor<Gyro>("Chassis.Gyro.Rate", *gyro, DOUBLE, (Sensor<Gyro>::d_funcPtr_t)&Gyro::GetRate));
+	Robot::logger->add_sensor(new Sensor<Gyro>("Chassis.Gyro.Angle", *gyro, FLOAT, &Gyro::GetAngle));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.LeftController.Encoder.Rate", (Encoder&)*leftController, DOUBLE, &Encoder::GetRate));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.Encoder.Rate", (Encoder&)*rightController, DOUBLE, &Encoder::GetRate));
 }
 
+/*
 Chassis::~Chassis()
 {
 	delete leftController;
@@ -54,6 +53,7 @@ Chassis::~Chassis()
 	delete gyro;
 	delete shifter;
 }
+*/
 
 void Chassis::InitDefaultCommand() {
 	// Set the default command for a subsystem here.

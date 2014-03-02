@@ -11,6 +11,7 @@
 #include <iostream>
 #include <algorithm>
 #include "tables/TableKeyNotDefinedException.h"
+#include "semLib.h"
 
 int file_exists (char *filename)
 {
@@ -43,7 +44,7 @@ Logger::Logger() :
 //	NetworkTable::SetServerMode();
 	m_table = NetworkTable::GetTable("log");
 
-	Sensor_Mutex = SemMCreate();
+	Sensor_Mutex = semMInitialize(m_sem, 0);
 }
 
 Logger::~Logger() {
@@ -55,34 +56,34 @@ Logger::~Logger() {
 }
 
 void Logger::add_sensor(Sensor<Encoder>* s) {
-	semTake(Sensor_Mutex);
+	semTake(Sensor_Mutex, WAIT_FOREVER);
 	m_encoders->push_back(s);
 	semGive(Sensor_Mutex);
 }
 void Logger::add_sensor(Sensor<DigitalInput>* s) {
-	semTake(Sensor_Mutex);
+	semTake(Sensor_Mutex, WAIT_FOREVER);
 	m_dis->push_back(s);
 	semGive(Sensor_Mutex);
 }
 void Logger::add_sensor(Sensor<Gyro>* s) {
-	semTake(Sensor_Mutex);
+	semTake(Sensor_Mutex, WAIT_FOREVER);
 	m_gyros->push_back(s);
 	semGive(Sensor_Mutex);
 }
 
 void Logger::remove_sensor(Sensor<Encoder>* s) {
-	semTake(Sensor_Mutex);
-	std::find(m_encoders->begin(), m_encoders->end(), s)->erase();
+	semTake(Sensor_Mutex, WAIT_FOREVER);
+	m_encoders->erase(std::remove(m_encoders->begin(), m_encoders->end(), s), m_encoders->end());
 	semGive(Sensor_Mutex);
 }
 void Logger::remove_sensor(Sensor<DigitalInput>* s) {
-	semTake(Sensor_Mutex);
-	std::find(m_dis->begin(), m_dis->end(), s)->erase();
+	semTake(Sensor_Mutex, WAIT_FOREVER);
+	m_dis->erase(std::remove(m_dis->begin(), m_dis->end(), s), m_dis->end());
 	semGive(Sensor_Mutex);
 }
 void Logger::remove_sensor(Sensor<Gyro>* s) {
-	semTake(Sensor_Mutex);
-	std::find(m_gyros->begin(), m_gyros->end(), s)->erase();
+	semTake(Sensor_Mutex, WAIT_FOREVER);
+	m_gyros->erase(std::remove(m_gyros->begin(), m_gyros->end(), s), m_gyros->end());
 	semGive(Sensor_Mutex);
 }
 
@@ -131,7 +132,7 @@ void Logger::ValueChanged(ITable* source, const std::string& key, EntryValue val
 }
 
 void Logger::InitDefaultCommand() {
-	SetDefaultCommand(new Log(m_encoders, m_dis, m_gyros));
+	SetDefaultCommand(new Log(m_encoders, m_dis, m_gyros, Sensor_Mutex));
 }
 
 

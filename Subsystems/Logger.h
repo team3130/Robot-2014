@@ -12,7 +12,6 @@
 #include "WPILib.h"
 #include "../Logger/Sensor.h"
 #include "semLib.h"
-#include "semMLib.h"
 
 #define LOG_FILE "match.log"
 #define LOG_FILE_OLD "old_match.log"
@@ -37,6 +36,7 @@ public:
 
 	void InitDefaultCommand();
 
+	VX_MUTEX_SEMAPHORE(m_sem);
 	SEM_ID Sensor_Mutex;
 	
 private:
