@@ -7,6 +7,7 @@
 #include "WaitForHot.h"
 #include "ShootCatapult.h"
 #include "WindCatapult.h"
+#include "AccumulateCatapult.h"
 
 /**
  *
@@ -21,6 +22,7 @@ private:
 	ShootCatapult* shoot;
 	DriveStraight* driveStraight2;
 	Timer hotGoalTimer;
+	AccumulateCatapult* accum;
 public:	
 	AutonomousGroup();
 	~AutonomousGroup();

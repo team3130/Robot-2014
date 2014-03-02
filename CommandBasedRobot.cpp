@@ -12,12 +12,12 @@ UnitTest*    Robot::unitTest = NULL;
 
 void Robot::init(){
 	Robot::preferences = Preferences::GetInstance();
-	if(!Robot::preferences->ContainsKey("LeftEncoderPPR")){
-		Robot::preferences->PutInt("LeftEncoderPPR", 256);
-	}
-	if(!Robot::preferences->ContainsKey("RightEncoderPPR")){
-		Robot::preferences->PutInt("RightEncoderPPR", 256);
-	}
+	//if(!Robot::preferences->ContainsKey("LeftEncoderPPR")){
+		Robot::preferences->PutInt("LeftEncoderPPR", 128);
+	//}
+	//if(!Robot::preferences->ContainsKey("RightEncoderPPR")){
+		Robot::preferences->PutInt("RightEncoderPPR", 128);
+	//}
 	if(!Robot::preferences->ContainsKey("LowGearTopSpeed")){
 		// Theoretical max speed of the bot on low gear in inches per second
 		// Has to be unreachable closest amount.

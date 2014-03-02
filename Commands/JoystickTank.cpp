@@ -40,7 +40,7 @@ void JoystickTank::Execute() {
 	}
 
 	// Automatic transmission
-	if(	fabs(leftStick)>FULL_SPEED &&
+/*	if(	fabs(leftStick)>FULL_SPEED &&
 		fabs(rightStick)>FULL_SPEED &&
 		leftStick*rightStick>0)
 	{
@@ -59,7 +59,7 @@ void JoystickTank::Execute() {
 	)
 	{
 		chassis->ShiftGear(false);
-	}
+	} */
 	previousDirection = leftStick + rightStick;
 	chassis->tankDrive(leftStick, rightStick);
 }
