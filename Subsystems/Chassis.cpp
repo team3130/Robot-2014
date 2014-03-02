@@ -16,8 +16,8 @@
 
 Chassis::Chassis() : Subsystem("Chassis"){
 	isUsingGyro = false;
-	leftController = new VelocityController(C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
-	rightController = new VelocityController(C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
+	leftController = new VelocityController("Left", C_LEFTMOTOR,C_LEFTSATELLITE,C_ENCODER_LEFT_A,C_ENCODER_LEFT_B);
+	rightController = new VelocityController("Right", C_RIGHTMOTOR,C_RIGHTSATELLITE,C_ENCODER_RIGHT_A,C_ENCODER_RIGHT_B);
 	shifter = new Solenoid(C_SHIFTER);
 	gyro  = new Gyro(C_GYRO);
 	drive = new RobotDrive(leftController, rightController);
@@ -28,12 +28,12 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	leftController->Encoder::SetReverseDirection(true);
 	rightController->Encoder::SetReverseDirection(true);
 	if(Robot::LeftEncoderPPR>0){
-		leftController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::LeftEncoderPPR);
+		//leftController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::LeftEncoderPPR);
 		isLeftEncoderOK = true;
 	}
 	else isLeftEncoderOK = false;
 	if(Robot::RightEncoderPPR>0) {
-		rightController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::RightEncoderPPR);
+		//rightController->SetDistancePerPulse(M_PI * N_WHEEL_DIAMETER * N_WHEEL_ENCODER_RATIO / Robot::RightEncoderPPR);
 		isRightEncoderOK = true;
 	}
 	else isRightEncoderOK = false;

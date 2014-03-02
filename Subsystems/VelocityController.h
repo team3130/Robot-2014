@@ -7,9 +7,8 @@
 /*-------------------------------------------------------------------------*/
 #ifndef VELOCITY_CONTROLLER_H
 #define VELOCITY_CONTROLLER_H
-//#include "Commands/Subsystem.h"
 #include "WPILib.h"
-//#include "string.h"
+#include "../Robot.h"
 
 class VelocityController: public Talon, public Encoder {
 private:
@@ -18,8 +17,9 @@ private:
 	Talon* m_satellite;
 	bool m_smart;
 	bool m_invertOutput;
+	const char *m_name;
 public:
-	VelocityController(uint32_t channel, uint32_t sat_channel,
+	VelocityController(const char *name, uint32_t channel, uint32_t sat_channel,
 			uint32_t aChannel, uint32_t bChannel,
 			Encoder::EncodingType encodingType = Encoder::k4X);
 	~VelocityController();
