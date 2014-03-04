@@ -42,6 +42,8 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	Robot::logger->add_sensor(new Sensor<Gyro>("Chassis.Gyro.Angle", *gyro, FLOAT, &Gyro::GetAngle));
 	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.LeftController.Encoder.Rate", (Encoder&)*leftController, DOUBLE, &Encoder::GetRate));
 	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.Encoder.Rate", (Encoder&)*rightController, DOUBLE, &Encoder::GetRate));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.LeftController.Encoder.Distance", (Encoder&)*leftController, DOUBLE, &Encoder::GetDistance));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.Encoder.Distance", (Encoder&)*rightController, DOUBLE, &Encoder::GetDistance));
 }
 
 /*
@@ -118,12 +120,14 @@ void Chassis::SmartRobot(bool smart) {
 }
 
 void Chassis::ProjectSensors() {
+	/* Redundant due to logger
 	SmartDashboard::PutNumber("Chassis Gyro Angle", gyro->GetAngle());
 	SmartDashboard::PutNumber("Chassis Gyro Rate",  gyro->GetRate());
 	SmartDashboard::PutNumber("Chassis Left  Raw",      leftController->Encoder::GetRaw());
 	SmartDashboard::PutNumber("Chassis Right Raw",      rightController->Encoder::GetRaw());
 	SmartDashboard::PutNumber("Chassis Left  Velocity", leftController->GetRate());
 	SmartDashboard::PutNumber("Chassis Right Velocity", rightController->GetRate());
+	*/
 }
 
 /*

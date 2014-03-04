@@ -23,6 +23,7 @@ StopperWinch::StopperWinch() : PIDSubsystem("StopperWinch",0.5,0,0) {
 	SmartDashboard::PutNumber("Stopper Low Angle",26.0);
 	SmartDashboard::PutNumber("Stopper High Angle",50.5);
 	Robot::logger->add_sensor(new Sensor<Encoder>("Shooter.StopperWinch.Encoder.Position", *stopperEncoder, DOUBLE, &Encoder::GetDistance));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Shooter.Arm.Encoder.Position", *armEncoder, DOUBLE, &Encoder::GetDistance));
 }
 StopperWinch::~StopperWinch(){
 	//delete winchEncoder;
@@ -37,6 +38,7 @@ void StopperWinch::setStopperDirect(double speed){
 	stopper->Set(speed);
 }
 void StopperWinch::ProjectSensors(){
+	/* Redundant due to Logger, but useful during match */
 	SmartDashboard::PutNumber("StopperWinch Distance", stopperEncoder->GetDistance());
 	SmartDashboard::PutNumber("StopperWinch Arm2 Encoder", armEncoder->GetDistance());
 	SmartDashboard::PutBoolean("StopperWinch Arm Switch", (limitSwitch->Get()?true:false));
