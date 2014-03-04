@@ -21,7 +21,7 @@ void JoystickShoot::Initialize() {
 void JoystickShoot::Execute() {
 	double d= oi->gamepad->GetRawAxis(B_POWERWINCH);
 	if(fabs(d)>0.2){
-		shooter->setWinchDirect(d*0.86);
+		shooter->setWinchDirect(d);
 	}else shooter->setWinchDirect(0);
 	
 	if(oi->gamepad->GetRawButton(B_SHOOT)){
