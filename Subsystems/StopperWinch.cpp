@@ -22,8 +22,8 @@ StopperWinch::StopperWinch() : PIDSubsystem("StopperWinch",0.5,0,0) {
 	PIDSubsystem::Disable();
 	SmartDashboard::PutNumber("Stopper Low Angle",26.0);
 	SmartDashboard::PutNumber("Stopper High Angle",50.5);
-	Robot::logger->add_sensor(new Sensor<Encoder>("Shooter.StopperWinch.Encoder.Position", *stopperEncoder, DOUBLE, &Encoder::GetDistance));
-	Robot::logger->add_sensor(new Sensor<Encoder>("Shooter.Arm.Encoder.Position", *armEncoder, DOUBLE, &Encoder::GetDistance));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Shooter.StopperWinch.Encoder.Position", *stopperEncoder, Sensor<Encoder>::DOUBLE, &Encoder::GetDistance));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Shooter.Arm.Encoder.Position", *armEncoder, Sensor<Encoder>::DOUBLE, &Encoder::GetDistance));
 }
 StopperWinch::~StopperWinch(){
 	//delete winchEncoder;

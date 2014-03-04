@@ -38,12 +38,12 @@ Chassis::Chassis() : Subsystem("Chassis"){
 	}
 	else isRightEncoderOK = false;
 
-	Robot::logger->add_sensor(new Sensor<Gyro>("Chassis.Gyro.Rate", *gyro, DOUBLE, (Sensor<Gyro>::d_funcPtr_t)&Gyro::GetRate));
-	Robot::logger->add_sensor(new Sensor<Gyro>("Chassis.Gyro.Angle", *gyro, FLOAT, &Gyro::GetAngle));
-	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.LeftController.Encoder.Rate", (Encoder&)*leftController, DOUBLE, &Encoder::GetRate));
-	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.Encoder.Rate", (Encoder&)*rightController, DOUBLE, &Encoder::GetRate));
-	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.LeftController.Encoder.Distance", (Encoder&)*leftController, DOUBLE, &Encoder::GetDistance));
-	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.Encoder.Distance", (Encoder&)*rightController, DOUBLE, &Encoder::GetDistance));
+	Robot::logger->add_sensor(new Sensor<Gyro>("Chassis.Gyro.Rate", *gyro, Sensor<Gyro>::DOUBLE, (Sensor<Gyro>::d_funcPtr_t)&Gyro::GetRate));
+	Robot::logger->add_sensor(new Sensor<Gyro>("Chassis.Gyro.Angle", *gyro, Sensor<Gyro>::FLOAT, &Gyro::GetAngle));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.LeftController.Encoder.Rate", (Encoder&)*leftController, Sensor<Encoder>::DOUBLE, &Encoder::GetRate));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.Encoder.Rate", (Encoder&)*rightController, Sensor<Encoder>::DOUBLE, &Encoder::GetRate));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.LeftController.Encoder.Distance", (Encoder&)*leftController, Sensor<Encoder>::DOUBLE, &Encoder::GetDistance));
+	Robot::logger->add_sensor(new Sensor<Encoder>("Chassis.RightController.Encoder.Distance", (Encoder&)*rightController, Sensor<Encoder>::DOUBLE, &Encoder::GetDistance));
 }
 
 /*
