@@ -9,7 +9,7 @@
 
 #include "../CommandBase.h"
 
-static const float DEAD_BAND = 0.08;
+static const float DEAD_BAND = 0.15;
 static const float FULL_SPEED = 0.92;
 static const float RED_ZONE = 90.0; // TODO find this experimentally (in/sec)
 

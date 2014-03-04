@@ -64,7 +64,9 @@ double StopperWinch::ReturnPIDInput(){
 	return stopperEncoder->GetDistance();
 }
 void StopperWinch::UsePIDOutput(double output){
-	stopper->Set(output);
+	if(output<0 && armSwitchState()==false) {
+		stopper->Set(output);
+	}
 }
 
 double StopperWinch::DegreesToInches(double angle){
