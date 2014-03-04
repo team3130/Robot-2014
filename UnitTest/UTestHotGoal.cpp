@@ -1,8 +1,9 @@
 #include "UTestHotGoal.h"
 
 UTestHotGoal::UTestHotGoal() : CommandGroup("UTest Hot Goal") {
-	waitForHot = new WaitForHot("Check for Hot Goal");
+	waitForHot = new WaitForHot("Unit Test for Hot Goal");
 	AddParallel(waitForHot);
+	SmartDashboard::PutData(this);
 }
 
 UTestHotGoal::~UTestHotGoal(){
