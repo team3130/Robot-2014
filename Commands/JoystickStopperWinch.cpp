@@ -23,7 +23,7 @@ void JoystickStopperWinch::Execute() {
 	if(m_position==stopHigh) {
 		if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
 			stopper->setSmart(false);
-			stopper->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
+			stopper->setStopperDirect(-oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
 			m_manual = true;
 		}
 		else if(m_manual) {
