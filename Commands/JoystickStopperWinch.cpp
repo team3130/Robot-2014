@@ -21,9 +21,10 @@ void JoystickStopperWinch::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void JoystickStopperWinch::Execute() {
 	if(m_position==stopHigh) {
-		if(fabs(oi->gamepad->GetRawAxis(B_STOPPERWINCH))>0.2){
+		double thumb = oi->gamepad->GetRawAxis(B_STOPPERWINCH);
+		if(fabs(thumb)>0.2){
 			stopper->setSmart(false);
-			stopper->setStopperDirect(oi->gamepad->GetRawAxis(B_STOPPERWINCH)/1.65);
+			stopper->setStopperDirect(-thumb);
 			m_manual = true;
 		}
 		else if(m_manual) {
