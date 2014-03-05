@@ -5,15 +5,18 @@
 /* Authors: James Li                                                       */
 /*-------------------------------------------------------------------------*/
 
-#ifndef IDLE_INTAKE_H
-#define IDLE_INTAKE_H
+#ifndef AUTO_INTAKE_H
+#define AUTO_INTAKE_H
 
 #include "../CommandBase.h"
 #include "WPILib.h"
 
-class IdleIntake: public CommandBase {
+class AutoIntake: public CommandBase {
 public:
-	IdleIntake();
+	Timer loadTimer;
+	bool done;
+	AutoIntake();
+	int GetPhase();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
