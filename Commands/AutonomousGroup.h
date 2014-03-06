@@ -23,6 +23,7 @@ private:
 	DriveStraight* driveStraight2;
 	Timer hotGoalTimer;
 	AccumulateCatapult* accum;
+	CommandGroup* alternative;
 public:	
 	AutonomousGroup();
 	~AutonomousGroup();

@@ -1,13 +1,16 @@
 #include "AutonomousGroup.h"
+#include "AutonomousDouble.h"
 #include "WindCatapult.h"
 
 AutonomousGroup::AutonomousGroup() {
 	SmartDashboard::PutNumber("Autonomous - Init Move Dist", 0);
 	SmartDashboard::PutNumber("Autonomous - Init Move Tol", 0.5);
-
 	SmartDashboard::PutNumber("Autonomous - Final Move Dist", -50);
 	SmartDashboard::PutNumber("Autonomous - Final Move Tol", 0.5);
 
+	SmartDashboard::PutBoolean("Autonomous Double Shot",false);
+	alternative = new AutonomousDouble();
+	
 	// allocate and store pointers to commands
 	loader = new WindCatapult("Auto: Load Catapult");
 	waitForHot = new WaitForHot("Check for Hot Goal");
@@ -31,9 +34,14 @@ AutonomousGroup::~AutonomousGroup(){
 	delete driveStraight1;
 	delete shoot;
 	delete driveStraight2;
+	delete alternative;
 }
 
 void AutonomousGroup::Initialize(){
+	if(SmartDashboard::GetBoolean("Autonomous Double Shot")) {
+		alternative->Start();
+		return;
+	}
 	CommandBase::intake->ResetIdleTimer();
 	WaitForHot::sm_bIsHot = false;
 	WaitForHot::sm_bInitialCheck = true;
@@ -53,6 +61,9 @@ void AutonomousGroup::Initialize(){
 }
 
 void AutonomousGroup::Execute(){
+	if(SmartDashboard::GetBoolean("Autonomous Double Shot")) {
+		return;
+	}
 	if(accum->IsFinished()){
 		if(waitForHot->sm_bIsHot || hotGoalTimer.Get()>=5.0){
 			shoot->GrantPermission(true);

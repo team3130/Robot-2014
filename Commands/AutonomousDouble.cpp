@@ -2,11 +2,11 @@
 #include "WindCatapult.h"
 
 AutonomousDouble::AutonomousDouble() {
-	SmartDashboard::PutNumber("Autonomous - Init Move Dist", 8);
-	SmartDashboard::PutNumber("Autonomous - Init Move Tol", 0.5);
+	SmartDashboard::PutNumber("Autonomous - Get Ball Dist", 8);
+	SmartDashboard::PutNumber("Autonomous - Get Ball Tol", 0.5);
 
-	SmartDashboard::PutNumber("Autonomous - Final Move Dist", -50);
-	SmartDashboard::PutNumber("Autonomous - Final Move Tol", 0.5);
+	SmartDashboard::PutNumber("Autonomous - Clear Zone Dist", -50);
+	SmartDashboard::PutNumber("Autonomous - Clear Zone Tol", 0.5);
 
 	driveToBall = new DriveStraight("Auto: get second ball");
 	shoot1 = new ShootCatapult("Auto: Shoot1");
@@ -38,12 +38,12 @@ void AutonomousDouble::Initialize(){
 	shoot2->GrantPermission(false);
 
 	driveToBall->SetGoal(
-			SmartDashboard::GetNumber("Autonomous - Init Move Dist"),
-			SmartDashboard::GetNumber("Autonomous - Init Move Tol")
+			SmartDashboard::GetNumber("Autonomous - Get Ball Dist"),
+			SmartDashboard::GetNumber("Autonomous - Get Ball Tol")
 		);
 	driveZone->SetGoal(
-			SmartDashboard::GetNumber("Autonomous - Final Move Dist"),
-			SmartDashboard::GetNumber("Autonomous - Final Move Tol")
+			SmartDashboard::GetNumber("Autonomous - Clear Zone Dist"),
+			SmartDashboard::GetNumber("Autonomous - Clear Zone Tol")
 		);
 }
 
