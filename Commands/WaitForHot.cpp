@@ -7,7 +7,8 @@ WaitForHot::WaitForHot(const char* name) : CommandBase(name) {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
 	SmartDashboard::PutNumber("Autonomous - Hot Method", 0.0);
-	
+	SmartDashboard::PutNumber("Hot Scans", 15);
+	SmartDashboard::PutNumber("Hot Confirms", 7);
     distanceTracking = new DistanceTracking();
 }
 
@@ -44,9 +45,9 @@ void WaitForHot::Execute() {
 	*/
 	
 	//Check if half a second had passed
-	if (timer.Get() >= .5){
+	if (timer.Get() >= .7){
 		// we'll check for hot the first 10 times called (0-9)
-		if ( hotIterate < 10 ) {
+		if ( hotIterate < SmartDashboard::GetNumber("Hot Scans") ) {
 		
 			// if using aimed method to test for hot
 			if ( hotMethod == 0 ) {
@@ -75,9 +76,9 @@ bool WaitForHot::IsFinished() {
 	// and setting a 
 	if ( sm_bInitialCheck ) {
 		// after the 10th hot check, check if we're hot  
-		if ( hotIterate >= 10 ) {
+		if ( hotIterate >= SmartDashboard::GetNumber("Hot Scans") ) {
 			// if greater than five hots, assume hot, return true
-			if ( hotCount > 5 ) {
+			if ( hotCount > SmartDashboard::GetNumber("Hot Confirms") ) {
 				WaitForHot::sm_bIsHot = true;
 			} else {
 				WaitForHot::sm_bIsHot = false;
