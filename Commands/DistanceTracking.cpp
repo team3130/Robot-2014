@@ -428,6 +428,7 @@ bool DistanceTracking::IsAimedTargetHot() {
 	
 			if ( !pNetworkTable->ContainsKey("MEQ_COORDINATES") ||
 				 !pNetworkTable->ContainsKey("IMAGE_WIDTH")) {
+				countNoTable++;
 				return false;
 			}
 				
@@ -445,8 +446,14 @@ bool DistanceTracking::IsAimedTargetHot() {
 			int iNumRects = GetMarkerSizes( coords, dMarkerHeights, dMarkerWidths, dMarkerCenterX );
 	
 			// no rectangles on screen, facing other direction or something blocking, return false
-			if (( iNumRects <= 0 ) || ( iNumRects > 3 ))
+			if ( iNumRects <= 0 ){
+				countZeroRectangles++;
 				return false;
+			}
+			if(iNumRects > 3 ) {
+				countTooMany++;
+				return false;
+			}
 
 			// a single rect.  we'll assume that this means that a single vertical rectangle is in the
 			// image, return false
@@ -479,6 +486,7 @@ bool DistanceTracking::IsAimedTargetHot() {
 			// three rects..  Must be that we have two verticals and a horizontal, just need to figure
 			// out which side the horizontal is on
 			if ( iNumRects == 3 ) {
+				countTooMany++;
 				// if THREE height is less than ONE, THREE (right) is the hot marker, ONE and TWO are the vertical markers
 				if ( dMarkerHeights[MARKER_THREE] < dMarkerHeights[MARKER_ONE] ) {
 						

@@ -26,6 +26,9 @@ void WaitForHot::Initialize() {
 	hotCount = 0;
 	hotIterate = 0;
 	
+	distanceTracking->countNoTable = 0;
+	distanceTracking->countTooMany = 0;
+	distanceTracking->countZeroRectangles = 0;
 	// reset the timer, then start again
 	timer.Reset();
 	timer.Start();
@@ -84,7 +87,10 @@ bool WaitForHot::IsFinished() {
 				WaitForHot::sm_bIsHot = false;
 			}
 			SmartDashboard::PutBoolean("IsHot", WaitForHot::sm_bIsHot);	
-			SmartDashboard::PutNumber("Hot Count", hotCount);	
+			SmartDashboard::PutNumber("Hot Count", hotCount);
+			SmartDashboard::PutNumber("Auto No Table count",distanceTracking->countNoTable);
+			SmartDashboard::PutNumber("Auto Zero Rects",distanceTracking->countZeroRectangles);
+			SmartDashboard::PutNumber("Auto Too Many Rects count",distanceTracking->countTooMany);
 			WaitForHot::sm_bInitialCheck = false;
 			return true;
 		}
