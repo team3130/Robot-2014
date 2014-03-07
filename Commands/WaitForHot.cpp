@@ -83,6 +83,7 @@ bool WaitForHot::IsFinished() {
 				WaitForHot::sm_bIsHot = false;
 			}
 			SmartDashboard::PutBoolean("IsHot", WaitForHot::sm_bIsHot);	
+			SmartDashboard::PutNumber("Hot Count", hotCount);	
 			WaitForHot::sm_bInitialCheck = false;
 			return true;
 		}
