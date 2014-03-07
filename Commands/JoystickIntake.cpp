@@ -9,6 +9,7 @@
 
 JoystickIntake::JoystickIntake() : CommandBase("Manual Intake") {
 	Requires(intake);
+	SmartDashboard::PutNumber("Beaterbar Speed",0.85);
 }
 
 // Called just before this Command runs the first time
@@ -30,9 +31,9 @@ void JoystickIntake::Execute() {
 		intake->SetIdle(true);
 	}
 	if(oi->gamepad->GetRawButton(B_BEATERBARFWD)){
-		intake->BeaterBar(0.75);
+		intake->BeaterBar(SmartDashboard::GetNumber("Beaterbar Speed"));
 	}else if(oi->gamepad->GetRawButton(B_BEATERBARREV)){
-		intake->BeaterBar(-0.75);
+		intake->BeaterBar(-SmartDashboard::GetNumber("Beaterbar Speed"));
 	}else intake->BeaterBar(0.0);
 	
 	/*
