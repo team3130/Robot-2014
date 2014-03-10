@@ -20,7 +20,7 @@ void JoystickStopperWinch::Initialize() {
 }
 // Called repeatedly when this Command is scheduled to run
 void JoystickStopperWinch::Execute() {
-	if(m_position==stopHigh) {
+	if(false && m_position==stopHigh) {
 		double thumb = oi->gamepad->GetRawAxis(B_STOPPERWINCH);
 		if(fabs(thumb)>0.2){
 			stopper->setSmart(false);

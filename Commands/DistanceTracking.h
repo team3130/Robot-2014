@@ -36,6 +36,9 @@ public:
 	double 		GetDistanceToTarget();
 	bool 		IsClosestTargetHot();
 	bool		IsAimedTargetHot();
+	int			countNoTable;
+	int			countZeroRectangles;
+	int			countTooMany;
 };
 
 #endif

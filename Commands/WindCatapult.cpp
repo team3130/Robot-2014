@@ -11,7 +11,6 @@ WindCatapult::WindCatapult(const char* name) :	CommandBase(name) {
 	// eg. Requires(chassis);
 	Requires(intake);
 	Requires(shooter);
-	Requires(stopper);
 	shooter->setReady(true);
 }
 

@@ -32,11 +32,16 @@ void JoystickTank::Execute() {
 	//precision mode
 	float multiplier = 1.0;	//how much precision each level gives us.
 	if(oi->leftPrecision->Get()) multiplier *= 0.666;
-	if(oi->rightPrecision->Get()) multiplier *= 0.666;
 	if(multiplier<1.0){
 		chassis->ShiftGear(false);
 		chassis->tankDrive(leftStick*multiplier, rightStick*multiplier);
 		return;
+	}
+
+	if(oi->rightPrecision->Get()) {
+		chassis->ShiftGear(true);
+	} else {
+		chassis->ShiftGear(false);
 	}
 
 	// Automatic transmission
