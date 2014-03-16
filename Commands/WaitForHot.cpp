@@ -1,14 +1,14 @@
 #include "WaitForHot.h"
 
 bool WaitForHot::sm_bIsHot = false;
-bool WaitForHot::sm_bInitialCheck = false;
 
 WaitForHot::WaitForHot(const char* name) : CommandBase(name) {
-	// Use requires() here to declare subsystem dependencies
-	// eg. requires(chassis);
-	SmartDashboard::PutNumber("Autonomous - Hot Method", 0.0);
-	SmartDashboard::PutNumber("Hot Scans", 15);
-	SmartDashboard::PutNumber("Hot Confirms", 7);
+
+	SmartDashboard::PutNumber("Auton - Hot Method", 2.0);
+	SmartDashboard::PutNumber("Auton - Hot Scans", 15);
+	SmartDashboard::PutNumber("Auton - Hot Confirms", 5);
+	SmartDashboard::PutNumber("Auton - Init Wait", 0.7);
+		
     distanceTracking = new DistanceTracking();
 }
 
@@ -20,8 +20,7 @@ WaitForHot::~WaitForHot() {
 // Called just before this Command runs the first time
 void WaitForHot::Initialize() {
 	
-	// hotMethod = (int) Robot::preferences->GetDouble("AutonomousDetectHotMethod",0.0);
-	hotMethod = (int) SmartDashboard::GetNumber("Autonomous - Hot Method");
+	hotMethod = (int) SmartDashboard::GetNumber("Auton - Hot Method");
 		
 	hotCount = 0;
 	hotIterate = 0;
@@ -29,6 +28,11 @@ void WaitForHot::Initialize() {
 	distanceTracking->countNoTable = 0;
 	distanceTracking->countTooMany = 0;
 	distanceTracking->countZeroRectangles = 0;
+	
+	hotScans = (int) SmartDashboard::GetNumber("Auton - Hot Scans");
+	hotConfirms = (int) SmartDashboard::GetNumber("Auton - Hot Confirms");
+	initWait = SmartDashboard::GetNumber("Auton - Init Wait");
+	
 	// reset the timer, then start again
 	timer.Reset();
 	timer.Start();
@@ -36,81 +40,68 @@ void WaitForHot::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void WaitForHot::Execute() {
-	
-	if ( !sm_bInitialCheck ) {
-		return;
-	}
-	
-	// wait until half a second has passed before checking for hot or not
-	/*
-	if ( !timer.HasPeriodPassed(0.5))
-		return;
-	*/
-	
-	//Check if half a second had passed
-	if (timer.Get() >= .7){
-		// we'll check for hot the first 10 times called (0-9)
-		if ( hotIterate < SmartDashboard::GetNumber("Hot Scans") ) {
 		
-			// if using aimed method to test for hot
-			if ( hotMethod == 0 ) {
-				// if the aimed target is hot, increment hot count
-				if ( distanceTracking->IsAimedTargetHot() ) {				
+	// wait a bit for checking for hot goal
+	if ( timer.Get() >= initWait ) {
+
+		// if using aimed method to test for hot
+		if ( hotMethod == 0 ) {
+			// if the aimed target is hot, increment hot count
+			if ( distanceTracking->IsAimedTargetHot() ) {				
 				hotCount ++;
-				}
-			
+			}
+		}
+
 		// else use closest method for hot test
-			} else {
-				// if the closer target is hot, increment hot count
-				if ( distanceTracking->IsClosestTargetHot() ) {
+		else if ( hotMethod == 1 ) {
+			// if the closer target is hot, increment hot count
+			if ( distanceTracking->IsClosestTargetHot() ) {
 				hotCount ++;
+			}
+		}
+
+		// else using roborealm shape matching, just check the value from the
+		// network table
+		else if ( hotMethod == 2 ) {
+			NetworkTable * pNetworkTable = NetworkTable::GetTable("SmartDashboard");
+			if ( pNetworkTable ) {
+				if ( pNetworkTable->GetNumber("SHAPE_MATCH_HIT", 0.0) > 0.0 ) {
+					hotCount++;
 				}
 			}
-			// increment hot iteration counter
-			hotIterate++;
 		}
+
+		// increment hot iteration counter
+		hotIterate++;
 	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool WaitForHot::IsFinished() {
 
-	// if this is the first run of this command, just checking for hot
-	// and setting a 
-	if ( sm_bInitialCheck ) {
-		// after the 10th hot check, check if we're hot  
-		if ( hotIterate >= SmartDashboard::GetNumber("Hot Scans") ) {
-			// if greater than five hots, assume hot, return true
-			if ( hotCount > SmartDashboard::GetNumber("Hot Confirms") ) {
-				WaitForHot::sm_bIsHot = true;
-			} else {
-				WaitForHot::sm_bIsHot = false;
-			}
-			SmartDashboard::PutBoolean("IsHot", WaitForHot::sm_bIsHot);	
-			SmartDashboard::PutNumber("Hot Count", hotCount);
-			SmartDashboard::PutNumber("Auto No Table count",distanceTracking->countNoTable);
-			SmartDashboard::PutNumber("Auto Zero Rects",distanceTracking->countZeroRectangles);
-			SmartDashboard::PutNumber("Auto Too Many Rects count",distanceTracking->countTooMany);
-			WaitForHot::sm_bInitialCheck = false;
-			return true;
-		}
-	}
-	else {
-		// if initial check indicated hot, return now
-		if ( sm_bIsHot )
-			return true;
+	// if we've iterated as many times as we were told to
+	if ( hotIterate >= hotScans ) {
 		
-		// else if it's been five seconds, return now
-		if ( timer.HasPeriodPassed(5.0)) {
-			return true;
+		// if our hot count exceeds or hits the hot confirm count, return true
+		if ( hotCount >= hotConfirms ) {
+			WaitForHot::sm_bIsHot = true;
+		} else {
+			WaitForHot::sm_bIsHot = false;
 		}
+		
+		SmartDashboard::PutBoolean("Auton - IsHot", WaitForHot::sm_bIsHot);	
+		SmartDashboard::PutNumber("Auton - Hot Count", hotCount);
+		SmartDashboard::PutNumber("Auton - No Table count",distanceTracking->countNoTable);
+		SmartDashboard::PutNumber("Auton - Zero Rects count",distanceTracking->countZeroRectangles);
+		SmartDashboard::PutNumber("Auton - Too Many Rects count",distanceTracking->countTooMany);
+
+		return true;
 	}
 	return false;
 }
 
 // Called once after isFinished returns true
 void WaitForHot::End() {
-	
 }
 
 // Called when another command which requires one or more of the same

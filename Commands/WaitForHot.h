@@ -19,13 +19,15 @@ public:
 	virtual void End();
 	virtual void Interrupted();
 	DistanceTracking* distanceTracking;
+	int hotScans;
+	int hotConfirms;
+	double initWait;
 	int hotCount;
 	int hotIterate;
-	int hotMethod; // 0 = aimed, 1 = distance
+	int hotMethod; // 0 = aimed, 1 = distance, 2 = shape matching
 	Timer timer;
 	
 	static bool sm_bIsHot;
-	static bool sm_bInitialCheck;
 };
 
 #endif

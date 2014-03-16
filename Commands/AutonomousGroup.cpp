@@ -2,11 +2,11 @@
 #include "WindCatapult.h"
 
 AutonomousGroup::AutonomousGroup() {
-	SmartDashboard::PutNumber("Autonomous - Init Move Dist", 0);
-	SmartDashboard::PutNumber("Autonomous - Init Move Tol", 0.5);
+	SmartDashboard::PutNumber("Auton - Init Move Dist", 0);
+	SmartDashboard::PutNumber("Auton - Init Move Tol", 0.5);
 
-	SmartDashboard::PutNumber("Autonomous - Final Move Dist", -50);
-	SmartDashboard::PutNumber("Autonomous - Final Move Tol", 0.5);
+	SmartDashboard::PutNumber("Auton - Final Move Dist", -60);
+	SmartDashboard::PutNumber("Auton - Final Move Tol", 0.5);
 
 	// allocate and store pointers to commands
 	loader = new WindCatapult("Auto: Load Catapult");
@@ -36,17 +36,16 @@ AutonomousGroup::~AutonomousGroup(){
 void AutonomousGroup::Initialize(){
 	CommandBase::intake->ResetIdleTimer();
 	WaitForHot::sm_bIsHot = false;
-	WaitForHot::sm_bInitialCheck = true;
 	CommandBase::stopper->Calibrate(SmartDashboard::GetNumber("Stopper High Angle"));
 	CommandBase::intake->SetIdle(true);
 	shoot->GrantPermission(false);
 	driveStraight1->SetGoal(
-			SmartDashboard::GetNumber("Autonomous - Init Move Dist"),
-			SmartDashboard::GetNumber("Autonomous - Init Move Tol")
+			SmartDashboard::GetNumber("Auton - Init Move Dist"),
+			SmartDashboard::GetNumber("Auton - Init Move Tol")
 		);
 	driveStraight2->SetGoal(
-			SmartDashboard::GetNumber("Autonomous - Final Move Dist"),
-			SmartDashboard::GetNumber("Autonomous - Final Move Tol")
+			SmartDashboard::GetNumber("Auton - Final Move Dist"),
+			SmartDashboard::GetNumber("Auton - Final Move Tol")
 		);
 	hotGoalTimer.Reset();
 	hotGoalTimer.Start();
@@ -54,7 +53,7 @@ void AutonomousGroup::Initialize(){
 
 void AutonomousGroup::Execute(){
 	if(accum->IsFinished()){
-		if(waitForHot->sm_bIsHot || hotGoalTimer.Get()>=5.0){
+		if(waitForHot->sm_bIsHot || hotGoalTimer.Get() >= 5.5){
 			shoot->GrantPermission(true);
 		}
 	}

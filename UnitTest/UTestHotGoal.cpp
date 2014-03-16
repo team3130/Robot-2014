@@ -12,7 +12,6 @@ UTestHotGoal::~UTestHotGoal(){
 
 void UTestHotGoal::Initialize(){
 	WaitForHot::sm_bIsHot = false;
-	WaitForHot::sm_bInitialCheck = true;
 	hotGoalTimer.Reset();
 	hotGoalTimer.Start();
 }
