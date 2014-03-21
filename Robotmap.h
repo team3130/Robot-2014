@@ -71,7 +71,7 @@
 #define B_BEATERBARFWD 2
 #define B_BEATERBARREV 4
 #define B_POWERWINCH 2
-#define B_STOPPERWINCH 4
+#define A_STOPPERWINCH 6
 #define B_SHOOT 6
 #define B_LOCKSHOOTER 9
 #define B_LOADLOWSHOT 1
