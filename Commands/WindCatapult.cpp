@@ -46,7 +46,7 @@ void WindCatapult::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool WindCatapult::IsFinished() {
-	return (state == 2);
+	return (state == 2 || fabs(oi->gamepad->GetRawAxis(B_POWERWINCH)) > 0.2);
 }
 
 // Called once after isFinished returns true

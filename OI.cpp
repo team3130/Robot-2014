@@ -13,6 +13,7 @@
 #include "Commands/Rotate.h"
 #include "Commands/DriveHighGear.h"
 #include "Commands/DriveLowGear.h"
+#include "Commands/WindCatapult.h"
 
 OI::OI() {
 	leftJoystick  = new Joystick(1);
@@ -28,6 +29,7 @@ OI::OI() {
 	triggerShoot = new JoystickButton(gamepad,B_SHOOT);
 
 	//triggerShoot->WhenPressed(new ShootCatapult("Shoot manual"));
+	triggerShoot->WhenReleased(new WindCatapult("Tele Reload catapult"));
 	straightMode->WhenPressed(new JoystickStraight("Straight manual"));
 	shiftUpButton1->WhenPressed(new DriveHighGear("Shift up manual1"));
 	shiftDnButton1->WhenPressed(new DriveLowGear("Shift down manual1"));
