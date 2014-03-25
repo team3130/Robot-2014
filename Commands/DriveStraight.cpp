@@ -21,7 +21,10 @@ void DriveStraight::SetGoal(double dist, double thresh, double timeToWait, doubl
 	goal=dist;
 	threshold=thresh;
 	confirmTime=timeToWait;
+	speed = ispeed;
 	dumbDriveTime = fabs(dist / Robot::LowGearTopSpeed);
+	if ( ispeed > 0.0 )
+		dumbDriveTime /= ispeed; 
 	SmartDashboard::PutNumber(GetName()+"Straight Goal",goal);
 	SmartDashboard::PutNumber(GetName()+"Straight Threshold",thresh);
 	SmartDashboard::PutNumber(GetName()+"Straight Cooldown",timeToWait);
