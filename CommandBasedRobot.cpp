@@ -34,7 +34,7 @@ private:
 		// teleop starts running. If you want the autonomous to 
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		autonomousCommand->Cancel();
+		// autonomousCommand->Cancel();
 		//SmartDashboard::PutData("Move Straight", new JoystickStraight(600,600));
 	}
 	

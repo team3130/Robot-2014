@@ -10,10 +10,13 @@
 
 #include "../CommandBase.h"
 #include "WPILib.h"
-
+/**
+ * winds winch, waits 0.4 seconds, then accumulates winch.
+ */
 class WindCatapult: public CommandBase {
 private:
 	int state;
+	Timer waitTimer;
 public:
 	WindCatapult(const char* name);
 	virtual void Initialize();

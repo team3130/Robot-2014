@@ -11,13 +11,13 @@
 DriveStraight::DriveStraight(const char *name): PIDCommand(name,0,0,0){
 	Requires(CommandBase::chassis);
 	this->chassis = CommandBase::chassis;
-
+	speed=1;
 	SmartDashboard::PutNumber("Straight PID P",-3000);
 	SmartDashboard::PutNumber("Straight PID I",0);
 	SmartDashboard::PutNumber("Straight PID D",0);
 }
 
-void DriveStraight::SetGoal(double dist, double thresh, double timeToWait) {
+void DriveStraight::SetGoal(double dist, double thresh, double timeToWait, double ispeed) {
 	goal=dist;
 	threshold=thresh;
 	confirmTime=timeToWait;
@@ -25,6 +25,7 @@ void DriveStraight::SetGoal(double dist, double thresh, double timeToWait) {
 	SmartDashboard::PutNumber(GetName()+"Straight Goal",goal);
 	SmartDashboard::PutNumber(GetName()+"Straight Threshold",thresh);
 	SmartDashboard::PutNumber(GetName()+"Straight Cooldown",timeToWait);
+	SmartDashboard::PutNumber(GetName()+"Straight Speed",ispeed);
 	GetPIDController()->SetSetpoint(goal);
 	GetPIDController()->SetAbsoluteTolerance(threshold);
 }
@@ -86,7 +87,9 @@ void DriveStraight::UsePIDOutput(double output){
 	if(chassis->CanUseGyro()){
 		drift = driftK*(chassis->gyro->GetAngle() - keepAngle)*fabs(output);
 	}
-	chassis->arcadeDrive(output,drift);
+	if(output>1)output=1;
+	if(output<-1)output=-1;
+	chassis->arcadeDrive(output*speed,drift);
 }
 
 // Called once after isFinished returns true

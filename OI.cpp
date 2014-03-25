@@ -26,7 +26,9 @@ OI::OI() {
 	shiftDnButton1  = new JoystickButton(leftJoystick, B_LOWGEAR1);
 	shiftUpButton2  = new JoystickButton(rightJoystick, B_HIGHGEAR2);
 	shiftDnButton2  = new JoystickButton(leftJoystick, B_LOWGEAR2);
+	manualWinchControl = new JoystickButton(gamepad, 9);
 	triggerShoot = new JoystickButton(gamepad,B_SHOOT);
+	triggerShoot->WhenReleased(new WindCatapult("Teleop Rewind After Shot"));
 
 	//triggerShoot->WhenPressed(new ShootCatapult("Shoot manual"));
 	triggerShoot->WhenReleased(new WindCatapult("Tele Reload catapult"));
@@ -35,4 +37,5 @@ OI::OI() {
 	shiftDnButton1->WhenPressed(new DriveLowGear("Shift down manual1"));
 	shiftUpButton2->WhenPressed(new DriveHighGear("Shift up manual2"));
 	shiftDnButton2->WhenPressed(new DriveLowGear("Shift down manual2"));
+	
 }

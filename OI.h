@@ -27,6 +27,7 @@ public:
 	JoystickButton* shiftDnButton1;
 	JoystickButton* shiftUpButton2;
 	JoystickButton* shiftDnButton2;
+	JoystickButton* manualWinchControl;
 };
 
 #endif
