@@ -10,22 +10,25 @@
 JoystickIntake::JoystickIntake() : CommandBase("Manual Intake") {
 	Requires(intake);
 	SmartDashboard::PutNumber("Beaterbar Speed",0.85);
+	beaterup=false;
+	extendPressed=false;
 }
 
 // Called just before this Command runs the first time
 void JoystickIntake::Initialize() {
 }
+
 // Called repeatedly when this Command is scheduled to run
 void JoystickIntake::Execute() {
-	static bool beaterup=false;
-	static bool extendPressed=false;
-	if(!extendPressed && (oi->gamepad->GetRawButton(B_EXTENDARMS))){
-		beaterup=!beaterup;
-		intake->SetIdle(false);
-		intake->ExtendArms(beaterup);
-		extendPressed=true;
-	}else{
-		extendPressed=(oi->gamepad->GetRawButton(B_EXTENDARMS));
+	if(!intake->isShooting) {
+		if(!extendPressed && (oi->gamepad->GetRawButton(B_EXTENDARMS))){
+			beaterup=!beaterup;
+			intake->SetIdle(false);
+			intake->ExtendArms(beaterup);
+			extendPressed=true;
+		}else{
+			extendPressed=(oi->gamepad->GetRawButton(B_EXTENDARMS));
+		}
 	}
 	if(oi->gamepad->GetRawButton(B_IDLEARMS)){
 		intake->SetIdle(true);
@@ -35,16 +38,6 @@ void JoystickIntake::Execute() {
 	}else if(oi->gamepad->GetRawButton(B_BEATERBARREV)){
 		intake->BeaterBar(-SmartDashboard::GetNumber("Beaterbar Speed"));
 	}else intake->BeaterBar(0.0);
-	
-	/*
-	float trigger_beaterbar = oi->gamepad->GetRawAxis(A_BEATERBAR); 
-	if(fabs(trigger_beaterbar)>0.5){
-		intake->BeaterBar(trigger_beaterbar);
-	}
-	else {
-		intake->BeaterBar(0);
-	}
-	*/
 }
 
 // Make this return true when this Command no longer needs to run execute()

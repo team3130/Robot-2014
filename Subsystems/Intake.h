@@ -22,8 +22,7 @@ private:
 	bool extendSet;
 	Timer readyTimer;
 public:
-	//encoder for beater bar
-	Encoder* intakeEncoder;
+	bool isShooting;
 	
 	Intake();
 	~Intake();

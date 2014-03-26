@@ -8,7 +8,6 @@
 #include "Commands/JoystickStraight.h"
 #include "Commands/JoystickTank.h"
 #include "Commands/ShootCatapult.h"
-#include "Commands/SpinIntake.h"
 #include "Commands/DriveStraight.h"
 #include "Commands/Rotate.h"
 #include "Commands/DriveHighGear.h"

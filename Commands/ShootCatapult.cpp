@@ -9,7 +9,6 @@
 ShootCatapult::ShootCatapult(const char* name) : CommandBase(name) {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires(intake);
 	Requires(shooter);
 	//Requires(stopper);
 	shooter->setReady(true);
@@ -23,6 +22,7 @@ ShootCatapult::ShootCatapult(const char* name) : CommandBase(name) {
 // Called just before this Command runs the first time
 void ShootCatapult::Initialize() 
 {
+	intake->isShooting=true;
 	intake->SetIdle(true);
 	done=false;
 	timer.Stop();
@@ -43,6 +43,7 @@ void ShootCatapult::Execute() {
 	}else if(state==1){	//wait for the catapult completes the shot
 		if(timer.Get()>1.0){
 			state=2;
+			intake->isShooting=false;
 		}
 	}else if(state==2){
 		shooter->setPinch(false);

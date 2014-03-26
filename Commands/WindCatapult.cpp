@@ -15,7 +15,7 @@ WindCatapult::WindCatapult(const char* name) :	CommandBase(name) {
 // Called just before this Command runs the first time
 void WindCatapult::Initialize() {
 	state = 0;
-	intake->GetDefaultCommand()->Cancel();
+	intake->isShooting=true;
 	intake->SetIdle(true);
 	waitTimer.Stop();
 	waitTimer.Reset();
@@ -32,7 +32,7 @@ void WindCatapult::Execute() {
 		shooter->setWinchDirect(.8);
 		if (stopper->armSwitchState()) {
 			shooter->setWinchDirect(0);
-			//intake->GetDefaultCommand()->Start();
+			intake->isShooting=false;
 			state = 1;
 		}
 		waitTimer.Start();

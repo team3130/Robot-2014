@@ -13,6 +13,8 @@
 
 class JoystickIntake: public CommandBase {
 public:
+	bool beaterup;
+	bool extendPressed;
 	JoystickIntake();
 	virtual void Initialize();
 	virtual void Execute();

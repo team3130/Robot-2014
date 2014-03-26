@@ -7,7 +7,6 @@
 
 #include "Intake.h"
 #include "../Robotmap.h"
-#include "../Commands/SpinIntake.h"
 #include "../Commands/JoystickIntake.h"
 
 Intake::Intake() : Subsystem("Intake") {
@@ -16,6 +15,7 @@ Intake::Intake() : Subsystem("Intake") {
 	idle = new Solenoid(C_IDLESOLENOID);
 	idleSet=false;
 	extendSet=false;
+	isShooting=false;
 }
 
 Intake::~Intake(){
