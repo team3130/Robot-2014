@@ -32,7 +32,7 @@ void WindCatapult::Execute() {
 		shooter->setWinchDirect(.8);
 		if (stopper->armSwitchState()) {
 			shooter->setWinchDirect(0);
-			intake->GetDefaultCommand()->Start();
+			//intake->GetDefaultCommand()->Start();
 			state = 1;
 		}
 		waitTimer.Start();

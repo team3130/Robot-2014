@@ -4,11 +4,11 @@
 AutonomousGroup::AutonomousGroup() {
 	SmartDashboard::PutNumber("Auton - Init Move Dist", -140);
 	SmartDashboard::PutNumber("Auton - Init Move Tol", 0.5);
-	SmartDashboard::PutNumber("Auton - Init Move Speed", 0.5);
+	SmartDashboard::PutNumber("Auton - Init Move Speed", 0.8);
 
 	SmartDashboard::PutNumber("Auton - Final Move Dist", -0);
 	SmartDashboard::PutNumber("Auton - Final Move Tol", 0.5);
-	SmartDashboard::PutNumber("Auton - Final Move Speed", 0.5);
+	SmartDashboard::PutNumber("Auton - Final Move Speed", 0.8);
 
 	SmartDashboard::PutNumber("Auton - Initial Shoot Time", 3.0);
 	// allocate and store pointers to commands
@@ -40,7 +40,8 @@ void AutonomousGroup::Initialize(){
 	CommandBase::intake->ResetIdleTimer();
 	WaitForHot::sm_bIsHot = false;
 	CommandBase::stopper->Calibrate(SmartDashboard::GetNumber("Stopper High Angle"));
-	CommandBase::intake->SetIdle(true);
+	CommandBase::intake->ExtendArms(false);
+	CommandBase::intake->SetIdle(false);
 	shoot->GrantPermission(false);
 	driveStraight1->SetGoal(
 			SmartDashboard::GetNumber("Auton - Init Move Dist"),
@@ -61,7 +62,7 @@ void AutonomousGroup::Initialize(){
 void AutonomousGroup::Execute(){
 	double waitTime = SmartDashboard::GetNumber("Auton - Initial Shoot Time");
 	if(accum->IsFinished()){
-		if((waitForHot->sm_bIsHot && (hotGoalTimer.Get() >= waitTime))|| hotGoalTimer.Get() >= 5.5){
+		if((waitForHot->sm_bIsHot && (hotGoalTimer.Get() >= waitTime))|| hotGoalTimer.Get() >= 6.28){
 			shoot->GrantPermission(true);
 		}
 	}
