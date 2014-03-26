@@ -23,6 +23,7 @@ ShootCatapult::ShootCatapult(const char* name) : CommandBase(name) {
 // Called just before this Command runs the first time
 void ShootCatapult::Initialize() 
 {
+	intake->SetIdle(true);
 	done=false;
 	timer.Stop();
 	timer.Reset();

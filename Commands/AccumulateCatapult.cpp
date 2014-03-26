@@ -8,8 +8,6 @@
 #include "AccumulateCatapult.h"
 AccumulateCatapult::AccumulateCatapult(const char* name) :	CommandBase(name) {
 	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(chassis);
-	Requires(intake);
 	Requires(shooter);
 	shooter->setReady(true);
 }
@@ -17,15 +15,11 @@ AccumulateCatapult::AccumulateCatapult(const char* name) :	CommandBase(name) {
 // Called just before this Command runs the first time
 void AccumulateCatapult::Initialize() {
 	state = 0;
-	intake->SetIdle(true);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AccumulateCatapult::Execute() {
 	shooter->setPinch(false);
-	bool shootReady = intake->getReadyToShoot();
-	SmartDashboard::PutNumber("Ready to Shoot", shootReady);
-	// Unwind to fill up the accumulator
 	shooter->setWinchDirect(-.5);
 	if (shooter->hasSlack()) {
 		shooter->setWinchDirect(0);

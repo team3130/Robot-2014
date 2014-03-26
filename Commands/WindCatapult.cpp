@@ -8,8 +8,6 @@
 #include "WindCatapult.h"
 WindCatapult::WindCatapult(const char* name) :	CommandBase(name) {
 	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(chassis);
-	Requires(intake);
 	Requires(shooter);
 	shooter->setReady(true);
 }
@@ -17,6 +15,7 @@ WindCatapult::WindCatapult(const char* name) :	CommandBase(name) {
 // Called just before this Command runs the first time
 void WindCatapult::Initialize() {
 	state = 0;
+	intake->GetDefaultCommand()->Cancel();
 	intake->SetIdle(true);
 	waitTimer.Stop();
 	waitTimer.Reset();
@@ -33,6 +32,7 @@ void WindCatapult::Execute() {
 		shooter->setWinchDirect(.8);
 		if (stopper->armSwitchState()) {
 			shooter->setWinchDirect(0);
+			intake->GetDefaultCommand()->Start();
 			state = 1;
 		}
 		waitTimer.Start();
@@ -60,11 +60,7 @@ void WindCatapult::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool WindCatapult::IsFinished() {
-	// <<<<<<< HEAD
 	return (state == 3 || oi->manualWinchControl->Get());
-	// =======
-	// return (state == 3 || fabs(oi->gamepad->GetRawAxis(B_POWERWINCH)) > 0.2);
-	// >>>>>>> ecd44206344eff23c6e7a600650baf1d12a23d20
 }
 
 // Called once after isFinished returns true

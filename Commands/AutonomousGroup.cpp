@@ -45,11 +45,13 @@ void AutonomousGroup::Initialize(){
 	driveStraight1->SetGoal(
 			SmartDashboard::GetNumber("Auton - Init Move Dist"),
 			SmartDashboard::GetNumber("Auton - Init Move Tol"),
+			0,
 			SmartDashboard::GetNumber("Auton - Init Move Speed")
 		);
 	driveStraight2->SetGoal(
 			SmartDashboard::GetNumber("Auton - Final Move Dist"),
 			SmartDashboard::GetNumber("Auton - Final Move Tol"),
+			0,
 			SmartDashboard::GetNumber("Auton - Final Move Speed")
 		);
 	hotGoalTimer.Reset();
