@@ -23,12 +23,14 @@ private:
 	DriveStraight* driveStraight2;
 	Timer hotGoalTimer;
 	AccumulateCatapult* accum;
+	AccumulateCatapult* accum2;
 public:	
 	AutonomousGroup();
 	~AutonomousGroup();
 	void Initialize();
 	void Execute();
 	void End();
+	void Interrupted();
 };
 
 #endif

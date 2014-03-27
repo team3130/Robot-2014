@@ -2,7 +2,7 @@
 #include "WindCatapult.h"
 
 AutonomousGroup::AutonomousGroup() {
-	SmartDashboard::PutNumber("Auton - Init Move Dist", -140);
+	SmartDashboard::PutNumber("Auton - Init Move Dist", -60);
 	SmartDashboard::PutNumber("Auton - Init Move Tol", 0.5);
 	SmartDashboard::PutNumber("Auton - Init Move Speed", 0.8);
 
@@ -18,12 +18,13 @@ AutonomousGroup::AutonomousGroup() {
 	shoot = new ShootCatapult("Auto: Shoot");
 	driveStraight2 = new DriveStraight("Auto: clear the zone");
 	accum = new AccumulateCatapult("Auto: Accum");
+	accum2 = new AccumulateCatapult("Auto: Accum 2");
 	// Do the whole reload procedure mainly to fill up the accumulator
 	// check for hot, store result as waitforhot static
-	AddParallel(accum);
+	AddParallel(accum2);
 	AddSequential(waitForHot);
 	AddSequential(driveStraight1);
-	
+	AddSequential(accum);
 	AddSequential(shoot);
 	AddSequential(driveStraight2);
 	AddSequential(new WindCatapult("Auto: Reload Catapult"));
@@ -70,4 +71,8 @@ void AutonomousGroup::Execute(){
 
 // Called once after isFinished returns true
 void AutonomousGroup::End() {
+	CommandBase::intake->isShooting=false;
+}
+void AutonomousGroup::Interrupted() {
+	End();
 }
