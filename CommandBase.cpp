@@ -27,7 +27,7 @@ void CommandBase::init() {
     // Create a single static instance of all of your subsystems. The following
 	// line should be repeated for each subsystem in the project.
 	//examplesubsystem = new ExampleSubsystem();
-	compressor = new Compressor(C_PRESSURE_SWITCH, C_COMPRESSOR_RELAY);
+	compressor = new Compressor();
 	shooter = new Shooter(C_WINCHMOTOR1, C_SHOOTERSOLENOID1, C_SHOOTERSOLENOID2);
 	stopper = new StopperWinch();
 	intake = new Intake();

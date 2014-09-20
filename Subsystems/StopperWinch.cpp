@@ -55,7 +55,7 @@ void StopperWinch::Calibrate(double angle){
 	if(Robot::StopperEncoderPPI!=0){
 		stopperEncoder->SetDistancePerPulse(1.0/Robot::StopperEncoderPPI);
 		stopperEncoder->Reset();
-		stopperEncoder->Start();
+		//stopperEncoder->Start();
 		Enable();
 	}
 }

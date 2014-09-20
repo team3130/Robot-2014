@@ -25,7 +25,7 @@ VelocityController::VelocityController(const char *name, uint32_t channel, uint3
 	m_power = 0;
 	m_smart = true;
 	m_invertOutput = false;
-	Encoder::Start();
+	Encoder::Reset();
 	SmartDashboard::PutNumber("VelocityController P",1000);
 }
 VelocityController::~VelocityController(){

@@ -53,8 +53,8 @@ void Chassis::InitDefaultCommand() {
 void Chassis::InitEncoders() {
 	leftController->Reset();
 	rightController->Reset();
-	leftController->Start();
-	rightController->Start();
+	//leftController->Start();
+	//rightController->Start();
 }
 
 double Chassis::GetDistance() {
