@@ -4,32 +4,33 @@
   \           ////  | ____  \ |  ___  \ | |_| | |  ____ \    
   /  \\\\\\\\\\\\\  |/    |_| |_|   |_| \_____/ |_|    \|    
   \_           ///\  // ///// /////                 
-    \\\\\\\\\\\\\\/  //   =// // //    2014 Code
+    \\\\\\\\\\\\\\/  //   =// // //    2014 Code in 2015 BETA
                      // ///// /////      
 -------------------------------------------------------------------
 --  I. Installation                                              --
 -------------------------------------------------------------------
 
-1. If you have not set-up WindRiver, follow the Getting Started
-   With C++ guide from FIRST
-   (http://wpilib.screenstepslive.com/s/3120/m/7913)
+1. If you have not set-up Eclipse, follow the FRC C++ Programming
+   guide from FIRST
+   https://wpilib.screenstepslive.com/s/4485/m/13810
 
-2. Import the Robot-2014 project into WindRiver
-   [File->Import...  General->Existing Project Into Workspace]
-   Select the project directory with "Select Root Directory"
-   [My Documents/GitHub/Robot-2014]
-   Click on the Robot-2014 folder and click OK.
-   Do not Copy the Project into the Workspace
+2. Create a new project from a template.
+   [File->New->Project...  WPILib Robot C++ Development->Robot C++ Project]
+   Enter a name you want and select "Command-Based Robot"
+   Click "Finish".
 
-3. Build the project once
-   [CTRL+B CTRL+P]
+3. Delete everything in 'src' directory of the newly created project.
 
-4. Change your FIRST Downloader Preferences to download this 
-   project
-   [Window->Preferences  First Downloader Preferences]
-   Set Team Number to 3130
-   Set the download file to the .out file from the project (found 
-   in Robot-2014/PPC603gnu/Robot-2014/Debug)
+4. Clone the Robot-2014 repository into the project.
+   Open GitHub GUI client and click "+" sign in the upper left corner.
+   Select "Team3130"->"Robot-2014" and click "Clone".
+   Find your "workspace" and the directory of the new project.
+   Select "src" in that directory and click OK.
+   Change the branch to Beta-2015.
+
+5. Go back to Eclipse and "Refresh (F5)" the content of your project.
+
+6. Build.
 
 -------------------------------------------------------------------
 --  II. Code Information                                         --
