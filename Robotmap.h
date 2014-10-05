@@ -45,11 +45,11 @@
 #define C_COMPRESSOR_RELAY 1
 
 // Solenoids
-#define C_SHOOTERSOLENOID1 4
-#define C_SHOOTERSOLENOID2 5
-#define C_EXTENDSOLENOID1 2
-#define C_IDLESOLENOID 1
-#define C_SHIFTER 3
+#define C_SHOOTERSOLENOID1 3
+#define C_SHOOTERSOLENOID2 4
+#define C_EXTENDSOLENOID1 1
+#define C_IDLESOLENOID 0
+#define C_SHIFTER 2
 
 // PWM Motors (Jag and Talons)
 #define C_WINCHMOTOR1 7
