@@ -31,10 +31,10 @@ public:
 	
 	//Encoder value for the Lob Position
 	//Undetermined value #UNDETERMINED
-	static const double STOP_LOB_POSITION = 0;
+	static constexpr double STOP_LOB_POSITION = 0;
 	//Encoder value for the Shoot Position
 	//Undetermined value #UNDETERMINED
-	static const double STOP_SHOOT_POSITION = 0;
+	static constexpr double STOP_SHOOT_POSITION = 0;
 	//StopState for the Stop motor in the Lob position
 	static const int STOP_LOB = 0;
 	//StopState for the Stop motor in the Shoot position

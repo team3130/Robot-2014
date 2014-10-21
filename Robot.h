@@ -19,8 +19,8 @@ public:
 	static const unsigned int RightEncoderPPR=0;
 	// Theoretical max speed of the bot on low gear in inches per second
 	// Has to be unreachable closest amount.
-	static const double LowGearTopSpeed=150;
-	static const double StopperEncoderPPI=114.53;
+	static constexpr double LowGearTopSpeed=150;
+	static constexpr double StopperEncoderPPI=114.53;
 };
 
 #endif

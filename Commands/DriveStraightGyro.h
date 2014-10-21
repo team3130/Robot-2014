@@ -19,7 +19,7 @@
  */
 class DriveStraightGyro: public PIDCommand{
 private:
-	static const double driftK = 1.0/180.0;
+	static constexpr double driftK = 1.0/180.0;
 	Timer timer;
 	double goalTime;
 	double moveSpeed;
