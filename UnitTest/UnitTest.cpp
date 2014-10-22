@@ -9,7 +9,6 @@
 #include "UTestRotate.h"
 #include "UTestDriveStraight.h"
 #include "UTestNavigateTo.h"
-#include "UTestInputs.h"
 #include "UTestHotGoal.h"
 
 /*
@@ -20,7 +19,6 @@ UnitTest::UnitTest()
 	m_tests.push_back(new UTestRotate());
 	m_tests.push_back(new UTestDriveStraight());
 	m_tests.push_back(new UTestNavigateTo());
-	m_tests.push_back(new UTestInputs());
 	m_tests.push_back(new UTestHotGoal());
 }
 

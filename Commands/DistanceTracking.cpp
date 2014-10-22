@@ -138,7 +138,7 @@ int DistanceTracking::GetMarkerData( NumberArray & coords, SPointRect * rcMarker
 		}
 
 		delete coordOffsets;
-		coordOffsets = NULL;
+		//coordOffsets = NULL;
 	
 		return iNumRects;
 	}
@@ -165,10 +165,10 @@ int DistanceTracking::GetMarkerSizes( NumberArray & coords, double * dMarkerHeig
 			double dMinY = 100000;
 			double dMaxY = -1;
 			for ( int j=0; j<4; j++ ) {
-				dMinX = min( dMinX, coords.get( 8*i + j*2 ));
-				dMaxX = max( dMaxX, coords.get( 8*i + j*2 ));	
-				dMinY = min( dMinY, coords.get( 8*i + j*2 + 1));
-				dMaxY = max( dMaxY, coords.get( 8*i + j*2 + 1));
+				dMinX = fmin( dMinX, coords.get( 8*i + j*2 ));
+				dMaxX = fmax( dMaxX, coords.get( 8*i + j*2 ));
+				dMinY = fmin( dMinY, coords.get( 8*i + j*2 + 1));
+				dMaxY = fmax( dMaxY, coords.get( 8*i + j*2 + 1));
 			}
 			dMarkerWidths[i] = dMaxX - dMinX;
 			dMarkerHeights[i] = dMaxY - dMinY;
