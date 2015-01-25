@@ -4,8 +4,13 @@
 /* teams under the same license as the WPILib code itself.                 */
 /* Authors: Ashwin Chetty, James Li                                        */
 /*-------------------------------------------------------------------------*/
+//#include "Commands/JoystickStraight.h"
+#include "opencv2/opencv.hpp"
+#include "opencv2/objdetect/objdetect.hpp"
+
+
 #include "OI.h"
-#include "Commands/JoystickStraight.h"
+#include "Commands/JoystickVideo.h"
 #include "Commands/JoystickTank.h"
 #include "Commands/ShootCatapult.h"
 #include "Commands/DriveStraight.h"
@@ -15,9 +20,9 @@
 #include "Commands/WindCatapult.h"
 
 OI::OI() {
-	leftJoystick  = new Joystick(1);
-	rightJoystick = new Joystick(2);
-	gamepad       = new Joystick(3);
+	leftJoystick  = new Joystick(0);
+	rightJoystick = new Joystick(1);
+	gamepad       = new Joystick(2);
 	leftPrecision  = new JoystickButton(leftJoystick, 1);
 	rightPrecision = new JoystickButton(rightJoystick, 1);
 	straightMode   = new JoystickButton(rightJoystick, 2);
@@ -31,7 +36,7 @@ OI::OI() {
 
 	//triggerShoot->WhenPressed(new ShootCatapult("Shoot manual"));
 	triggerShoot->WhenReleased(new WindCatapult("Tele Reload catapult"));
-	straightMode->WhenPressed(new JoystickStraight("Straight manual"));
+	straightMode->WhenPressed(new JoystickVideo("Straight manual"));
 	shiftUpButton1->WhenPressed(new DriveHighGear("Shift up manual1"));
 	shiftDnButton1->WhenPressed(new DriveLowGear("Shift down manual1"));
 	shiftUpButton2->WhenPressed(new DriveHighGear("Shift up manual2"));
